@@ -1,12 +1,37 @@
 {
-	"required": true,
-	"package": "dev.uncandango.kubejstweaks.mixin.core",
-	"plugin": "dev.uncandango.kubejstweaks.mixin.core.plugin.KJSTMixinPlugin",
-	"compatibilityLevel": "JAVA_21",
-	"minVersion": "0.8",
-	"client": [],
-	"mixins": [],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "dev.uncandango.kubejstweaks.mixin.core",
+  "plugin": "dev.uncandango.kubejstweaks.mixin.core.plugin.KJSTMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "main.ClientAssetPacksMixin"
+  ],
+  "mixins": [
+    "main.CachedTagLookupMixin",
+    "main.DataExportMixin",
+    "main.EitherRecipeComponentMixin",
+    "main.EnumComponentMixin",
+    "main.ExDeorumKubeJsPluginMixin",
+    "main.ListRecipeComponentMixin",
+    "main.RecipeComponentBuilderMixin",
+    "main.RecipeComponentBuilderMixin$MapCodecMixin",
+    "main.RecipeComponentBuilderMixin$ValueMixin",
+    "main.RecipeComponentMixin",
+    "main.RecipeKeyMixin",
+    "main.RecipeManagerMixin",
+    "main.RecipeTypeFunctionMixin",
+    "main.RecordTypeInfoMixin",
+    "main.RegistryComponentMixin",
+    "main.ScannerMixin",
+    "main.ServerPackMixin",
+    "main.ServerScriptManagerMixin",
+    "main.TypesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixinextras": {
+    "minVersion": "0.5.0-beta.5"
+  }
 }
