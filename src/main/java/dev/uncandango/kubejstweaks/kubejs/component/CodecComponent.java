@@ -1,0 +1,106 @@
+package dev.uncandango.kubejstweaks.kubejs.component;
+
+import com.google.gson.reflect.TypeToken;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import dev.latvian.mods.kubejs.error.KubeRuntimeException;
+import dev.latvian.mods.kubejs.recipe.KubeRecipe;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.match.ReplacementMatchInfo;
+import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactory;
+import dev.latvian.mods.kubejs.script.KubeJSContext;
+import dev.latvian.mods.kubejs.util.Cast;
+import dev.latvian.mods.kubejs.util.UtilsJS;
+import dev.latvian.mods.rhino.Context;
+import dev.latvian.mods.rhino.type.RecordTypeInfo;
+import dev.latvian.mods.rhino.type.TypeInfo;
+import dev.uncandango.kubejstweaks.KubeJSTweaks;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+public record CodecComponent<T>(Codec<T> codec, TypeInfo type, String fieldString) implements RecipeComponent<T> {
+    public static final Map<String, Codec<?>> CODECS = new HashMap<>();
+
+    public static final RecipeComponentFactory FACTORY = (registries, storage, reader) -> {
+        reader.skipWhitespace();
+        reader.expect('<');
+        reader.skipWhitespace();
+        // com.buuz135.replication.calculation.MatterValue#CODEC
+        var clazzAndField = reader.readStringUntil('>').split("#");
+        Type genericType = null;
+        Object codecObj = CODECS.get(clazzAndField[0]);
+        if (codecObj != null) {
+            if (clazzAndField[0].contains(",")) {
+                var split = clazzAndField[0].split(",");
+                genericType = TypeToken.getParameterized(UtilsJS.tryLoadClass(split[0]), split.length > 1 ? UtilsJS.tryLoadClass(split[1]) : null).getType();
+            }
+            if (genericType != null) {
+                return new CodecComponent<>((Codec<?>)codecObj, TypeInfo.of(genericType), genericType.getTypeName());
+            }
+        }
+        Class<?> clazz = UtilsJS.tryLoadClass(clazzAndField[0]);
+        if (clazz == null) throw new KubeRuntimeException("Class " + clazzAndField[0] + " for CodecComponent not found!");
+        Field codecField = null;
+        String fieldString = "";
+        Codec<?> codec = null;
+        TypeInfo typeInfo = null;
+        {
+            try {
+                fieldString = clazzAndField.length == 2 ? clazzAndField[1] : "CODEC";
+                codecField = clazz.getDeclaredField(fieldString);
+                codecField.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                throw new KubeRuntimeException("Field " + fieldString + "for class " + clazz + " was not found!", e);
+            }
+            Type type = null;
+            if (codecField.getGenericType() instanceof ParameterizedType t1) {
+                type = t1.getActualTypeArguments()[0];
+            }
+            typeInfo = clazz.isRecord() ? TypeInfo.of(clazz) : TypeInfo.of(type);
+            codecObj = codecField.get(null);
+        }
+        if (codecObj instanceof MapCodec<?> mapCodec) {
+            codec = mapCodec.codec();
+        }
+        if (codecObj instanceof Codec<?> codec1) {
+            codec = codec1;
+        }
+        return new CodecComponent<>(codec, typeInfo, clazzAndField[0] + "#" + fieldString);
+    };
+
+    @Override
+    public T wrap(Context cx, KubeRecipe recipe, Object from) {
+        Object value = null;
+        try {
+            var dr = codec.decode(((KubeJSContext)cx).getRegistries().java(), Cast.to(from));
+            value = dr.getOrThrow().getFirst();
+        } catch (Exception ignored) {
+            return RecipeComponent.super.wrap(cx, recipe, from);
+        }
+        return Cast.to(value);
+
+
+
+//        if (typeInfo() instanceof RecordTypeInfo rti){
+//            value = rti.wrap(cx, from, rti);
+//        }
+//        if (value == null) {
+//
+//        }
+//        ;
+    }
+
+    @Override
+    public TypeInfo typeInfo() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return "codec<" + fieldString + ">";
+    }
+}

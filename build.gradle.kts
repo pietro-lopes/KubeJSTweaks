@@ -19,6 +19,7 @@ val mod_name: String by extra
 val mod_license: String by extra
 val mod_authors: String by extra
 val mod_description: String by extra
+val alltheleaks_version_range: String by extra
 
 repositories {
     mavenLocal()
@@ -56,13 +57,15 @@ repositories {
         url = uri("https://code.redspace.io/releases")
     }
 
+    maven { url = uri("https://maven.bawnorton.com/releases") }
+
     flatDir {
         dir("libs")
     }
 }
 
 val mod_id: String by extra
-
+val testmod_id = "testmod"
 base {
     archivesName = mod_id
     group = mod_group_id
@@ -82,12 +85,15 @@ neoForge {
     runs {
         register("client") {
             client()
-
+            systemProperty("production", "")
+            systemProperty("neoforge.enableGameTest", "false")
             systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
         }
 
         register("server") {
             server()
+            systemProperty("production", "")
+            systemProperty("neoforge.enableGameTest", "false")
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
         }
@@ -95,6 +101,13 @@ neoForge {
         register("gameTestServer") {
             type = "gameTestServer"
             systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+        }
+
+        register("testmod") {
+            client()
+            sourceSet = sourceSets.test.get()
+            systemProperty("neoforge.gameTestServer", "true")
+            systemProperty("neoforge.enabledGameTestNamespaces", "${mod_id},${testmod_id}")
         }
 
         register("data") {
@@ -130,7 +143,11 @@ neoForge {
         register(mod_id) {
             sourceSet(sourceSets.main.get())
         }
+        register("testmod") {
+            sourceSet(sourceSets.test.get())
+        }
     }
+    addModdingDependenciesTo(sourceSets.test.get())
 }
 
 val localRuntime: Configuration by configurations.creating
@@ -138,31 +155,57 @@ configurations {
     runtimeClasspath {
         extendsFrom(localRuntime)
     }
+    testRuntimeClasspath {
+        extendsFrom(localRuntime)
+    }
 }
 
 dependencies {
+    // MixinExtras that supports @Expression
+    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0-beta.5")?.let {
+        implementation(it)
+    }
+
+    // MixinSquared to Cancel and Adjust other mixins
+    annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")?.let {
+        compileOnly(it)
+    }
+    jarJar("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.2.0")?.let {
+        implementation(it)
+    }
+
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
         interfaceInjectionData(it)
     }
-    // localRuntime("curse.maven:kubejs-238086:5810100")
-
     implementation("dev.latvian.mods:rhino:2101.2.6-build.66")
-    // localRuntime("curse.maven:rhino-416294:6110233")
 
-    // localRuntime("curse.maven:alltheleaks-1091339:6165880")
-    localRuntime("blank:alltheleaks:0.1.14:beta+1.21.1-neoforge")
+    testImplementation("net.neoforged:testframework:${neo_version}")
 
+    compileOnly("curse.maven:probejs-585406:5820894")
     localRuntime("curse.maven:probejs-585406:5820894")
-    // localRuntime("blank:ProbeJS:7.7.2")
 
     // Mods
-    localRuntime("curse.maven:oritech-1030830:6065115")
-    localRuntime("curse.maven:replication-638351:6168308")
-    localRuntime("curse.maven:industrial-foregoing-266515:6030556")
+    implementation("curse.maven:ex-deorum-901420:6162365")
+
+    localRuntime("curse.maven:oritech-1030830:6300493")
+    localRuntime("curse.maven:replication-638351:6311813")
+    localRuntime("curse.maven:industrial-foregoing-266515:6283758")
     localRuntime("curse.maven:selene-499980:6184655")
     localRuntime("curse.maven:mekanism-268560:6018306")
-    implementation("curse.maven:ex-deorum-901420:6162365")
-    localRuntime("curse.maven:ars-nouveau-401955:6228434")
+    localRuntime("curse.maven:ars-nouveau-401955:6333245")
+    // localRuntime("curse.maven:fastsuite-475117:6321099-sources")
+    localRuntime("curse.maven:actually-additions-228404:6329770")
+    localRuntime("curse.maven:applied-energistics-2-223794:6323510")
+    localRuntime("curse.maven:extreme-reactors-250277:6158187")
+    implementation("curse.maven:create-328085:6323264")
+    localRuntime("curse.maven:ender-io-64578:6307311")
+    localRuntime("curse.maven:ex-pattern-provider-892005:6283473")
+    localRuntime("curse.maven:farming-for-blockheads-261924:6185977")
+    localRuntime("curse.maven:functional-storage-556861:6189752")
+    localRuntime("curse.maven:immersive-engineering-231951:6235316")
+    localRuntime("curse.maven:industrial-foregoing-266515:6283758")
+    localRuntime("curse.maven:integrated-dynamics-236307:6331508")
+    localRuntime("curse.maven:just-dire-things-1002348:6161633")
 
     // Dependencies
     localRuntime("curse.maven:architectury-api-419699:5786327")
@@ -170,12 +213,24 @@ dependencies {
     localRuntime("curse.maven:owo-lib-532610:5945693")
     localRuntime("curse.maven:geckolib-388172:6027599")
     localRuntime("curse.maven:athena-841890:5629395")
-    localRuntime("curse.maven:titanium-287342:6155132")
+    localRuntime("curse.maven:titanium-287342:6308421")
     localRuntime("curse.maven:curios-309927:6296219")
+    localRuntime("curse.maven:placebo-283644:6274181-sources")
+    localRuntime("curse.maven:oracle-index-1206582:6300145")
+    localRuntime("curse.maven:guideme-1173950:6331224")
+    localRuntime("curse.maven:zerocore-247921:6160798")
+    localRuntime("curse.maven:glodium-957920:5821676")
+    localRuntime("curse.maven:balm-531761:6338302")
+    localRuntime("curse.maven:common-capabilities-247007:6332022")
+    localRuntime("curse.maven:cyclops-core-232758:6340387")
 
+    localRuntime("blank:DualCodecs:0.1.2")
 
     // Utils
-    localRuntime("curse.maven:jei-238222:5846880")
+    // localRuntime("curse.maven:jei-238222:5846880")
+    localRuntime("curse.maven:emi-580555:6205506")
+    localRuntime("curse.maven:tmrv-1194921:6269681")
+    localRuntime("curse.maven:jade-324717:6291517")
 }
 
 publishing {
@@ -202,7 +257,8 @@ tasks {
             "mod_license" to mod_license,
             "mod_version" to mod_version,
             "mod_authors" to mod_authors,
-            "mod_description" to mod_description
+            "mod_description" to mod_description,
+            "alltheleaks_version_range" to alltheleaks_version_range
         )
         inputs.properties(replaceProperties)
         expand(replaceProperties)
