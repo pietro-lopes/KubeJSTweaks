@@ -1,0 +1,7 @@
+{
+    "integrateddynamics:item_stack_from_ingredient": "{tag: id, count?: int}",
+    "integrateddynamics:tag_chance": "{tag: integrateddynamics:item_stack_from_ingredient, chance?: float}",
+    "integrateddynamics:item_chance": "{item: item_stack, chance?: float}",
+    "integrateddynamics:item_stack_or_tag": "either<item_stack,integrateddynamics:item_stack_from_ingredient>",
+    "integrateddynamics:ingredient_chance": "either<integrateddynamics:item_chance,integrateddynamics:tag_chance>"
+}

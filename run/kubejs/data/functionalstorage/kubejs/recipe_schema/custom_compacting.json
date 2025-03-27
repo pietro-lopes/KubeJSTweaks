@@ -1,0 +1,14 @@
+{
+    "keys": [
+        {
+            "name": "lower_input",
+            "role": "input",
+            "type": "item_stack"
+        },
+        {
+            "name": "higher_input",
+            "role": "input",
+            "type": "item_stack"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "keys": [
+        {
+            "name": "ingredient",
+            "role": "input",
+            "type": "bigreactors:item_stack_recipe_ingredient"
+        },
+        {
+            "name": "result",
+            "role": "output",
+            "type": "fluid_stack"
+        }
+    ]
+}

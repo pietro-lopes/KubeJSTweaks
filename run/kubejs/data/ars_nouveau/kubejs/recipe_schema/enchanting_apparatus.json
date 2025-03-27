@@ -1,0 +1,29 @@
+{
+    "keys": [
+        {
+            "name": "reagent",
+            "role": "input",
+            "type": "ingredient"
+        },
+        {
+            "name": "result",
+            "role": "output",
+            "type": "item_stack"
+        },
+        {
+            "name": "pedestalItems",
+            "role": "input",
+            "type": "ingredient[]"
+        },
+        {
+            "name": "sourceCost",
+            "role": "other",
+            "type": "int"
+        },
+        {
+            "name": "keepNbtOfReagent",
+            "role": "other",
+            "type": "boolean"
+        }
+    ]
+}

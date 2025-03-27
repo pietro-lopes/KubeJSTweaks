@@ -1,0 +1,69 @@
+{
+	"factory": "kubejs:shaped",
+	"keys": [
+		{
+			"name": "result",
+			"role": "output",
+			"type": "strict_item_stack"
+		},
+		{
+			"name": "pattern",
+			"type": "string_grid"
+		},
+		{
+			"name": "key",
+			"role": "input",
+			"type": "pattern<ingredient>"
+		},
+		{
+			"name": "kubejs:mirror",
+			"type": "boolean",
+			"builder_names": ["kjsMirror"],
+			"optional": true,
+			"excluded": true
+		},
+		{
+			"name": "kubejs:shrink",
+			"type": "boolean",
+			"builder_names": ["kjsShrink"],
+			"optional": true,
+			"excluded": true
+		},
+		{
+			"name": "category",
+			"role": "other",
+			"type": "crafting_book_category",
+			"optional": "misc"
+		},
+		{
+			"name": "group",
+			"role": "other",
+			"type": "string",
+			"optional": ""
+		},
+        {
+            "name": "show_notification",
+            "role": "other",
+            "type": "boolean",
+            "optional": true
+        }
+	],
+	"unique": ["result"],
+	"constructors": [
+		{
+			"keys": ["result", "pattern", "key"]
+		}
+	],
+	"functions": {
+		"noMirror": {
+			"set": {
+				"kubejs:mirror": false
+			}
+		},
+		"noShrink": {
+			"set": {
+				"kubejs:shrink": false
+			}
+		}
+	}
+}

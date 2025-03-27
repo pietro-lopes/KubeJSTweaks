@@ -1,0 +1,60 @@
+{
+    "keys": [
+        {
+            "name": "results",
+            "role": "output",
+            "type": "item_stack[]",
+            "allow_empty": true
+        },
+        {
+            "name": "ingredients",
+            "role": "input",
+            "type": "ingredient[]",
+            "allow_empty": true
+        },
+        {
+            "name": "time",
+            "role": "other",
+            "type": "ticks",
+            "optional": 60,
+            "always_write": true
+        },
+        {
+            "name": "type",
+            "role": "other",
+            "type": "id",
+            "optional": "oritech:assembler",
+            "always_write": true,
+            "excluded": true
+        },
+        {
+            "name": "fluidInputVariant",
+            "role": "input",
+            "type": "registry_element<minecraft:fluid>",
+            "optional": "minecraft:empty",
+            "always_write": true
+        },
+        {
+            "name": "fluidInputAmount",
+            "role": "other",
+            "type": "long",
+            "optional": 0,
+            "always_write": true
+        },
+        {
+            "name": "fluidOutputVariant",
+            "role": "output",
+            "type": "registry_element<minecraft:fluid>",
+            "optional": "minecraft:empty",
+            "always_write": true
+        },
+        {
+            "name": "fluidOutputAmount",
+            "role": "other",
+            "type": "long",
+            "optional": 0,
+            "always_write": true
+        }
+        
+    ]
+}

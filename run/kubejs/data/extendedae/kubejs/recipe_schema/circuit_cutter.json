@@ -1,0 +1,14 @@
+{
+    "keys": [
+        {
+            "name": "output",
+            "role": "output",
+            "type": "item_stack"
+        },
+        {
+            "name": "input",
+            "role": "input",
+            "type": "extendedae:ingredient_stack_item"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+	"factory": "kubejs:shapeless",
+	"keys": [
+		{
+			"name": "result",
+			"role": "output",
+			"type": "item_stack"
+		},
+		{
+			"name": "ingredients",
+			"role": "input",
+			"type": "unwrapped_ingredient_list"
+		},
+		{
+			"name": "category",
+			"role": "other",
+			"type": "crafting_book_category",
+			"optional": "misc"
+		},
+		{
+			"name": "group",
+			"role": "other",
+			"type": "string",
+			"optional": ""
+		}
+	],
+	"unique": ["result"]
+}

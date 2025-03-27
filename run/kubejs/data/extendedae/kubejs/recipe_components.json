@@ -1,0 +1,4 @@
+{
+    "extendedae:ingredient_stack_item": "{ingredient: ingredient, amount?: int<1,max> }",
+    "extendedae:ingredient_stack_fluid": "{ingredient: fluid_ingredient, amount?: int<1,max> }"
+}

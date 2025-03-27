@@ -1,0 +1,21 @@
+{
+    "keys": [
+        {
+            "name": "output",
+            "role": "output",
+            "type": "item_stack"
+        },
+        {
+            "name": "input_items",
+            "role": "input",
+            "type": "extendedae:ingredient_stack_item[]"
+        },
+        {
+            "name": "input_fluid",
+            "role": "input",
+            "type": "extendedae:ingredient_stack_fluid",
+            "optional": {"ingredient": [], "amount": 1},
+            "allow_empty": true
+        }
+    ]
+}

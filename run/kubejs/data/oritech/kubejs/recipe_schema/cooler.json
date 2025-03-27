@@ -1,0 +1,6 @@
+{
+    "parent": "oritech:assembler",
+    "override_keys": {
+        "type": "oritech:cooler"
+    }
+}

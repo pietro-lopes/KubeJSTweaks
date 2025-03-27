@@ -1,0 +1,52 @@
+{
+    "keys": [
+    {
+        "name": "type",
+        "role": "other",
+        "type": "id"
+    },
+    {
+        "name": "researchCost",
+        "role": "input",
+        "type": "codec<rearth.oritech.util.SizedIngredient>[]"
+    },
+    {
+        "name": "applyCost",
+        "role": "input",
+        "type": "codec<rearth.oritech.util.SizedIngredient>[]"
+    },
+    {
+        "name": "requirements",
+        "role": "other",
+        "type": "id[]",
+        "allow_empty": true
+    },
+    {
+        "name": "requiredStation",
+        "role": "other",
+        "type": "id"
+    },
+    {
+        "name": "uiX",
+        "role": "other",
+        "type": "int"
+    },
+    {
+        "name": "uiY",
+        "role": "other",
+        "type": "int"
+    },
+    {
+        "name": "time",
+        "role": "other",
+        "type": "ticks",
+        "optional": 60
+    },
+    {
+        "name": "rfCost",
+        "role": "other",
+        "type": "long",
+        "optional": 60
+    }
+]
+}

@@ -1,0 +1,4 @@
+{
+    "enderio:sized_tag_output": "{tag: item_tag, count: int<0,max> }",
+    "enderio:output_item": "{ item: either<item_stack,enderio:sized_tag_output>, chance?: float, optional?: boolean }"
+}

@@ -1,0 +1,33 @@
+{
+    "keys": [
+        {
+            "name": "result",
+            "role": "output",
+            "type": "farmingforblockheads:result"
+        },
+        {
+            "name": "category",
+            "role": "other",
+            "type": "id"
+        },
+        {
+            "name": "preset",
+            "role": "other",
+            "type": "id"
+        },
+        {
+            "name": "payment",
+            "role": "input",
+            "type": "farmingforblockheads:payment",
+            "optional": {"ingredient": [], "count": 0},
+            "allow_empty": true
+        },
+        {
+            "name": "icon",
+            "role": "other",
+            "type": "item_stack",
+            "optional": null,
+            "allow_empty": true
+        }
+    ]
+}

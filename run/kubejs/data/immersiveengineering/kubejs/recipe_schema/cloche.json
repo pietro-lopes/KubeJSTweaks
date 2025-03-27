@@ -1,0 +1,29 @@
+{
+    "keys": [
+        {
+            "name": "results",
+            "role": "output",
+            "type": "immersiveengineering:tag_output[]"
+        },
+        {
+            "name": "input",
+            "role": "input",
+            "type": "ingredient"
+        },
+        {
+            "name": "soil",
+            "role": "other",
+            "type": "ingredient"
+        },
+        {
+            "name": "time",
+            "role": "other",
+            "type": "int"
+        },
+        {
+            "name": "render",
+            "role": "other",
+            "type": "immersiveengineering:render"
+        }
+    ]
+}

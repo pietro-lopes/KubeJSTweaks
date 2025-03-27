@@ -1,0 +1,4 @@
+{
+    "farmingforblockheads:result": "{item: registry_element<minecraft:item>, count?: int<1,max>, components?: codec<net.minecraft.core.component.DataComponentPatch>}",
+    "farmingforblockheads:payment": "{ingredient: ingredient, count: int, tooltip?: codec<net.minecraft.network.chat.ComponentSerialization>}"
+}

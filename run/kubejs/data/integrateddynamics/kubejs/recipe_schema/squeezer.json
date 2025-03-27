@@ -1,0 +1,23 @@
+{
+    "keys": [
+        {
+            "name": "input_item",
+            "role": "input",
+            "type": "non_empty_ingredient"
+        },
+        {
+            "name": "output_items",
+            "role": "output",
+            "type": "integrateddynamics:ingredient_chance[]",
+            "optional": [],
+            "allow_empty": true
+        },
+        {
+            "name": "output_fluid",
+            "role": "output",
+            "type": "fluid_stack",
+            "optional": {},
+            "allow_empty": true
+        }
+    ]
+}

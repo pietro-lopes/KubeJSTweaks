@@ -1,0 +1,14 @@
+{
+  "keys": [
+    {
+      "name": "input",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
+      "name": "matter",
+      "role": "output",
+      "type": "codec<com.buuz135.replication.calculation.MatterValue>[]"
+    }
+  ]
+}

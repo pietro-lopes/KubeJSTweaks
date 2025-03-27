@@ -1,0 +1,17 @@
+{ "keys": [
+    {
+        "name": "block_predicate",
+        "type": "exdeorum:block_predicate",
+        "role": "other"
+    },
+    {
+        "name": "result",
+        "role": "output",
+        "type": "item_stack"
+    },
+    {
+        "name": "chance",
+        "role": "other",
+        "type": "float"
+    }
+]}

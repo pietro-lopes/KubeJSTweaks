@@ -1,0 +1,33 @@
+{ "keys": [
+    {
+        "name": "base_fluid",
+        "type": "fluid_ingredient",
+        "role": "input"
+    },
+    {
+        "name": "result_fluid",
+        "role": "output",
+        "type": "registry_element<minecraft:fluid>"
+    },
+    {
+        "name": "result_color",
+        "type": "int",
+        "role": "other"
+    },
+    {
+        "name": "catalyst",
+        "type": "exdeorum:block_predicate",
+        "role": "other"
+    },
+    {
+        "name": "duration",
+        "type": "int",
+        "role": "other"
+    },
+    {
+        "name": "byproducts",
+        "type": "exdeorum:weighted_list_blockstate[]",
+        "role": "output",
+        "optional": []
+    }
+]}

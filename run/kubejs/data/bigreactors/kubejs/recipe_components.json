@@ -1,0 +1,3 @@
+{
+    "bigreactors:item_stack_recipe_ingredient": "{ ingredient: ingredient, count: int}"
+}

@@ -1,0 +1,51 @@
+{
+    "keys": [
+        {
+			"name": "result",
+			"role": "output",
+			"type": "strict_item_stack"
+		},
+		{
+			"name": "pattern",
+			"type": "string_grid"
+		},
+		{
+			"name": "key",
+			"role": "input",
+			"type": "pattern<ingredient>"
+		},
+        {
+            "name": "accept_mirrored",
+            "role": "other",
+            "type": "boolean",
+            "optional": true,
+            "always_write": true,
+            "excluded": true
+        },
+		{
+			"name": "category",
+			"role": "other",
+			"type": "crafting_book_category",
+			"optional": "misc"
+		},
+		{
+			"name": "group",
+			"role": "other",
+			"type": "string",
+			"optional": ""
+		},
+        {
+            "name": "show_notification",
+            "role": "other",
+            "type": "boolean",
+            "optional": true
+        }
+    ],
+    "functions": {
+        "noMirror": {
+            "set": {
+                "accept_mirrored": false
+            }
+        }
+    }
+}

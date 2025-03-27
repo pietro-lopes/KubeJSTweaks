@@ -1,0 +1,29 @@
+{
+  "keys": [
+    {
+      "name": "input",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
+      "name": "result",
+      "role": "output",
+      "type": "block_state"
+    },
+    {
+      "name": "breakChance",
+      "role": "other",
+      "type": "float"
+    },
+    {
+      "name": "output",
+      "role": "output",
+      "type": "fluid_stack"
+    },
+    {
+      "name": "defaultRecipe",
+      "role": "other",
+      "type": "boolean"
+    }
+  ]
+}

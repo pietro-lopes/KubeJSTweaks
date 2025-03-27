@@ -1,0 +1,24 @@
+{
+    "keys": [
+        {
+            "name": "result",
+            "role": "output",
+            "type": "immersiveengineering:tag_output"
+        },
+        {
+            "name": "input",
+            "role": "input",
+            "type": "immersiveengineering:ingredient_with_size"
+        },
+        {
+            "name": "mold",
+            "role": "other",
+            "type": "registry_element<minecraft:item>"
+        },
+        {
+            "name": "energy",
+            "role": "other",
+            "type": "int"
+        }
+    ]
+}

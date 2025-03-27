@@ -1,0 +1,8 @@
+{
+    "immersiveengineering:ingredient_with_size_count": "{basePredicate: ingredient, count: int}",
+    "immersiveengineering:ingredient_with_size": "either<immersiveengineering:ingredient_with_size_count,ingredient>",
+    "immersiveengineering:tag_output": "either<immersiveengineering:ingredient_with_size,item_stack>",
+    "immersiveengineering:stack_with_chance": "{output: immersiveengineering:tag_output, chance: float, conditions?: codec<net.neoforged.neoforge.common.conditions.ICondition#LIST_CODEC>}",
+    "immersiveengineering:render": "{type: id, block?: block, crop?: block, stem?: block, attachedStem?: block, doublingAge?: int}"
+
+}
