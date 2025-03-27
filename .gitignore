@@ -19,7 +19,28 @@ build
 
 # other
 eclipse
-run
+run/**/*
+!run/kubejs/
+!run/kubejs/data/
+!run/kubejs/data/**/*
+!run/kubejs/client_scripts/
+!run/kubejs/client_scripts/*
+run/kubejs/client_scripts/jsconfig.json
+!run/kubejs/client_scripts/test/
+!run/kubejs/client_scripts/test/*
+
+!run/kubejs/startup_scripts/
+!run/kubejs/startup_scripts/*
+run/kubejs/startup_scripts/jsconfig.json
+!run/kubejs/startup_scripts/test/
+!run/kubejs/startup_scripts/test/*
+
+!run/kubejs/server_scripts/
+!run/kubejs/server_scripts/*
+run/kubejs/server_scripts/jsconfig.json
+!run/kubejs/server_scripts/test/
+!run/kubejs/server_scripts/test/*
+
 runs
 run-data
 
