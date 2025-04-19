@@ -8,6 +8,7 @@ import dev.latvian.mods.kubejs.script.KubeJSContext;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.JsonIO;
 import dev.latvian.mods.rhino.Context;
+import dev.latvian.mods.rhino.NativeJavaObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
@@ -23,6 +24,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.resource.ResourcePackLoader;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.locating.IModFile;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -46,11 +48,13 @@ public class KJSTPluginUtils {
         }
     }
 
+    @Nullable
     public static JsonElement readJsonFromMod(Context cx, String modId, String id){
         var type = ((KubeJSContext)cx).getType().equals(ScriptType.CLIENT) ? KJSTPackType.ASSETS : KJSTPackType.DATA;
         return readJsonFromMod(cx, modId, id, type);
     }
 
+    @Nullable
     public static JsonElement readJsonFromMod(Context cx, String modId, String id, KJSTPackType type){
         var rl = toJsonRL(cx, id, modId);
         modId = modId.equals("minecraft") ? "vanilla" : "mod/" + modId;
@@ -146,4 +150,22 @@ public class KJSTPluginUtils {
         }
         throw new IllegalStateException("Failed to read json with id " + id + ", extension " + extension + " is invalid, only json is supported");
     }
+
+    public static Class<?> getClass(Object obj) {
+        if (obj instanceof Class<?> clazz) {
+            return clazz;
+        }
+        return obj.getClass();
+    }
+
+    public static Class<?> getSuperclass(Object object) {
+        if (object instanceof Class<?> clazz) {
+            return clazz.getSuperclass();
+        }
+        if (object instanceof NativeJavaObject nativeJavaObject){
+            return nativeJavaObject.unwrap().getClass().getSuperclass();
+        }
+        throw new IllegalStateException("Failed to get superclass of " + object);
+    }
+
 }

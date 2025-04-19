@@ -7,27 +7,7 @@
   "client": [
     "main.ClientAssetPacksMixin"
   ],
-  "mixins": [
-    "main.CachedTagLookupMixin",
-    "main.DataExportMixin",
-    "main.EitherRecipeComponentMixin",
-    "main.EnumComponentMixin",
-    "main.ExDeorumKubeJsPluginMixin",
-    "main.ListRecipeComponentMixin",
-    "main.RecipeComponentBuilderMixin",
-    "main.RecipeComponentBuilderMixin$MapCodecMixin",
-    "main.RecipeComponentBuilderMixin$ValueMixin",
-    "main.RecipeComponentMixin",
-    "main.RecipeKeyMixin",
-    "main.RecipeManagerMixin",
-    "main.RecipeTypeFunctionMixin",
-    "main.RecordTypeInfoMixin",
-    "main.RegistryComponentMixin",
-    "main.ScannerMixin",
-    "main.ServerPackMixin",
-    "main.ServerScriptManagerMixin",
-    "main.TypesMixin"
-  ],
+  "mixins": ["main.CachedTagLookupMixin", "main.DataExportMixin", "main.EitherRecipeComponentMixin", "main.EnumComponentMixin", "main.ExDeorumKubeJsPluginMixin", "main.ListRecipeComponentMixin", "main.RecipeComponentBuilderMixin", "main.RecipeComponentBuilderMixin$MapCodecMixin", "main.RecipeComponentBuilderMixin$ValueMixin", "main.RecipeComponentMixin", "main.RecipeKeyMixin", "main.RecipeManagerMixin", "main.RecipeTypeFunctionMixin", "main.RegistryComponentMixin", "main.ScannerMixin", "main.ServerPackMixin", "main.ServerScriptManagerMixin", "main.TypesMixin"],
   "injectors": {
     "defaultRequire": 1
   },

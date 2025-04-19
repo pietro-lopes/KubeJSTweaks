@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Map;
-
+// This is needed to wrap values for the RecipeComponentBuilder or ListRecipeComponent
+// Or it breaks at the encode/decode
 @Mixin(RecipeTypeFunction.class)
 public class RecipeTypeFunctionMixin {
     @WrapOperation(method = "createRecipe", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/rhino/Wrapper;unwrapped(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 1))

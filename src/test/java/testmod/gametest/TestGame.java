@@ -14,7 +14,7 @@ public class TestGame {
 
     @GameTest
     @EmptyTemplate
-    @TestHolder(description = "Serialization tests for single fluid and tag ingredients")
+    @TestHolder(description = "Testing if I can trigger a test, expanding this later")
     static void testingTheFramework(ExtendedGameTestHelper helper) {
 
         var vec3 = helper.getBounds().getCenter();

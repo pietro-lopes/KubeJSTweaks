@@ -18,6 +18,7 @@ import dev.latvian.mods.rhino.type.TypeInfo;
 import dev.uncandango.kubejstweaks.kubejs.component.CodecComponent;
 import dev.uncandango.kubejstweaks.kubejs.event.KJSTEvents;
 import dev.uncandango.kubejstweaks.kubejs.event.NoOpEventJS;
+import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -63,6 +64,7 @@ public class KJSTPlugin implements KubeJSPlugin {
                 }
                 return EventResult.PASS;
             });
+            RecipeSchemaFinder.cleanUp();
         }
     }
 

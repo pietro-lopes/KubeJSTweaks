@@ -8,17 +8,11 @@ import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.registry.BuilderBase;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
-import net.minecraft.server.packs.PackResources;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.lang.ref.WeakReference;
 import java.util.Iterator;
-import java.util.List;
-
-import static dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils.SERVER_PACK_RESOURCES;
 
 // https://github.com/KubeJS-Mods/KubeJS/issues/972
 @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")

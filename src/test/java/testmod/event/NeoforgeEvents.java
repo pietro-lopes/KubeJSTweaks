@@ -30,7 +30,6 @@ import testmod.Utils;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -41,7 +40,7 @@ public class NeoforgeEvents {
     @SubscribeEvent
     public static void onPackLoaded(AddReloadListenerEvent e){
         // NOT SAFE
-        // THIS HAPPENS IN WORKER THREAD
+        // THIS HAPPENS AT WORKER THREAD BUT WHATEVER PRAY FOR CME GODS
         ServerEvents.RECIPES.listenJava(ScriptType.SERVER, null, NeoforgeEvents::eventDispatcher);
     }
 
@@ -54,6 +53,7 @@ public class NeoforgeEvents {
         var event = KubeJSEvents.KUBEJS_EVENTS.get("recipes");
         var rm = server.getRecipeManager();
         KubeJS.LOGGER.info("onRecipeLoad started!");
+        // THIS NEEDS TO BE CONDITIONALOPS TO FIX CRUSHER ORE RECIPE
         var registryOps = RegistryOps.create(JsonOps.INSTANCE, server.registryAccess());
         Stream.of(event.originalRecipes.values(),event.addedRecipes.stream().toList()).flatMap(Collection::stream).filter(RECIPE_NOT_REMOVED).forEach(kubeRecipe -> {
             if (kubeRecipe.type.schemaType.schema.keys.isEmpty()) return;
@@ -92,7 +92,6 @@ public class NeoforgeEvents {
             Recipe<RecipeInput> tempKubeRecipe = null;
             try {
                 Codec<Recipe<RecipeInput>> codec2 = (Codec<Recipe<RecipeInput>>) originalRecipe.getSerializer().codec().codec();
-//                CompletableFuture<Recipe<RecipeInput>> recipeFuture = Minecraft.getInstance().submit(() -> );
                 tempKubeRecipe = codec2.decode(registryOps, jsonKjs).getOrThrow().getFirst();
             } catch (Exception e) {
                 KubeJSTweaks.LOGGER.error("Error parsing recipe {}", kubeRecipe.id + "[" + kubeRecipe.type + "]", e);
@@ -101,13 +100,6 @@ public class NeoforgeEvents {
 
             var newJsonKjs = (JsonObject) codec.encoder().encodeStart(registryOps, Cast.to(tempKubeRecipe)).getOrThrow();
 
-//            if (newJsonKjs.remove("type") != null){
-//                originalJson.getAsJsonObject().remove("type");
-//            }
-//            newJsonKjs.remove("neoforge:conditions");
-//            newJsonKjs.remove("_kubejs_changed_marker");
-//            originalJson.getAsJsonObject().remove("category");
-//            newJsonKjs.remove("category");
             LinkedHashMap<String, Object> originalMap = Cast.to(Utils.unwrap(originalJson));
             LinkedHashMap<String, Object> kubejsMap = Cast.to(Utils.unwrap(newJsonKjs));
             var diff = Maps.difference(originalMap, kubejsMap);

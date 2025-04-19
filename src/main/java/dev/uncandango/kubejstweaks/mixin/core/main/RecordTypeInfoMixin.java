@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.lang.reflect.Constructor;
 
-
+// Latest Rhino got rid of it, needs to find a new way to still be able to create private Records
 @Mixin(RecordTypeInfo.class)
 public class RecordTypeInfoMixin<T> {
     @WrapOperation(method = "getConstructor", at = @At(value = "INVOKE", target = "Ljava/lang/Class;getConstructor([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;"))

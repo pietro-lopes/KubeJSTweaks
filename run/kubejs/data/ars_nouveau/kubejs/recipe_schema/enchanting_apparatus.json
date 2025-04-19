@@ -23,7 +23,16 @@
         {
             "name": "keepNbtOfReagent",
             "role": "other",
-            "type": "boolean"
+            "type": "boolean",
+            "optional": false,
+            "always_write": true
         }
-    ]
+    ],
+    "functions": {
+        "keepNbt": {
+            "set": {
+                "keepNbtOfReagent": true
+            }
+        }
+    }
 }

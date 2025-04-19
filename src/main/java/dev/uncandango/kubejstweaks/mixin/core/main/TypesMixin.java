@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+// don't use regular "string" or it will remove suggestions
 @ConditionalMixin(modId = "probejs", versionRange = "7.5.1")
 @Mixin(Types.class)
 public interface TypesMixin {

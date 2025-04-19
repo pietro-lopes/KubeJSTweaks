@@ -331,6 +331,8 @@ ServerEvents.recipes(event => {
 
 })
 
+
+
 function testRecipes(event, regex, type) {
   testExistingRecipes(event, regex, type)
   testAddedRecipes(event, regex, type)
@@ -357,7 +359,7 @@ const debugRecipe = (/** @type {$KubeRecipe_} */ recipe) => {
     let currentClass
     let error = false
     if (recipe.kjs$getSchema().getKey(rcvKey.getKey().name) != null && (!(!rcvKey.getKey().optional() && rcvKey.getValue() == null))) {
-      currentClass = rcvKey.getValue() == null ? "null" : rcvKey.getValue().getClass() || rcvKey.getValue().toString()
+      currentClass = rcvKey.getValue() == null ? "null" : KJSTweaks.getClass(rcvKey.getValue()) || rcvKey.getValue().toString()
       currentComponent = rcvKey.getKey().component
       // currentClass = rcvKey.getKey().component.typeInfo()
       let unwrapped = unwrapValue(rcvKey.getValue())
@@ -402,23 +404,23 @@ let $String = Java.loadClass("java.lang.String")
 
 function unwrapValue(value) {
   if (value == null) return
-  if (value.getClass == null) return value
+  // if (value.getClass == null) return value
   let newValue = value
-  if (value.getClass().getSuperclass().simpleName == "Either") {
+  if (KJSTweaks.getSuperclass(KJSTweaks.getClass(value)).simpleName == "Either") {
     newValue = unwrapEither(value)
-  } else if (value.getClass().simpleName == "RecipeComponentBuilderMap") {
+  } else if (KJSTweaks.getClass(value).simpleName == "RecipeComponentBuilderMap") {
     newValue = currentComponent.codec().encodeStart($JsonInstance, value).getOrThrow()
     // newValue = unwrapMapBuilder(value)
-  } else if (value.getClass().isArray() || value instanceof $List) {
+  } else if (KJSTweaks.getClass(value).isArray() || value instanceof $List) {
     newValue = unwrapArray(value)
-  } else if (value.getClass().isEnum()) {
+  } else if (KJSTweaks.getClass(value).isEnum()) {
     newValue = value.toString().toLowerCase()
-  } else if (value.getClass().simpleName == "HashMap" || value.getClass().simpleName == "LinkedHashMap") {
+  } else if (KJSTweaks.getClass(value).simpleName == "HashMap" || KJSTweaks.getClass(value).simpleName == "LinkedHashMap") {
     newValue = unwrapHashMap(value)
   } else if (value instanceof $Value) {
     newValue = value.getValue()
   }
-  if (value == newValue && value.getClass() == newValue.getClass()) {
+  if (value == newValue && KJSTweaks.getClass(value) == KJSTweaks.getClass(newValue)) {
     if (value instanceof $Ingredient) return value.toJson()
     if (value instanceof $ItemStackKJS) return value.toJson()
     if (value instanceof $Fluid) return value

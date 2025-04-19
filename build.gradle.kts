@@ -1,3 +1,5 @@
+import net.neoforged.moddevgradle.internal.RunGameTask
+
 plugins {
     `java-library`
     `maven-publish`
@@ -74,6 +76,12 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+evaluationDependsOn(project(":kjst-agent").path)
+
+subprojects {
+    version = project(":").version
+}
+
 neoForge {
     version = neo_version
 
@@ -103,11 +111,13 @@ neoForge {
             systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
         }
 
+        val agentJarFile = project(":kjst-agent").tasks.jar.get().archiveFile.get().asFile.toString()
         register("testmod") {
             client()
             sourceSet = sourceSets.test.get()
             systemProperty("neoforge.gameTestServer", "true")
             systemProperty("neoforge.enabledGameTestNamespaces", "${mod_id},${testmod_id}")
+            jvmArgument("-javaagent:$agentJarFile")
         }
 
         register("data") {
@@ -119,7 +129,7 @@ neoForge {
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
             jvmArgument("-Xmx3000m")
-            jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
+            //jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
 
             logLevel = org.slf4j.event.Level.DEBUG
@@ -146,6 +156,9 @@ neoForge {
         register("testmod") {
             sourceSet(sourceSets.test.get())
         }
+//        register("kjst-asm") {
+//            sourceSet(project(":kjst-asm").sourceSets.main.get())
+//        }
     }
     addModdingDependenciesTo(sourceSets.test.get())
 }
@@ -159,6 +172,12 @@ configurations {
         extendsFrom(localRuntime)
     }
 }
+
+//afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
+//    tasks.withType(RunGameTask::class).configureEach {
+//        classpathProvider.setFrom(classpathProvider.files.stream().filter {f -> !f.toString().contains("kjst-asm")}.toList())
+//    }
+//}
 
 dependencies {
     // MixinExtras that supports @Expression
@@ -174,10 +193,14 @@ dependencies {
         implementation(it)
     }
 
+//    jarJar(project(":kjst-asm"))
+//    implementation(project(":kjst-asm"))
+//    localRuntime(project(":kjst-asm"))
+
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
         interfaceInjectionData(it)
     }
-    implementation("dev.latvian.mods:rhino:2101.2.6-build.66")
+    implementation("dev.latvian.mods:rhino:2101.2.7-build.74")
 
     testImplementation("net.neoforged:testframework:${neo_version}")
 
@@ -206,6 +229,7 @@ dependencies {
     localRuntime("curse.maven:industrial-foregoing-266515:6283758")
     localRuntime("curse.maven:integrated-dynamics-236307:6331508")
     localRuntime("curse.maven:just-dire-things-1002348:6161633")
+    localRuntime("curse.maven:the-twilight-forest-227639:6087105")
 
     // Dependencies
     localRuntime("curse.maven:architectury-api-419699:5786327")
@@ -231,6 +255,7 @@ dependencies {
     localRuntime("curse.maven:emi-580555:6205506")
     localRuntime("curse.maven:tmrv-1194921:6269681")
     localRuntime("curse.maven:jade-324717:6291517")
+//    localRuntime(project(":kjst-agent"))
 }
 
 publishing {
@@ -270,6 +295,10 @@ tasks {
     }
     wrapper {
         distributionType = Wrapper.DistributionType.BIN
+    }
+
+    named("runTestmod") {
+        dependsOn(":kjst-agent:jar")
     }
 }
 
