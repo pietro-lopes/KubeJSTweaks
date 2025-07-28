@@ -50,12 +50,34 @@ public class ConditionalMixinManager {
                     var modVerString = mod.versionString();
                     var modVer = new DefaultArtifactVersion(modVerString);
                     if (range != null && range.containsVersion(modVer) || modVerString.equals("0.0NONE")) {
-                        // TODO: Add Extra mods support
-                        // extraModDep
-                        // extraModDepVersions
-
-                        KubeJSTweaks.LOGGER.info("Conditional Mixin {} will be loaded as it matches versions: {} in {}", currentMixin, modVer, range);
-                        shouldLoad = true;
+                        if (!extraModDep.isEmpty()) {
+                            for (int i = 0; i < extraModDep.size(); i++) {
+                                var dep = LoadingModList.get().getModFileById(extraModDep.get(i));
+                                if (dep == null) {
+                                    KubeJSTweaks.LOGGER.debug("Extra dependency Mod {} is not present in the mod list", extraModDep.get(i));
+                                    KubeJSTweaks.LOGGER.debug("Class {} will NOT be loaded as extra mod dependecy is not present.", annotation.memberName());
+                                    shouldLoad = false;
+                                } else {
+                                    var rangeDepVer = VersionRange.createFromVersionSpec(extraModDepVersions.get(i));
+                                    var depVerString = dep.versionString();
+                                    var depVer = new DefaultArtifactVersion(depVerString);
+                                    if (rangeDepVer.containsVersion(depVer) || depVerString.equals("0.0NONE")) {
+                                        KubeJSTweaks.LOGGER.info("Extra dependecy Mod {} matches versions: {} in {}", extraModDep.get(i),dep.versionString(), extraModDepVersions.get(i));
+                                    } else {
+                                        KubeJSTweaks.LOGGER.debug("Extra dependecy Mod {} does NOT matches versions: {} in {}", extraModDep.get(i),dep.versionString(), extraModDepVersions.get(i));
+                                        KubeJSTweaks.LOGGER.debug("Class {} will NOT be loaded as extra mod dependecy does not match.", annotation.memberName());
+                                        shouldLoad = false;
+                                    }
+                                }
+                            }
+                            if (shouldLoad == null) {
+                                KubeJSTweaks.LOGGER.info("Conditional Mixin {} will be loaded as it matches versions: {} in {}", currentMixin, modVer, range);
+                                shouldLoad = true;
+                            }
+                        } else {
+                            KubeJSTweaks.LOGGER.info("Conditional Mixin {} will be loaded as it matches versions: {} in {}", currentMixin, modVer, range);
+                            shouldLoad = true;
+                        }
                     } else {
                         shouldLoad = false;
                     }

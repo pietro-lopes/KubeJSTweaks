@@ -138,7 +138,15 @@ ServerEvents.recipes(event => {
       .id("atmindev:crushing/test/" + counter++)
   })
 
-  event.recipes.ae2.inscriber({bottom: "#actuallyadditions:crystals", top: "#actuallyadditions:lamps", middle: "#ae2:all_fluix"},"acacia_boat","press")
+  event.recipes.ae2.inscriber("acacia_boat",{bottom: "#actuallyadditions:crystals", top: "#actuallyadditions:lamps", middle: "#ae2:all_fluix"},"press")
+
+  event.recipes.ae2.inscriber("oak_trapdoor",{bottom: "minecraft:emerald", top: "minecraft:grass_block", middle: "minecraft:oak_log"}) // will be a inscribe
+
+  event.recipes.ae2.inscriber("oak_door",{bottom: "minecraft:diamond", top: "minecraft:dirt", middle: "minecraft:stick"}).mode("inscribe")
+
+  event.recipes.ae2.inscriber("oak_door",["minecraft:diamond", "minecraft:dirt",  "minecraft:stick"]).mode("inscribe")
+
+  event.replaceInput({type: "ae2:inscriber"}, Ingredient.of("#c:silicon"), Ingredient.of("minecraft:gold_block"))
 
   event.forEachRecipe({type: "actuallyadditions:crushing"}, debugRecipe)
   

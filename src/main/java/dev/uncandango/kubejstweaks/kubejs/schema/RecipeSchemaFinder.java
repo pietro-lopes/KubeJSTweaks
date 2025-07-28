@@ -16,6 +16,8 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Decoder;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.EitherCodec;
+import com.mojang.serialization.codecs.EitherMapCodec;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.error.KubeRuntimeException;
 import dev.latvian.mods.kubejs.recipe.component.EnumComponent;
@@ -452,7 +454,7 @@ public class RecipeSchemaFinder {
                                 parsedValues.add(Map.entry(entry.getKey(), value));
                             }
                         }
-                        case DataResult.Error<T> error -> {}
+                        case DataResult.Error<T> ignored -> {}
                     }
                 } catch (KubeRuntimeException ignore) {
                 }
@@ -487,4 +489,6 @@ public class RecipeSchemaFinder {
             });
         }
     }
+
+
 }

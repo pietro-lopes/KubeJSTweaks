@@ -8,12 +8,12 @@
         {
             "name": "ingredients",
             "role": "input",
-            "type": "codec<appeng.recipes.handlers.InscriberRecipe$Ingredients#CODEC>"
-        },        
+            "type": "ae2:ingredients"
+        },
         {
             "name": "mode",
             "role": "other",
-            "type": "codec<appeng.recipes.handlers.InscriberRecipe#MODE_CODEC>",
+            "type": "enum<appeng.recipes.handlers.InscriberProcessType>",
             "optional": "inscribe",
             "always_write": true
         }

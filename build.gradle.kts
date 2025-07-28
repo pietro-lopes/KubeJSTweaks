@@ -41,7 +41,7 @@ repositories {
     }
     maven {
         // saps.dev Maven (KubeJS and Rhino)
-        url = uri("https://maven.saps.dev/releases")
+        url = uri("https://maven.latvian.dev/releases")
         content {
             includeGroup("dev.latvian.mods")
             includeGroup("dev.latvian.apps")
@@ -60,6 +60,10 @@ repositories {
     }
 
     maven { url = uri("https://maven.bawnorton.com/releases") }
+
+    maven {
+        url = uri("https://maven.blamejared.com/")
+    }
 
     flatDir {
         dir("libs")
@@ -181,7 +185,7 @@ configurations {
 
 dependencies {
     // MixinExtras that supports @Expression
-    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0-beta.5")?.let {
+    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0-rc.2")?.let {
         implementation(it)
     }
 
@@ -209,6 +213,9 @@ dependencies {
 
     // Mods
     implementation("curse.maven:ex-deorum-901420:6162365")
+    compileOnly("curse.maven:jei-238222:6614392")
+    compileOnly("curse.maven:emi-580555:6420931")
+    compileOnly("curse.maven:tmrv-1194921:6269681")
 
     localRuntime("curse.maven:oritech-1030830:6300493")
     localRuntime("curse.maven:replication-638351:6311813")
@@ -225,7 +232,7 @@ dependencies {
     localRuntime("curse.maven:ex-pattern-provider-892005:6283473")
     localRuntime("curse.maven:farming-for-blockheads-261924:6185977")
     localRuntime("curse.maven:functional-storage-556861:6189752")
-    localRuntime("curse.maven:immersive-engineering-231951:6235316")
+    implementation("curse.maven:immersive-engineering-231951:6235316")
     localRuntime("curse.maven:industrial-foregoing-266515:6283758")
     localRuntime("curse.maven:integrated-dynamics-236307:6331508")
     localRuntime("curse.maven:just-dire-things-1002348:6161633")
@@ -247,12 +254,15 @@ dependencies {
     localRuntime("curse.maven:balm-531761:6338302")
     localRuntime("curse.maven:common-capabilities-247007:6332022")
     localRuntime("curse.maven:cyclops-core-232758:6340387")
+    localRuntime("curse.maven:flux-networks-248020:6089446")
+    localRuntime("curse.maven:allthecompressed-514045:6121584")
 
-    localRuntime("blank:DualCodecs:0.1.2")
+    implementation("malte0811:DualCodecs:0.1.2")
+    implementation("blank:endec:0.1.8")
 
     // Utils
-    // localRuntime("curse.maven:jei-238222:5846880")
-    localRuntime("curse.maven:emi-580555:6205506")
+    // localRuntime("curse.maven:jei-238222:6614392")
+    localRuntime("curse.maven:emi-580555:6420931")
     localRuntime("curse.maven:tmrv-1194921:6269681")
     localRuntime("curse.maven:jade-324717:6291517")
 //    localRuntime(project(":kjst-agent"))

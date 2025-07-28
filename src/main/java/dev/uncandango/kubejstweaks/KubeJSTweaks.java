@@ -38,10 +38,10 @@ public class KubeJSTweaks {
 
     public KubeJSTweaks(IEventBus modEventBus, ModContainer modContainer) {
         MOD_EVENT_BUS = modEventBus;
-        modEventBus.addListener(this::commonSetup);
+        //modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::loadCompleteSetup);
 
-        NeoForge.EVENT_BUS.register(this);
+        // NeoForge.EVENT_BUS.register(this);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         if (FMLEnvironment.dist.isClient()) {
@@ -68,7 +68,7 @@ public class KubeJSTweaks {
                 Class<? extends Event> clazz = (Class<Event>) Class.forName("com.mojang.serialization.Decoder$CodecParsedEvent");
                 MOD_EVENT_BUS.addListener(clazz, CodecParsedListener::codecParsed);
             } catch (Exception e) {
-                KubeJSTweaks.LOGGER.error("Failed to listen to event of codec parsed", e);
+                KubeJSTweaks.LOGGER.debug("Failed to listen to event of codec parsed", e);
             }
         });
         if (!FMLEnvironment.production) {
@@ -76,30 +76,28 @@ public class KubeJSTweaks {
         }
     }
 
-
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        // Some common setup code
-    }
+//    private void commonSetup(final FMLCommonSetupEvent event) {
+//        // Some common setup code
+//    }
 
     public void registerClientCommands(RegisterClientCommandsEvent event){
         KJSTCommands.registerClientCommands(event.getDispatcher(), event.getBuildContext());
     }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
-    }
-
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
-    }
+//    @SubscribeEvent
+//    public void onServerStarting(ServerStartingEvent event) {
+//        // Do something when the server starts
+//        LOGGER.info("HELLO from server starting");
+//    }
+//
+//    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+//    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+//    public static class ClientModEvents {
+//        @SubscribeEvent
+//        public static void onClientSetup(FMLClientSetupEvent event) {
+//            // Some client setup code
+//            LOGGER.info("HELLO FROM CLIENT SETUP");
+//            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+//        }
+//    }
 }

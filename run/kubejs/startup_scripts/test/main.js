@@ -27,3 +27,25 @@ KubeJSTweaks.schema(event => {
     let ieCodec = $ClocheRenderFunction.CODECS.codec()
     event.registerCodec("blusunrize.immersiveengineering.api.crafting.ClocheRenderFunction", codec)
 })
+
+// at startup scripts
+StartupEvents.registry("fluid", event => {
+    let thickFluid = event.create("kubejs:jelly", "thick")
+      .tint(0xFF0000)
+
+    thickFluid.displayName("Test 123")
+    thickFluid.block.displayName("Test 123")
+    thickFluid.fluidType.displayName("Test 123")
+    thickFluid.bucketItem.displayName("Test 123 Bucket")
+    thickFluid.flowingFluid.displayName("Flowing Test 123")
+})
+
+global.flux =  [
+    {
+        clickedBlock: 'minecraft:obsidian',
+        baseBlock:    'allthecompressed:obsidian_1x',
+        inputItem:    'minecraft:redstone',
+        outputItem:   'fluxnetworks:flux_dust',
+        resultBlock:  'minecraft:cobblestone'
+    }
+];
