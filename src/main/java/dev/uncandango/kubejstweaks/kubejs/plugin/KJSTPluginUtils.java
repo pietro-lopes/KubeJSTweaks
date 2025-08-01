@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class KJSTPluginUtils {
     public static WeakReference<MultiPackResourceManager> SERVER_PACK_RESOURCES = new WeakReference<>(null);
-    public static WeakReference<MultiPackResourceManager> CLIENT_PACK_RESOURCES = new WeakReference<>(null);
+    public static MultiPackResourceManager CLIENT_PACK_RESOURCES;
     public static MultiPackResourceManager TEMPORARY_SERVER_PACK_RESOURCES = null;
 
     public enum KJSTPackType {
@@ -61,7 +61,7 @@ public class KJSTPluginUtils {
         if (type == KJSTPackType.ASSETS) {
             if (FMLEnvironment.dist == Dist.CLIENT) {
                 if (Minecraft.getInstance().getResourceManager().getNamespaces().isEmpty()) {
-                    var rm = CLIENT_PACK_RESOURCES.get();
+                    var rm = CLIENT_PACK_RESOURCES;
                     if (rm != null) {
                         var resources = rm.getResourceStack(rl);
                         var kjsSide = ((KubeJSContext)cx).getType();
@@ -71,6 +71,7 @@ public class KJSTPluginUtils {
                         return readJsonFromResourceList(cx, modId, resources, rl);
                     }
                 } else {
+                    if (CLIENT_PACK_RESOURCES != null) CLIENT_PACK_RESOURCES = null;
                     var resources = Minecraft.getInstance().getResourceManager().getResourceStack(rl);
                     var kjsSide = ((KubeJSContext)cx).getType();
                     if (!kjsSide.equals(ScriptType.CLIENT)){
@@ -111,8 +112,8 @@ public class KJSTPluginUtils {
         var vanillaPack = new ServerPacksSource(new DirectoryValidator(path -> true));
         List<PackResources> packs = new ArrayList<>(packRepo.openAllSelected());
         packs.addFirst(vanillaPack.getVanillaPack());
-
-        return new MultiPackResourceManager(PackType.SERVER_DATA, packs);
+        TEMPORARY_SERVER_PACK_RESOURCES = new MultiPackResourceManager(PackType.SERVER_DATA, packs);
+        return TEMPORARY_SERVER_PACK_RESOURCES;
     }
 
     private static JsonElement readJsonFromResourceList(Context cx, String modId, List<Resource> resources, ResourceLocation id){

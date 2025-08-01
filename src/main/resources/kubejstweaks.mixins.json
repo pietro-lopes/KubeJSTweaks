@@ -24,12 +24,14 @@
     "main.RecipeComponentBuilderMixin$ValueMixin",
     "main.RecipeComponentMixin",
     "main.RecipeKeyMixin",
+    "main.RecipesKubeEventMixin",
     "main.RecipeTypeFunctionMixin",
     "main.RegistryComponentMixin",
     "main.ScannerMixin",
     "main.ServerPackMixin",
     "main.ServerScriptManagerMixin",
-    "main.TypesMixin"
+    "main.TypesMixin",
+    "main.VariableTypeInfoMixin"
   ],
   "injectors": {
     "defaultRequire": 1
