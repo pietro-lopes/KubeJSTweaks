@@ -8,7 +8,7 @@ This also includes some fixes of KubeJS when needed (only applied at specific ve
 
 ## 📦 Installation
 
-Mod is available on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/alltheleaks).
+Mod is available on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/kubejs-tweaks).
 
 ## 🔧 Features
 
