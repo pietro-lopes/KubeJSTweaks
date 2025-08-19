@@ -3,7 +3,7 @@
         {
             "name": "results",
             "role": "output",
-            "type": "immersiveengineering:tag_output[]"
+            "type": "either<immersiveengineering:tag_output,immersiveengineering:stack_with_chance>[]"
         },
         {
             "name": "input",

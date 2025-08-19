@@ -13,7 +13,7 @@
         {
             "name": "pedestalItems",
             "role": "input",
-            "type": "ingredient",
+            "type": "ingredient[]",
             "allow_empty": true
         },
         {

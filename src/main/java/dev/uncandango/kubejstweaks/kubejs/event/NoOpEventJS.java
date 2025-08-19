@@ -9,10 +9,9 @@ import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.generator.KubeDataGenerator;
 import dev.latvian.mods.kubejs.script.data.GeneratedData;
 import dev.latvian.mods.kubejs.typings.Info;
+import dev.latvian.mods.rhino.util.HideFromJS;
 import dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import org.apache.logging.log4j.core.util.JsonUtils;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -22,7 +21,8 @@ import java.util.function.Supplier;
     """)
 public class NoOpEventJS implements KubeEvent {
 
-    private static final Supplier<JsonObject> NO_OP_CONDITION_OPS = () -> {
+    @HideFromJS
+    public static final Supplier<JsonObject> NO_OP_CONDITION_OPS = () -> {
         var json = new JsonObject();
         var conditions = new JsonArray();
         var condition = new JsonObject();
@@ -100,7 +100,8 @@ public class NoOpEventJS implements KubeEvent {
         generator.add(GeneratedData.json(id, () -> json));
     }
 
-    private void mergeJson(JsonObject first, JsonObject second) {
+    @HideFromJS
+    public static void mergeJson(JsonObject first, JsonObject second) {
         Map<String, JsonElement> map = second.asMap();
         map.forEach(first::add);
     }

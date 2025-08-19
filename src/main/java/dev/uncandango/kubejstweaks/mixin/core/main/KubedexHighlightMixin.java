@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.ArrayList;
 
+// https://github.com/KubeJS-Mods/KubeJS/issues/1024
 @Mixin(KubedexHighlight.class)
 public class KubedexHighlightMixin {
     @WrapOperation(method = "requestInventory", at = @At(value = "INVOKE", target = "Ljava/util/ArrayList;add(Ljava/lang/Object;)Z", ordinal = 1))

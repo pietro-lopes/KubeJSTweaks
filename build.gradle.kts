@@ -22,6 +22,7 @@ val mod_license: String by extra
 val mod_authors: String by extra
 val mod_description: String by extra
 val alltheleaks_version_range: String by extra
+val kubejs_version_range: String by extra
 
 repositories {
     mavenLocal()
@@ -136,6 +137,14 @@ neoForge {
             //jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
             jvmArgument("-XX:+AllowEnhancedClassRedefinition")
 
+            // So Intellij Debug can work...
+            //jvmArgument("--add-exports=java.base/sun.nio.ch=ALL-UNNAMED")
+            jvmArgument("--add-opens=java.base/java.lang=ALL-UNNAMED")
+            //jvmArgument("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED")
+            //jvmArgument("--add-opens=java.base/java.io=ALL-UNNAMED")
+            //jvmArgument("--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED")
+            //jvmArgument("--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED")
+
             logLevel = org.slf4j.event.Level.DEBUG
 
             if (type.get().startsWith("client")) {
@@ -204,7 +213,8 @@ dependencies {
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
         interfaceInjectionData(it)
     }
-    implementation("dev.latvian.mods:rhino:2101.2.7-build.74")
+    compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
+    localRuntime("dev.latvian.mods:rhino:2101.2.7-build.77")
 
     testImplementation("net.neoforged:testframework:${neo_version}")
 
@@ -225,14 +235,17 @@ dependencies {
     localRuntime("curse.maven:ars-nouveau-401955:6333245")
     // localRuntime("curse.maven:fastsuite-475117:6321099-sources")
     localRuntime("curse.maven:actually-additions-228404:6329770")
+    compileOnly("curse.maven:applied-energistics-2-223794:6323510")
     localRuntime("curse.maven:applied-energistics-2-223794:6323510")
     localRuntime("curse.maven:extreme-reactors-250277:6158187")
     implementation("curse.maven:create-328085:6323264")
+    // 6641610
+    localRuntime("curse.maven:create-328085:6641610")
     localRuntime("curse.maven:ender-io-64578:6307311")
     localRuntime("curse.maven:ex-pattern-provider-892005:6283473")
-    //localRuntime("curse.maven:farming-for-blockheads-261924:6409932")
+    localRuntime("curse.maven:farming-for-blockheads-261924:6409932")
     localRuntime("curse.maven:functional-storage-556861:6189752")
-    implementation("curse.maven:immersive-engineering-231951:6235316")
+    implementation("curse.maven:immersive-engineering-231951:6733669")
     localRuntime("curse.maven:industrial-foregoing-266515:6283758")
     localRuntime("curse.maven:integrated-dynamics-236307:6331508")
     localRuntime("curse.maven:just-dire-things-1002348:6161633")
@@ -241,9 +254,11 @@ dependencies {
     localRuntime("curse.maven:apothic-spawners-986583:6751589")
     localRuntime("curse.maven:apothic-attributes-898963:6751650")
     localRuntime("curse.maven:apothic-enchanting-1063926:6751658")
-    localRuntime("curse.maven:irons-spells-n-spellbooks-855414:6826052")
+    localRuntime("curse.maven:irons-spells-n-spellbooks-855414:6834357")
     localRuntime("curse.maven:stone-zone-1154622:6710522")
     localRuntime("curse.maven:every-compat-628539:6762704")
+    compileOnly("curse.maven:theurgy-kubejs-963206:5705870")
+
 
     // Dependencies
     localRuntime("curse.maven:architectury-api-419699:5786327")
@@ -258,6 +273,7 @@ dependencies {
     localRuntime("curse.maven:guideme-1173950:6331224")
     localRuntime("curse.maven:zerocore-247921:6160798")
     localRuntime("curse.maven:glodium-957920:5821676")
+    compileOnly("curse.maven:balm-531761:6338302")
     localRuntime("curse.maven:balm-531761:6338302")
     localRuntime("curse.maven:common-capabilities-247007:6332022")
     localRuntime("curse.maven:cyclops-core-232758:6340387")
@@ -266,6 +282,13 @@ dependencies {
     localRuntime("curse.maven:placebo-283644:6751290")
     localRuntime("curse.maven:playeranimator-658587:6024462")
     localRuntime("curse.maven:geckolib-388172:6659026")
+    localRuntime("curse.maven:farmers-delight-398521:6597295")
+    localRuntime("curse.maven:createaddition-439890:6773416")
+    localRuntime("curse.maven:deeperdarker-659011:6463247")
+    localRuntime("curse.maven:silent-gear-297039:6872305")
+    localRuntime("curse.maven:silent-lib-242998:6565251")
+    localRuntime("curse.maven:almost-unified-633823:6847936")
+
 
     implementation("malte0811:DualCodecs:0.1.2")
     implementation("blank:endec:0.1.8")
@@ -303,7 +326,8 @@ tasks {
             "mod_version" to mod_version,
             "mod_authors" to mod_authors,
             "mod_description" to mod_description,
-            "alltheleaks_version_range" to alltheleaks_version_range
+            "alltheleaks_version_range" to alltheleaks_version_range,
+            "kubejs_version_range" to kubejs_version_range
         )
         inputs.properties(replaceProperties)
         expand(replaceProperties)

@@ -9,4 +9,6 @@ public class KJSTEvents {
     public static final EventHandler schema = GROUP.startup("schema", () -> RegisterCodecEventJS.class);
 
     public static final EventHandler noOp = GROUP.server("noOp", () -> NoOpEventJS.class);
+
+    public static final EventHandler preRecipes = GROUP.server("beforeRecipes", () -> PreRecipeEventJS.class);
 }

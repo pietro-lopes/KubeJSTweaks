@@ -1,9 +1,6 @@
 package dev.uncandango.kubejstweaks.kubejs.plugin;
 
-import dev.latvian.mods.kubejs.bindings.event.ServerEvents;
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
-import dev.latvian.mods.kubejs.event.EventResult;
-import dev.latvian.mods.kubejs.generator.KubeDataGenerator;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactoryRegistry;
 import dev.latvian.mods.kubejs.registry.RegistryType;
@@ -11,17 +8,14 @@ import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.ScriptManager;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.TypeDescriptionRegistry;
-import dev.latvian.mods.kubejs.script.data.GeneratedDataStage;
 import dev.latvian.mods.rhino.type.JSObjectTypeInfo;
 import dev.latvian.mods.rhino.type.JSOptionalParam;
-import dev.latvian.mods.rhino.type.RecordTypeInfo;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import dev.uncandango.kubejstweaks.kubejs.component.CodecComponent;
+import dev.uncandango.kubejstweaks.kubejs.event.CommonEvents;
 import dev.uncandango.kubejstweaks.kubejs.event.KJSTEvents;
-import dev.uncandango.kubejstweaks.kubejs.event.NoOpEventJS;
+import dev.uncandango.kubejstweaks.kubejs.event.RegisterCodecEventJS;
 import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -56,19 +50,26 @@ public class KJSTPlugin implements KubeJSPlugin {
         registry.register(NumberProvider.class, NUMBER_PROVIDER_TYPE.get());
     }
 
+//    @Override
+//    public void beforeRecipeLoading(RecipesKubeEvent event, RecipeManagerKJS manager, Map<ResourceLocation, JsonElement> recipeJsons) {
+//        var preRecipeEvent = new PreRecipeEventJS(recipeJsons);
+//        KJSTEvents.preRecipes.post(preRecipeEvent);
+//    }
+
+
+
     @Override
     public void afterScriptsLoaded(ScriptManager manager) {
         if (manager.scriptType == ScriptType.SERVER) {
-            ServerEvents.GENERATE_DATA.listenJava(ScriptType.SERVER, GeneratedDataStage.LAST, handler -> {
-                if (handler instanceof KubeDataGenerator generator) {
-                    if (KJSTEvents.noOp.hasListeners()) {
-                        KJSTEvents.noOp.post(new NoOpEventJS(generator));
-                    }
-                }
-                return EventResult.PASS;
-            });
+            CommonEvents.listenKubeEvent();
             RecipeSchemaFinder.cleanUp();
         }
+        if (manager.scriptType == ScriptType.STARTUP) {
+            if (KJSTEvents.schema.hasListeners()) {
+                KJSTEvents.schema.post(new RegisterCodecEventJS());
+            }
+        }
+
     }
 
     @Override

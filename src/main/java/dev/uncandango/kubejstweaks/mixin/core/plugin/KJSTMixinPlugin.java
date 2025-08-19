@@ -20,8 +20,9 @@ public class KJSTMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         mixinManager = new ConditionalMixinManager();
-        MixinAnnotationAdjusterRegistrar.register(new KJSTMixinAdjuster());
-        MixinCancellerRegistrar.register(new KJSTMixinCanceller());
+        // unused
+        //MixinAnnotationAdjusterRegistrar.register(new KJSTMixinAdjuster());
+        //MixinCancellerRegistrar.register(new KJSTMixinCanceller());
     }
 
     @Override

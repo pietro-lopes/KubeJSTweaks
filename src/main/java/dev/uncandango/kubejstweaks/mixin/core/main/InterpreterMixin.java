@@ -5,10 +5,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.Interpreter;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@ConditionalMixin(modId = "rhino", versionRange = "[2101.2.7-build.74]")
 @Mixin(Interpreter.class)
 public class InterpreterMixin {
     @WrapOperation(method = "getSourcePositionFromStack", at = @At(value = "FIELD", target = "Ldev/latvian/mods/rhino/Context;lastInterpreterFrame:Ljava/lang/Object;"))

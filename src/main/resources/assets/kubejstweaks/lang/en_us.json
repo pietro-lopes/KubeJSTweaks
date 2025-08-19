@@ -1,0 +1,5 @@
+{  "kubejstweaks.chat.click_here": "[click here]",
+"kubejstweaks.chat.click_to_open_markdown": "Click to open markdown",
+"kubejstweaks.debug.erroring_recipes_summary": "A markdown file was generated with erroring recipes: %s",
+  "kubejstweaks.chat.mod_id": "[KubeJS Tweaks] %s"
+}

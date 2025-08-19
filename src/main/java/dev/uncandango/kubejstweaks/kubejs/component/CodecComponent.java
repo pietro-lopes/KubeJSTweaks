@@ -18,10 +18,7 @@ import dev.latvian.mods.kubejs.util.Cast;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.NativeArray;
-import dev.latvian.mods.rhino.NativeObject;
-import dev.latvian.mods.rhino.type.RecordTypeInfo;
 import dev.latvian.mods.rhino.type.TypeInfo;
-import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -33,11 +30,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public record CodecComponent<T>(Codec<T> codec, TypeInfo type, String fieldString) implements RecipeComponent<T> {
-    public static final Map<String, Codec<?>> CODECS = new HashMap<>();
+    public static final Map<String, Codec<?>> CODECS = new ConcurrentHashMap<>();
 
     public static final RecipeComponentFactory FACTORY = (registries, storage, reader) -> {
         reader.skipWhitespace();

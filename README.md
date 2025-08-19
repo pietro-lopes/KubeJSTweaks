@@ -12,6 +12,8 @@ Mod is available on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ku
 
 ## 🔧 Features
 
+Check [Wiki](https://github.com/pietro-lopes/KubeJSTweaks/wiki) for events.
+
 You can find examples [here](https://github.com/pietro-lopes/KubeJSTweaks/tree/master/run/kubejs).
 
 New schema component:
@@ -33,7 +35,7 @@ Hot Fix Kubejs issues for 2101.7.1-build.181:
 - [Fixed Registry Component](https://github.com/KubeJS-Mods/KubeJS/commit/4a5391bf2257f6b97d02ac2227089bd8b695775c)
 - [Fixed Registry Scanner](https://github.com/KubeJS-Mods/KubeJS/commit/f1befc44784d9a64986f8275b6a80b7ce8b33966)
 - [Fixed Registry Scanner again](https://github.com/KubeJS-Mods/KubeJS/commit/c88bae170f686120d091e4b67c545b11cb2469b7)
-- [event.creatCustom seem broken](https://github.com/KubeJS-Mods/KubeJS/issues/972)
+- [event.createCustom seem broken](https://github.com/KubeJS-Mods/KubeJS/issues/972)
 
 
 ## 🤝 Contributing

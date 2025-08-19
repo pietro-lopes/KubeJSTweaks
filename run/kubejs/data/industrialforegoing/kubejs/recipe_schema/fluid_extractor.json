@@ -8,7 +8,8 @@
     {
       "name": "result",
       "role": "output",
-      "type": "block_state"
+      "type": "block_state",
+      "allow_empty": true
     },
     {
       "name": "breakChance",

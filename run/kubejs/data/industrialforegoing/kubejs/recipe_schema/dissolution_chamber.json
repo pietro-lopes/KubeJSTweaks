@@ -3,7 +3,8 @@
     {
       "name": "input",
       "role": "input",
-      "type": "ingredient[]"
+      "type": "ingredient[]",
+      "allow_empty": true
     },
     {
       "name": "inputFluid",
