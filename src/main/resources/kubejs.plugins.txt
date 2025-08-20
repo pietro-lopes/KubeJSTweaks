@@ -1,2 +1,2 @@
 dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPlugin
-dev.uncandango.kubejstweaks.kubejs.plugin.KJSTProbeJSPlugin client
+dev.uncandango.kubejstweaks.kubejs.plugin.KJSTProbeJSPlugin client probejs

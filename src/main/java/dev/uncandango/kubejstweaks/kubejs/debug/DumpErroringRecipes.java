@@ -87,7 +87,10 @@ public record DumpErroringRecipes(Throwable exception, ResourceLocation recipeId
                 sb.append("<summary>").append(dump.recipeId().toString()).append("</summary>\n");
                 sb.append("\n");
                 if (dump.exception() instanceof KubeRuntimeException kre) {
-                    sb.append("`").append(kre.toString().replace(cat, "").substring(3)).append("`\n\n");
+                    var firstPart = kre.toString().replace(cat, "");
+                    if (firstPart.length() > 3) {
+                        sb.append("`").append(firstPart.substring(3)).append("`\n\n");
+                    }
                 }
                 resourceManager.getResource(dump.recipeId().withPrefix("recipe/").withSuffix(".json")).ifPresent(resource -> {
                     sb.append("`").append(resource.sourcePackId()).append("`\n\n");

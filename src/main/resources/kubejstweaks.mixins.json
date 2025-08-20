@@ -25,6 +25,7 @@
     "main.RecipeComponentBuilderMixin$MapCodecMixin",
     "main.RecipeComponentBuilderMixin$ValueMixin",
     "main.RecipeComponentMixin",
+    "main.RecipeComponentValueMapMixin",
     "main.RecipeKeyMixin",
     "main.RecipeManagerMixin",
     "main.RecipesKubeEventMixin",
