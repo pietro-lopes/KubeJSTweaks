@@ -213,8 +213,8 @@ dependencies {
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
         interfaceInjectionData(it)
     }
-    compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
-    localRuntime("dev.latvian.mods:rhino:2101.2.7-build.77")
+    // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
+    implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
 
     testImplementation("net.neoforged:testframework:${neo_version}")
 
@@ -289,6 +289,7 @@ dependencies {
     localRuntime("curse.maven:silent-lib-242998:6565251")
     localRuntime("curse.maven:almost-unified-633823:6847936")
 
+    localRuntime("curse.maven:entityjs-967617:6886680")
 
     implementation("malte0811:DualCodecs:0.1.2")
     implementation("blank:endec:0.1.8")
