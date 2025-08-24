@@ -1,6 +1,7 @@
 package dev.uncandango.kubejstweaks.kubejs.plugin;
 
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
+import dev.latvian.mods.kubejs.plugin.ClassFilter;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactoryRegistry;
 import dev.latvian.mods.kubejs.registry.RegistryType;
@@ -13,9 +14,14 @@ import dev.latvian.mods.rhino.type.JSOptionalParam;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import dev.uncandango.kubejstweaks.kubejs.component.CodecComponent;
 import dev.uncandango.kubejstweaks.kubejs.event.CommonEvents;
+import dev.uncandango.kubejstweaks.kubejs.event.CompatibilityEventJS;
 import dev.uncandango.kubejstweaks.kubejs.event.KJSTEvents;
 import dev.uncandango.kubejstweaks.kubejs.event.RegisterCodecEventJS;
 import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
+import net.minecraft.util.NativeModuleLister;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -57,6 +63,21 @@ public class KJSTPlugin implements KubeJSPlugin {
 //    }
 
 
+    @Override
+    public void afterInit() {
+        if (KJSTEvents.compatibility.hasListeners()) {
+            var event = new CompatibilityEventJS();
+            KJSTEvents.compatibility.post(event);
+            var messages = event.getMessages();
+            if (!messages.isEmpty()) {
+                String s = String.join("\n",messages);
+                CrashReport crashreport = new CrashReport("\n" + s, new Throwable("\n" + s));
+                CrashReportCategory crashreportcategory = crashreport.addCategory("Mod Incompatibility details");
+                NativeModuleLister.addCrashSection(crashreportcategory);
+                throw new ReportedException(crashreport);
+            }
+        }
+    }
 
     @Override
     public void afterScriptsLoaded(ScriptManager manager) {
