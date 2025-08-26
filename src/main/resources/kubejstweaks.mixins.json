@@ -10,41 +10,11 @@
     "main.KubeJEIPluginMixin",
     "main.KubeJSEMIPluginMixin"
   ],
-  "mixins": [
-    "main.BalmClientRuntimeSpiMixin",
-    "main.CachedTagLookupMixin",
-    "main.ContextFactoryMixin",
-    "main.ContextMixin",
-    "main.DataExportMixin",
-    "main.EitherRecipeComponentMixin",
-    "main.EnumComponentMixin",
-    "main.ExDeorumKubeJsPluginMixin",
-    "main.InterpreterMixin",
-    "main.KubeRecipeMixin",
-    "main.ListRecipeComponentMixin",
-    "main.RecipeComponentBuilderMixin",
-    "main.RecipeComponentBuilderMixin$MapCodecMixin",
-    "main.RecipeComponentBuilderMixin$ValueMixin",
-    "main.RecipeComponentMixin",
-    "main.RecipeComponentValueMapMixin",
-    "main.RecipeKeyMixin",
-    "main.RecipeManagerMixin",
-    "main.RecipesKubeEventMixin",
-    "main.RecipeTypeFunctionMixin",
-    "main.RegistryAccessContainerMixin",
-    "main.RegistryComponentMixin",
-    "main.ScannerMixin",
-    "main.ServerPackMixin",
-    "main.ServerScriptManagerMixin",
-    "main.TheurgyRecipeSchemaMixin",
-    "main.TooltipProvidersMixin",
-    "main.TypesMixin",
-    "main.VariableTypeInfoMixin"
-  ],
+  "mixins": ["main.BalmClientRuntimeSpiMixin", "main.BasicMobEffectMixin", "main.CachedTagLookupMixin", "main.ContextFactoryMixin", "main.ContextMixin", "main.DataExportMixin", "main.EitherRecipeComponentMixin", "main.EnumComponentMixin", "main.ExDeorumKubeJsPluginMixin", "main.InterpreterMixin", "main.KubeRecipeMixin", "main.ListRecipeComponentMixin", "main.RecipeComponentBuilderMixin", "main.RecipeComponentBuilderMixin$MapCodecMixin", "main.RecipeComponentBuilderMixin$ValueMixin", "main.RecipeComponentMixin", "main.RecipeComponentValueMapMixin", "main.RecipeKeyMixin", "main.RecipeManagerMixin", "main.RecipesKubeEventMixin", "main.RecipeTypeFunctionMixin", "main.RegistryAccessContainerMixin", "main.RegistryComponentMixin", "main.ScannerMixin", "main.ServerPackMixin", "main.ServerScriptManagerMixin", "main.TheurgyRecipeSchemaMixin", "main.TooltipProvidersMixin", "main.TypesMixin", "main.VariableTypeInfoMixin"],
   "injectors": {
     "defaultRequire": 1
   },
   "mixinextras": {
-    "minVersion": "0.5.0-rc.2"
+    "minVersion": "0.5.0"
   }
 }

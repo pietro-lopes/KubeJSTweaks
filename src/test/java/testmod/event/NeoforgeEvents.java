@@ -4,17 +4,17 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.bindings.event.ServerEvents;
 import dev.latvian.mods.kubejs.event.EventResult;
 import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.RecipesKubeEvent;
+import dev.latvian.mods.kubejs.recipe.schema.UnknownKubeRecipe;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.Cast;
 import dev.uncandango.kubejstweaks.KubeJSTweaks;
-import net.minecraft.resources.RegistryOps;
+import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -51,15 +51,13 @@ public class NeoforgeEvents {
         var event = KubeJSEvents.KUBEJS_EVENTS.get("recipes");
         var rm = server.getRecipeManager();
         KubeJS.LOGGER.info("onRecipeLoad started!");
-        // THIS NEEDS TO BE CONDITIONALOPS TO FIX CRUSHER ORE RECIPE
-        var registryOps = RegistryOps.create(JsonOps.INSTANCE, server.registryAccess());
 
-
+        var registryOps = RecipeSchemaFinder.getConditionalOps();
 
         Stream.of(event.originalRecipes.values(),event.addedRecipes.stream().toList()).flatMap(Collection::stream).filter(RECIPE_NOT_REMOVED).forEach(kubeRecipe -> {
             if (kubeRecipe.type.schemaType.schema.keys.isEmpty()) return;
-            if (kubeRecipe.id.getPath().contains("crusher/ore")){
-                KubeJSTweaks.LOGGER.warn("Skipping crusher ore recipe {} due to weird codec behaviour", kubeRecipe.id + "[" + kubeRecipe.type + "]");
+            if (kubeRecipe instanceof UnknownKubeRecipe){
+                KubeJSTweaks.LOGGER.warn("Skipping unknown recipe {}.", kubeRecipe.id + "[" + kubeRecipe.type + "]");
                 return;
             }
             Recipe<?> originalRecipe;
@@ -130,6 +128,7 @@ public class NeoforgeEvents {
                 }
             }
         });
+        RecipeSchemaFinder.cleanUp();
     }
 
     public static Object eventDispatcher(KubeEvent kubeEvent) {

@@ -194,15 +194,15 @@ configurations {
 
 dependencies {
     // MixinExtras that supports @Expression
-    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0-rc.2")?.let {
+    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0")?.let {
         implementation(it)
     }
 
     // MixinSquared to Cancel and Adjust other mixins
-    annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0")?.let {
+    annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3")?.let {
         compileOnly(it)
     }
-    jarJar("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.2.0")?.let {
+    jarJar("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.3.3")?.let {
         implementation(it)
     }
 
