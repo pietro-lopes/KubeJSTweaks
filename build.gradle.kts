@@ -216,6 +216,9 @@ dependencies {
     // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
     implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
 
+//    runtimeOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
+//    compileOnly("dev.latvian.mods:rhino:2101.2.7-build.77")
+
     testImplementation("net.neoforged:testframework:${neo_version}")
 
     compileOnly("curse.maven:probejs-585406:5820894")
@@ -290,6 +293,7 @@ dependencies {
     localRuntime("curse.maven:almost-unified-633823:6847936")
 
     localRuntime("curse.maven:entityjs-967617:6886680")
+    localRuntime("curse.maven:embeddium-908741:6118392")
 
     implementation("malte0811:DualCodecs:0.1.2")
     implementation("blank:endec:0.1.8")
