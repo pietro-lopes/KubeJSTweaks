@@ -6,8 +6,8 @@ StartupEvents.registry('mob_effect',event=> {
     .modifyAttribute('minecraft:generic.armor','kubejs:iron_skin',8,'add_value')
 })
 
-StartupEvents.registry('potion',event => {
-    event.create('iron_skin')
-    .effect('kubejs:iron_skin',3600,0)
-})
+//StartupEvents.registry('potion',event => {
+//    event.create('iron_skin')
+//    .effect('kubejs:iron_skin',3600,0)
+//})
 
