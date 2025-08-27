@@ -24,6 +24,12 @@
             "name": "render",
             "role": "other",
             "type": "immersiveengineering:render"
+        },
+        {
+            "name": "fluid",
+            "role": "input",
+            "type": "fluid_ingredient",
+            "optional": {"tag": "minecraft:water"}
         }
     ]
 }
