@@ -86,10 +86,17 @@ public abstract class RecipeComponentBuilderMixin implements RecipeComponent<Map
         @Inject(method = "getValue", at = @At("HEAD"), cancellable = true)
         private void unwrapDataResult(CallbackInfoReturnable<Object> cir){
             if (value instanceof DataResult<?> dr) {
-                if (dr.getOrThrow() instanceof Pair<?, ?> p) {
-                    cir.setReturnValue(p.getFirst());
+                if (dr.isSuccess()) {
+                    if (dr.getOrThrow() instanceof Pair p) {
+                        cir.setReturnValue(p.getFirst());
+                    } else {
+                        cir.setReturnValue(dr.getOrThrow());
+                    }
                 } else {
-                    cir.setReturnValue(dr.getOrThrow());
+                    var result = dr.result();
+                    if (result.isEmpty()) {
+                        cir.setReturnValue(null);
+                    } else cir.setReturnValue(result.get());
                 }
             }
         }

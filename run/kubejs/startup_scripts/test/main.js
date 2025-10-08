@@ -24,7 +24,7 @@ StartupEvents.registry("item", event => {
 });
 
 StartupEvents.registry('entity_type', event => {
-    event.createCustom('wyrm', "net.minecraft.world.entity.npc.Villager")
+    event.createCustom('wyrm', "net.minecraft.world.entity.npc.Villager", modify => {})
 })
 
 KubeJSTweaks.checkCompatibility(event => {

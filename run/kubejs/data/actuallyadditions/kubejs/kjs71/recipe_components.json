@@ -1,0 +1,3 @@
+{
+    "actuallyadditions:effect": "{effect: registry_element<mob_effect>, duration: int, amplifier: int}"
+}

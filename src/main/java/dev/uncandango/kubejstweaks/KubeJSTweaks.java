@@ -2,6 +2,7 @@ package dev.uncandango.kubejstweaks;
 
 import dev.uncandango.kubejstweaks.command.KJSTCommands;
 import dev.uncandango.kubejstweaks.kubejs.schema.CodecParsedListener;
+import net.minecraft.SharedConstants;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -63,7 +64,7 @@ public class KubeJSTweaks {
                 KubeJSTweaks.LOGGER.debug("Failed to listen to event of codec parsed", e);
             }
         });
-        if (!FMLEnvironment.production) {
+        if (SharedConstants.IS_RUNNING_IN_IDE) {
             event.enqueueWork(() -> MixinEnvironment.getCurrentEnvironment().audit());
         }
     }

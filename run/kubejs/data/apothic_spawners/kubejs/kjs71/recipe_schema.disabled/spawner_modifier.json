@@ -1,0 +1,38 @@
+{
+  "keys": [
+    {
+      "name": "stat_changes",
+      "type": "codec<dev.shadowsoffire.apothic_spawners.modifiers.StatModifier>[]",
+      "role": "other"
+    },
+    {
+      "name": "mainhand",
+      "type": "non_empty_ingredient",
+      "role": "input"
+    },
+    {
+      "name": "offhand",
+      "type": "ingredient",
+      "role": "input",
+      "optional": null,
+      "excluded": true,
+      "function_names": [
+        "offhand"
+      ]
+    },
+    {
+      "name": "consume_offhand",
+      "type": "boolean",
+      "role": "other",
+      "optional": false,
+      "excluded": true
+    }
+  ],
+  "functions": {
+    "consumeOffhand": {
+      "set": {
+        "consume_offhand": true
+      }
+    }
+  }
+}

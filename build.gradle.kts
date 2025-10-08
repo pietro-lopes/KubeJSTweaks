@@ -1,4 +1,7 @@
-import net.neoforged.moddevgradle.internal.RunGameTask
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.stream.JsonReader
+import java.nio.file.Files
 
 plugins {
     `java-library`
@@ -221,15 +224,62 @@ dependencies {
 
     testImplementation("net.neoforged:testframework:${neo_version}")
 
-    compileOnly("curse.maven:probejs-585406:5820894")
-    localRuntime("curse.maven:probejs-585406:5820894")
+    compileOnly("curse.maven:probejs-585406:5820894") // fixes some stuff
 
     // Mods
-    implementation("curse.maven:ex-deorum-901420:6162365")
-    compileOnly("curse.maven:jei-238222:6614392")
-    compileOnly("curse.maven:emi-580555:6420931")
-    compileOnly("curse.maven:tmrv-1194921:6269681")
+    compileOnly("curse.maven:ex-deorum-901420:6162365") // disable KubeJS Schemas from it
+    compileOnly("curse.maven:jei-238222:6614392") // Jei plugin for global.jeiRuntime
+    compileOnly("curse.maven:theurgy-kubejs-963206:5705870") // Fix recipe schema
 
+    // dev-only related bug
+    compileOnly("curse.maven:balm-531761:6338302") // fix service bug
+    compileOnly("curse.maven:selene-499980:6818413") // fix production detection
+    compileOnly("curse.maven:applied-energistics-2-223794:6323510") // fix service bug
+
+
+//    compileOnly("curse.maven:emi-580555:6420931")
+//    compileOnly("curse.maven:tmrv-1194921:6269681")
+
+//    compileOnly("curse.maven:create-328085:6323264")
+//    compileOnly("curse.maven:immersive-engineering-231951:6733669")
+//
+//
+//    compileOnly("malte0811:DualCodecs:0.1.2")
+//    compileOnly("blank:endec:0.1.8")
+
+    // Testing at runtime from latest version reading a CF file
+    val recipeViewer = "emi"
+    val gson = GsonBuilder().create()
+    val minecraftInstanceJson = Files.newInputStream(project.buildFile.parentFile.resolve("minecraftinstance.json").toPath()).use { inputStream ->
+        val jsonReader = JsonReader(inputStream.reader())
+        gson.fromJson<JsonObject>(jsonReader, JsonObject::class.java)
+    }
+    minecraftInstanceJson.get("installedAddons").asJsonArray.forEach {
+        val addonJson = it.asJsonObject
+        val cfId = addonJson.get("addonID").asNumber
+        val nameId = addonJson.get("webSiteURL").asString.split("/").last()
+        if (recipeViewer == "emi") {
+            // if emi, we skip JEI
+            if (nameId == "jei") return@forEach
+        } else {
+            // if JEI, we skip TMRV and EMI
+            if (nameId == "tmrv") return@forEach
+            if (nameId == "emi") return@forEach
+        }
+        if (nameId == "stone-zone") return@forEach
+        val fileId = addonJson.getAsJsonObject("installedFile").asJsonObject.get("id").asNumber
+        localRuntime("curse.maven:$nameId-$cfId:$fileId")
+    }
+
+    localRuntime("curse.maven:projecte-226410:6611984")
+
+    // localRuntime("curse.maven:oritech-1030830:6558345") // oritech-neoforge-0.15.7.jar
+    //localRuntime("curse.maven:jei-238222:6614392")
+    // localRuntime("curse.maven:kubejs-actually-additions-1126546:6013079") // addons add schemas last, good
+
+    /*
+    localRuntime("curse.maven:ex-deorum-901420:6162365")
+    localRuntime("curse.maven:probejs-585406:5820894")
     localRuntime("curse.maven:oritech-1030830:6300493")
     localRuntime("curse.maven:replication-638351:6763336")
     localRuntime("curse.maven:industrial-foregoing-266515:6283758")
@@ -238,17 +288,15 @@ dependencies {
     localRuntime("curse.maven:ars-nouveau-401955:6333245")
     // localRuntime("curse.maven:fastsuite-475117:6321099-sources")
     localRuntime("curse.maven:actually-additions-228404:6329770")
-    compileOnly("curse.maven:applied-energistics-2-223794:6323510")
     localRuntime("curse.maven:applied-energistics-2-223794:6323510")
     localRuntime("curse.maven:extreme-reactors-250277:6158187")
-    implementation("curse.maven:create-328085:6323264")
-    // 6641610
+
     localRuntime("curse.maven:create-328085:6641610")
     localRuntime("curse.maven:ender-io-64578:6307311")
     localRuntime("curse.maven:ex-pattern-provider-892005:6283473")
     localRuntime("curse.maven:farming-for-blockheads-261924:6409932")
     localRuntime("curse.maven:functional-storage-556861:6189752")
-    implementation("curse.maven:immersive-engineering-231951:6733669")
+    localRuntime("curse.maven:immersive-engineering-231951:6733669")
     localRuntime("curse.maven:industrial-foregoing-266515:6283758")
     localRuntime("curse.maven:integrated-dynamics-236307:6331508")
     localRuntime("curse.maven:just-dire-things-1002348:6161633")
@@ -260,8 +308,13 @@ dependencies {
     localRuntime("curse.maven:irons-spells-n-spellbooks-855414:6834357")
     localRuntime("curse.maven:stone-zone-1154622:6710522")
     localRuntime("curse.maven:every-compat-628539:6762704")
-    compileOnly("curse.maven:theurgy-kubejs-963206:5705870")
-
+    localRuntime("curse.maven:flux-networks-248020:6089446")
+    localRuntime("curse.maven:allthecompressed-514045:6121584")
+    localRuntime("curse.maven:farmers-delight-398521:6597295")
+    localRuntime("curse.maven:createaddition-439890:6773416")
+    localRuntime("curse.maven:deeperdarker-659011:6463247")
+    localRuntime("curse.maven:silent-gear-297039:6872305")
+    localRuntime("curse.maven:almost-unified-633823:6847936")
 
     // Dependencies
     localRuntime("curse.maven:architectury-api-419699:5786327")
@@ -276,34 +329,26 @@ dependencies {
     localRuntime("curse.maven:guideme-1173950:6331224")
     localRuntime("curse.maven:zerocore-247921:6160798")
     localRuntime("curse.maven:glodium-957920:5821676")
-    compileOnly("curse.maven:balm-531761:6338302")
     localRuntime("curse.maven:balm-531761:6338302")
     localRuntime("curse.maven:common-capabilities-247007:6332022")
     localRuntime("curse.maven:cyclops-core-232758:6340387")
-    localRuntime("curse.maven:flux-networks-248020:6089446")
-    localRuntime("curse.maven:allthecompressed-514045:6121584")
     localRuntime("curse.maven:placebo-283644:6751290")
     localRuntime("curse.maven:playeranimator-658587:6024462")
     localRuntime("curse.maven:geckolib-388172:6659026")
-    localRuntime("curse.maven:farmers-delight-398521:6597295")
-    localRuntime("curse.maven:createaddition-439890:6773416")
-    localRuntime("curse.maven:deeperdarker-659011:6463247")
-    localRuntime("curse.maven:silent-gear-297039:6872305")
     localRuntime("curse.maven:silent-lib-242998:6565251")
-    localRuntime("curse.maven:almost-unified-633823:6847936")
 
     localRuntime("curse.maven:entityjs-967617:6886680")
     localRuntime("curse.maven:embeddium-908741:6118392")
 
-    implementation("malte0811:DualCodecs:0.1.2")
-    implementation("blank:endec:0.1.8")
+
 
     // Utils
     // localRuntime("curse.maven:jei-238222:6614392")
     localRuntime("curse.maven:emi-580555:6420931")
-    localRuntime("curse.maven:tmrv-1194921:6269681")
+    localRuntime("curse.maven:tmrv-1194921:6856067")
     localRuntime("curse.maven:jade-324717:6291517")
 //    localRuntime(project(":kjst-agent"))
+     */
 }
 
 publishing {
@@ -346,6 +391,24 @@ tasks {
         distributionType = Wrapper.DistributionType.BIN
     }
 
+    val schemasReady = listOf(
+        "actuallyadditions/**"
+    )
+
+    register<Zip>("generateDatapack") {
+        from("src/main/datapack")
+        from("run/kubejs/data") {
+            include(schemasReady)
+            into("data")
+            includeEmptyDirs = false
+        }
+        destinationDirectory = layout.buildDirectory.dir("libs")
+        archiveExtension = "zip"
+        archiveVersion = "0.1.0"
+        archiveBaseName = "kubejstweaks-recipes"
+        archiveClassifier = ""
+    }
+
     named("runTestmod") {
         dependsOn(":kjst-agent:jar")
     }
@@ -359,6 +422,7 @@ sourceSets {
 }
 
 neoForge.ideSyncTask(tasks.named("generateModMetadata"))
+neoForge.ideSyncTask(tasks.named("generateDatapack"))
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {

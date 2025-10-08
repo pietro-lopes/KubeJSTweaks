@@ -11,6 +11,7 @@ import dev.latvian.mods.rhino.type.VariableTypeInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+// Fixed by ZZZank Generics PR
 @Mixin(Context.class)
 public class ContextMixin {
     @ModifyExpressionValue(method = "getConversionWeight", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/rhino/type/TypeInfo;is(Ldev/latvian/mods/rhino/type/TypeInfo;)Z", ordinal = 0))

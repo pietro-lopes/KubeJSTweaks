@@ -1,0 +1,3 @@
+{
+    "oritech:fluid_stack": "{fluid: registry_element<fluid>, amount: long<0,max>}"
+}

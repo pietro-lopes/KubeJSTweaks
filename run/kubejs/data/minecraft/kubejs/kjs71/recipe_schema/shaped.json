@@ -39,7 +39,8 @@
 			"name": "group",
 			"role": "other",
 			"type": "string",
-			"optional": ""
+			"optional": "",
+      "allow_empty": true
 		},
         {
             "name": "show_notification",

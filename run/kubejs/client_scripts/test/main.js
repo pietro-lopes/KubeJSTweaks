@@ -65,3 +65,47 @@ ClientEvents.generateAssets("last", event => {
 //        }
 //    })
 //})
+
+ClientEvents.lang("en_us", event => {
+  event.add("emc.projecte.tooltip", "Value: %1$s")
+})
+
+RecipeViewerEvents.addEntries('item', allthemods =>{
+    let jeiRuntime = global.jeiRuntime
+    let emiRegistry = global.emiRegistry
+    if (jeiRuntime) {
+      console.log(jeiRuntime)
+    }
+    if (emiRegistry) {
+      console.log(emiRegistry)
+    }
+
+//    if (emiRegistry) {
+//        //let fluxRecipeCategory = global.jeiCategoryRegistration.getRecipeCategories().stream().filter(cat => cat.getRecipeType() == $CreatingFluxRecipeCategory.RECIPE_TYPE).findFist().get()
+//        //console.log("Flux recipe category is:" + fluxRecipeCategory)
+//    }
+//    let jeiRecipeCategories = global.jeiCategoryRegistration.getRecipeCategories()
+//    global.flux.forEach(recipe => {
+//        let customFlux = new $CreatingFluxRecipe(recipe.baseBlock, recipe.clickedBlock, recipe.inputItem, recipe.outputItem)
+//        if (emiRegistry) {
+//            let recipeCategory = new $JemiCategory(fluxRecipeCategory)
+//            let recipe = new $JemiRecipe(recipeCategory, fluxRecipeCategory, customFlux)
+//            emiRegistry.addRecipe(recipe)
+//        }
+//        if (jeiRuntime) {
+//            let RecipeManager = jeiRuntime.getRecipeManager()
+//            RecipeManager.addRecipes($CreatingFluxRecipeCategory.RECIPE_TYPE, [customFlux])
+//        }
+//    })
+})
+
+ClientEvents.generateAssets("last", event => {
+    event.json("emi:recipe/additions/test", 
+        {
+            "type": "emi:world_interaction",
+            "left": "#fluid:c:biodiesel",
+            "right": "#item:c:raw_materials",
+            "output": "item:minecraft:apple"
+        }
+    )
+})

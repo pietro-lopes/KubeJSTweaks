@@ -1,15 +1,27 @@
 // Visit the wiki for more info - https://kubejs.com/
 console.info('Hello, World! (Loaded server example script)')
 
+//ItemEvents.rightClicked("minecraft:lodestone", event => {
+//    /** @type {$ServerLevel_} */
+//    let level = event.level
+//    let map = level.structureManager().getAllStructuresAt(event.player.blockPosition())
+//    map.keySet().forEach(structure => {
+//        let key = event.level.registryAccess().registryOrThrow($Registries.STRUCTURE).getKey(structure)
+//        event.player.tell(key)
+//    })
+//})
+
 ItemEvents.rightClicked("minecraft:lodestone", event => {
     /** @type {$ServerLevel_} */
+    if (event.hand != "main_hand") return
     let level = event.level
-    let map = level.structureManager().getAllStructuresAt(event.player.blockPosition())
-    map.keySet().forEach(structure => {
-        let key = event.level.registryAccess().registryOrThrow($Registries.STRUCTURE).getKey(structure)
-        event.player.tell(key)
-    })
+    let list = level.getEntities().filterSelector("@e[type=minecraft:text_display, distance=..64, limit=1, sort=nearest, tag=Player1]")
+    for (let entity of list) {
+      console.log(entity)
+      console.log(entity.getNbt())
+    }
 })
+
 
 KubeJSTweaks.noOp(event => {
     event.recipes("minecraft:anvil")

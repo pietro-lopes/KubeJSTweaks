@@ -1,0 +1,15 @@
+{
+    "keys": [
+        {
+            "name": "result",
+            "role": "output",
+            "type": "codec<de.ellpeck.actuallyadditions.mod.crafting.CrushingRecipe$Serializer#RESULT_CODEC>[]"
+        },
+        {
+            "name": "ingredient",
+            "role": "input",
+            "type": "non_empty_ingredient"
+        }
+    ],
+    "unique": ["result"]
+}

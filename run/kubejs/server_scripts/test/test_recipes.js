@@ -28,8 +28,9 @@ let $IntStream = Java.loadClass("java.util.stream.IntStream")
 ServerEvents.recipes(event => {
   const random = new $Random()
   const itemList = Item.list.filter(item => !["minecraft:barrier", "minecraft:air", "ae2:facade"].includes(item.id))
-  const fluidList = Registry.of("minecraft:fluid").registry().holders().map(holder => holder.key().location().toString()).toList().filter(fluid => !["minecraft:empty"].includes(fluid))
+  const fluidList = Registry.of("minecraft:fluid").registry().holders().filter(holder => holder.value().isSource(holder.value().defaultFluidState())).map(holder => holder.key().location().toString()).toList().filter(fluid => !["minecraft:empty"].includes(fluid))
   const blockList = Registry.of("minecraft:block").registry().holders().map(holder => holder.key().location().toString()).toList().filter(block => !["minecraft:air","minecraft:cave_air","minecraft:barrier","ae2:facade"].includes(block))
+  const rRegistry = (registry) => Registry.of(registry).registry().getRandom(Utils.getRandom()).map(holder => holder.key().location().toString()).orElseThrow()
   const rList = (list) => Utils.randomOf(random, list)
   const genRandomItem = () => rList(itemList).id
   let itemTagList = Registry.of("minecraft:item").registry().getTags()
@@ -52,7 +53,8 @@ ServerEvents.recipes(event => {
   const genRandomFluid = () => rList(fluidList)
   const rf = genRandomFluid
   const rft = genRandomNonEmptyFluidTag
-  // Fix this, I think Lat changed fluistack parsing
+
+  const ris = () => `${rRange(1, 64)}x ${ri()}`
   const rfs = () => `${rRange(1, 1000)}x ${rf()}`
   const genRandomBoolean = () => Utils.getRandom().nextBoolean()
   const rb = genRandomBoolean
@@ -96,28 +98,177 @@ ServerEvents.recipes(event => {
 
   const oritech = event.recipes.oritech
 
-  recipeTypes.forEach(type => {
-    let counter = 0
-    let exactValuesRecipe = ["particle_collision"]
-    // if (type[1] == 0 || type[2] == 0) return
-    let exactValue = false
-    if (exactValuesRecipe.indexOf(type[0]) > -1) exactValue = true
-    runFor(5, (idx) => {
-      oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot))
-        .id("atmindev:" + type[0] + "/test/" + counter++)
-      oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200))
-        .id("atmindev:" + type[0] + "/test/" + counter++)
-      oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), rf(), rRange(1, 1000) * 81)
-        .id("atmindev:" + type[0] + "/test/" + counter++)
-      oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), rf(), rRange(1, 1000) * 81, rf(), rRange(1, 1000) * 81)
-        .id("atmindev:" + type[0] + "/test/" + counter++)
+  KJSTweaks.runIfModPresent("oritech", "(,0.15.2]", () => {
+    recipeTypes.forEach(type => {
+      let counter = 0
+      let exactValuesRecipe = ["particle_collision"]
+      // if (type[1] == 0 || type[2] == 0) return
+      let exactValue = false
+      if (exactValuesRecipe.indexOf(type[0]) > -1) exactValue = true
+      runFor(5, (idx) => {
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), rf(), rRange(1, 1000) * 81)
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), rf(), rRange(1, 1000) * 81, rf(), rRange(1, 1000) * 81)
+          .id("oritech:" + type[0] + "/test/" + counter++)
+      })
+    })
+
+    // Needs to be on a second pass
+    recipeTypes.forEach(type => {
+      // if (type[1] == 0 || type[2] == 0) return
+      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
     })
   })
 
-  // Needs to be on a second pass
-  recipeTypes.forEach(type => {
-    // if (type[1] == 0 || type[2] == 0) return
-    testRecipes(event, new RegExp(`atmindev:${type[0]}/test/`))
+  KJSTweaks.runIfModPresent("oritech", "[0.15.3,0.15.7]", () => {
+    recipeTypes.forEach(type => {
+      let counter = 0
+      let exactValuesRecipe = ["particle_collision"]
+      // if (type[1] == 0 || type[2] == 0) return
+      let exactValue = false
+      if (exactValuesRecipe.indexOf(type[0]) > -1) exactValue = true
+      runFor(5, (idx) => {
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)})
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}, {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)})
+          .id("oritech:" + type[0] + "/test/" + counter++)
+      })
+    })
+
+    // Needs to be on a second pass
+    recipeTypes.forEach(type => {
+      // if (type[1] == 0 || type[2] == 0) return
+      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
+    })
+  })
+
+  KJSTweaks.runIfModPresent("oritech", "[0.16.0,)", () => {
+    recipeTypes.forEach(type => {
+      let counter = 0
+      let exactValuesRecipe = ["particle_collision"]
+      // if (type[1] == 0 || type[2] == 0) return
+      let exactValue = false
+      if (exactValuesRecipe.indexOf(type[0]) > -1) exactValue = true
+      runFor(5, (idx) => {
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200))
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)})
+          .id("oritech:" + type[0] + "/test/" + counter++)
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}, [{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)},{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)},{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}])
+          .id("oritech:" + type[0] + "/test/" + counter++)
+      })
+    })
+
+    // Needs to be on a second pass
+    recipeTypes.forEach(type => {
+      // if (type[1] == 0 || type[2] == 0) return
+      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
+    })
+  })
+
+  const aa = event.recipes.actuallyadditions
+
+  aa.copy_nbt("minecraft:netherite_chestplate",["NNN","NDN","NNN"],{N:"minecraft:netherite_ingot", D: {type: "actuallyadditions:target_nbt", base: JsonIO.toObject(Ingredient.of("minecraft:diamond_chestplate"))}})
+    .id("actuallyadditions:copy_nbt/test/1")
+
+  KJSTweaks.runIfModPresent("actuallyadditions", () => {
+    let counter = 0
+    let results = () => [{stack: ris()}, {stack: "empty", chance: 0}]
+    let results2 = () => [{stack: ris()},{stack: ris(), chance: rChance()}]
+    let effects = () => genArray(rRange(1,10), () => ({effect: rRegistry("mob_effect"), amplifier: rRange(0,5), duration: rRange(20,200)}))
+
+    runFor(5, (idx) => {
+      // required: ingredient, max_amplifier
+      // optional: .effects([{effect: mod:effect_here, amplifier: number, duration: ticks},{...}])
+      // optional: .extra_text("Some text description")
+      aa.coffee_ingredient(rit(), rRange(1,5))
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+      aa.coffee_ingredient(ri(), rRange(1,5)).effects(effects())
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+      aa.coffee_ingredient(riot(), rRange(1,5)).effects(effects()).extra_text("Some Extra Text here?")
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+
+//      console.log(`aa.coffee_ingredient("${ri()}", ${rRange(1,5)})`)
+//      console.log(`aa.coffee_ingredient("${rit()}", ${rRange(1,5)}).effects(${JsonIO.toString(effects())})`)
+//      console.log(`aa.coffee_ingredient("${riot()}", ${rRange(1,5)}).effects(${JsonIO.toString(effects())}).extra_text("Some Extra Text here?")`)
+
+      // required: result (itemstack), ingredient
+      aa.color_change(ri(), ri())
+        .id("actuallyadditions:color_change/test/" + counter++)
+      aa.color_change(ri(), rit())
+        .id("actuallyadditions:color_change/test/" + counter++)
+      aa.color_change(ri(), riot())
+        .id("actuallyadditions:color_change/test/" + counter++)
+
+//      console.log(`aa.color_change("${ri()}", "${ri()}")`)
+//      console.log(`aa.color_change("${ri()}", "${rit()}")`)
+//      console.log(`aa.color_change("${ri()}", "${riot()}")`)
+
+      aa.crushing(results(),ri())
+        .id("actuallyadditions:crushing/test/" + counter++)
+      aa.crushing(results2(), rit())
+        .id("actuallyadditions:crushing/test/" + counter++)
+      aa.crushing(results(), riot())
+        .id("actuallyadditions:crushing/test/" + counter++)
+
+//      console.log(`aa.crushing(${JsonIO.toString(results())}, "${ri()}")`)
+//      console.log(`aa.crushing(${JsonIO.toString(results2())}, "${rit()}")`)
+//      console.log(`aa.crushing(${JsonIO.toString(results())}, "${riot()}")`)
+
+      // required: result (itemstack 1 qty only), base (ingredient on empowering), modifiers (4 ingredients, one on each display stand)
+      // optional: .color(hex) like .color(0xFFEEBB), default is 0xFFFFFF
+      // optional: .energy(number), default is 5000
+      // optional: .duration(ticks_number), default is 50
+      aa.empowering(ri(),ri(),genArray(4, riot))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), rit(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000)).duration(rRange(50,500))
+        .id("actuallyadditions:empowering/test/" + counter++)
+
+//      console.log(`aa.empowering("${ri()}", "${ri()}", ${JsonIO.toString(genArray(4, riot))})`)
+//      console.log(`aa.empowering("${ri()}", "${rit()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)})`)
+//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)})`)
+//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)}).duration(${rRange(50,500)})`)
+
+      aa.fermenting("80x " + rf(),"80x " + rf())
+        .id("actuallyadditions:fermenting/test/" + counter++)
+      aa.fermenting(rfs(), rfs(), rRange(100,10000))
+        .id("actuallyadditions:fermenting/test/" + counter++)
+      aa.fermenting(rfs(), rfs()).duration(rRange(100,10000))
+        .id("actuallyadditions:fermenting/test/" + counter++)
+
+//      console.log(`aa.fermenting("80x ${rf()}", "80x ${rf()}")`)
+//      console.log(`aa.fermenting("${rfs()}", "${rfs()}", ${rRange(100,10000)})`)
+//      console.log(`aa.fermenting("${rfs()}", "${rfs()}").duration(${rRange(100,10000)})`)
+
+      aa.laser(ris(),riot(),rRange(60,20000))
+        .id("actuallyadditions:laser/test/" + counter++)
+
+//      console.log(`aa.laser("${ri()}", "${ri()}", ${rRange(60,20000)})`)
+//      console.log(`aa.laser("${ri()}", "${rit()}", ${rRange(60,20000)})`)
+
+    })
+
+    testRecipes(event, /.*/, "actuallyadditions:fermenting")
+    testRecipes(event, /.*/, "actuallyadditions:empowering")
+    testRecipes(event, /.*/, "actuallyadditions:crushing")
+    testRecipes(event, /.*/, "actuallyadditions:coffee_ingredient")
+    testRecipes(event, /.*/, "actuallyadditions:color_change")
+    testRecipes(event, /.*/, "actuallyadditions:copy_nbt")
+    testRecipes(event, /.*/, "actuallyadditions:laser")
   })
 
   const exdeorum = event.recipes.exdeorum
@@ -129,15 +280,6 @@ ServerEvents.recipes(event => {
   exdeorum.crucible_heat_source({block_tag: "c:stones"}, 1)
   exdeorum.crucible_heat_source({block: "acacia_log", state: {axis: "x"}}, 1)
 
-  let counter = 0
-  runFor(5, (idx) => {
-    event.recipes.actuallyadditions.crushing(riot(),[{stack: ri(), chance: rChance()}, {stack: "air", chance: 0}])
-      .id("atmindev:crushing/test/" + counter++)
-
-    event.recipes.actuallyadditions.crushing(riot(),[{stack: ri(), chance: rChance()},{stack: ri(), chance: rChance()}])
-      .id("atmindev:crushing/test/" + counter++)
-  })
-
   event.recipes.ae2.inscriber("acacia_boat",{bottom: "#actuallyadditions:crystals", top: "#actuallyadditions:lamps", middle: "#ae2:all_fluix"},"press")
 
   event.recipes.ae2.inscriber("oak_trapdoor",{bottom: "minecraft:emerald", top: "minecraft:grass_block", middle: "minecraft:oak_log"}) // will be a inscribe
@@ -148,27 +290,23 @@ ServerEvents.recipes(event => {
 
   event.replaceInput({type: "ae2:inscriber"}, Ingredient.of("#c:silicon"), Ingredient.of("minecraft:gold_block"))
 
-  event.forEachRecipe({type: "actuallyadditions:crushing"}, debugRecipe)
-  
-  testRecipes(event, new RegExp(`actuallyadditions:crushing/.*`))
-  testRecipes(event, new RegExp(`atmindev:crushing/test/.*`))
   testRecipes(event, new RegExp(`ae2:inscriber/.*`))
   
-  counter = 0
+  let counter = 0
   runFor(5, (idx) => {
     event.recipes.ars_nouveau.enchanting_apparatus(riot(),ri(),genArray(rRange(1,8), riot),rRange(0,200), rb())
       .id("atmindev:ars_nouveau/enchanting_apparatus/test/" + counter++)
   })
   testRecipes(event, new RegExp(`atmindev:ars_nouveau/enchanting_apparatus/test/.*`))
 
-  testRecipes(event, "*", "ars_nouveau:enchanting_apparatus")
+  testRecipes(event, /.*/, "ars_nouveau:enchanting_apparatus")
 
-  testRecipes(event, "*", "bigreactors:fluidizersolid")
-  testRecipes(event, "*", "bigreactors:fluidizersolidmixing")
+  testRecipes(event, /.*/, "bigreactors:fluidizersolid")
+  testRecipes(event, /.*/, "bigreactors:fluidizersolidmixing")
 
-  testRecipes(event, "*", "create:mechanical_crafting")
+  testRecipes(event, /.*/, "create:mechanical_crafting")
 
-  testRecipes(event, "*", "enderio:sag_milling")
+  testRecipes(event, /.*/, "enderio:sag_milling")
 
   counter = 0
   runFor(15, (idx) => {
@@ -185,9 +323,9 @@ ServerEvents.recipes(event => {
   })
   testRecipes(event, new RegExp(`atmindev:enderio/sag_milling/test/.*`))
   
-  testRecipes(event, "*", "extendedae:circuit_cutter")
+  testRecipes(event, /.*/, "extendedae:circuit_cutter")
 
-  testRecipes(event, "*", "extendedae:crystal_assembler")
+  testRecipes(event, /.*/, "extendedae:crystal_assembler")
 
   counter = 0
   runFor(15, (idx) => {
@@ -206,7 +344,7 @@ ServerEvents.recipes(event => {
   testRecipes(event, new RegExp(`atmindev:extendedae/circuit_cutter/test/.*`))
   testRecipes(event, new RegExp(`atmindev:extendedae/crystal_assembler/test/.*`))
 
-  testRecipes(event, "*", "farmingforblockheads:market")
+  testRecipes(event, /.*/, "farmingforblockheads:market")
 
   counter = 0
   runFor(5, (idx) => {
@@ -219,7 +357,7 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:farmingforblockheads/market/test/.*`))
 
-  testRecipes(event, "*", "functionalstorage:custom_compacting")
+  testRecipes(event, /.*/, "functionalstorage:custom_compacting")
 
   counter = 0
   runFor(10, (idx) => {
@@ -229,7 +367,7 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:functionalstorage/custom_compacting/test/.*`))
 
-  testRecipes(event, "*", "immersiveengineering:arc_furnace")
+  testRecipes(event, /.*/, "immersiveengineering:arc_furnace")
 
   event.custom(
     {
@@ -261,9 +399,9 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:immersiveengineering/arc_furnace/test/.*`))
 
-  testRecipes(event, "*", "immersiveengineering:cloche")
-  testRecipes(event, "*", "immersiveengineering:crusher")
-  testRecipes(event, "*", "immersiveengineering:metal_press")
+  testRecipes(event, /.*/, "immersiveengineering:cloche")
+  testRecipes(event, /.*/, "immersiveengineering:crusher")
+  testRecipes(event, /.*/, "immersiveengineering:metal_press")
 
   counter = 0
   runFor(10, (idx) => {
@@ -291,8 +429,8 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:immersiveengineering/metal_press/test/.*`))
 
-  testRecipes(event, "*", "industrialforegoing:dissolution_chamber")
-  testRecipes(event, "*", "industrialforegoing:fluid_extractor")
+  testRecipes(event, /.*/, "industrialforegoing:dissolution_chamber")
+  testRecipes(event, /.*/, "industrialforegoing:fluid_extractor")
 
   counter = 0
   runFor(10, (idx) => {
@@ -312,8 +450,8 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:industrialforegoing/fluid_extractor/test/.*`))
 
-  testRecipes(event, "*", "integrateddynamics:squeezer")
-  testRecipes(event, "*", "integrateddynamics:mechanical_squeezer")
+  testRecipes(event, /.*/, "integrateddynamics:squeezer")
+  testRecipes(event, /.*/, "integrateddynamics:mechanical_squeezer")
 
   counter = 0
   runFor(10, (idx) => {
@@ -325,7 +463,7 @@ ServerEvents.recipes(event => {
 
   testRecipes(event, new RegExp(`atmindev:integrateddynamics/squeezer/test/.*`))
 
-  testRecipes(event, "*", "justdirethings:fluiddrop")
+  testRecipes(event, /.*/, "justdirethings:fluiddrop")
 
   counter = 0
   runFor(10, (idx) => {
@@ -353,7 +491,7 @@ const testExistingRecipes = (event, regex, type) => {
 
 const testAddedRecipes = (event, regex, type) => {
   console.log("Now running test on Added Recipes using param: " + regex + " and " + type)
-  event.addedRecipes.stream().filter(recipe => type == null ? regex.test(recipe.getId()) : recipe.type.id == type).forEach(debugRecipe)
+  event.addedRecipes.stream().filter(recipe => type == null ? regex.test(recipe.getId()) : recipe.kjs$getType() == type && regex.test(recipe.getId())).forEach(debugRecipe)
 }
 
 
