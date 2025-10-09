@@ -22,7 +22,7 @@ public class KJSTMixinPlugin implements IMixinConfigPlugin {
         mixinManager = new ConditionalMixinManager();
         // unused
         //MixinAnnotationAdjusterRegistrar.register(new KJSTMixinAdjuster());
-        //MixinCancellerRegistrar.register(new KJSTMixinCanceller());
+        MixinCancellerRegistrar.register(new KJSTMixinCanceller());
     }
 
     @Override
@@ -47,11 +47,11 @@ public class KJSTMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-        if (targetClassName.equals(ListRecipeComponentTransformers.TARGET_CLASS.replaceAll("/","."))) {
-            ListRecipeComponentTransformers.transform(targetClass);
+        //if (targetClassName.equals(ListRecipeComponentTransformers.TARGET_CLASS.replaceAll("/","."))) {
+            //ListRecipeComponentTransformers.transform(targetClass);
             // For Debug
             // Utils.saveClassToDisk(targetClass, FMLPaths.GAMEDIR.get().resolve("local/asm/" + targetClassName + ".class").toString());
-        }
+        //}
     }
 
     @Override

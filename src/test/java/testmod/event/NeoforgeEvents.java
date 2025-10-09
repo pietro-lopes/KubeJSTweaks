@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.bindings.event.ServerEvents;
 import dev.latvian.mods.kubejs.event.EventResult;
@@ -14,13 +15,16 @@ import dev.latvian.mods.kubejs.recipe.schema.UnknownKubeRecipe;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.Cast;
 import dev.uncandango.kubejstweaks.KubeJSTweaks;
-import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.conditions.ConditionContext;
+import net.neoforged.neoforge.common.conditions.ConditionalOps;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import testmod.Utils;
@@ -39,12 +43,18 @@ public class NeoforgeEvents {
     public static void onPackLoaded(AddReloadListenerEvent e){
         // NOT SAFE
         // THIS HAPPENS AT WORKER THREAD BUT WHATEVER PRAY FOR CME GODS
-        ServerEvents.RECIPES.listenJava(ScriptType.SERVER, null, NeoforgeEvents::eventDispatcher);
+        var version = ModList.get().getModFileById("kubejs").versionString();
+        if (version.startsWith("2101.7.1-")) {
+            ServerEvents.RECIPES.listenJava(ScriptType.SERVER, null, NeoforgeEvents::eventDispatcher);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onServerStarted(ServerStartedEvent e){
-        testRecipes(e.getServer());
+        var version = ModList.get().getModFileById("kubejs").versionString();
+        if (version.startsWith("2101.7.1-")) {
+            testRecipes(e.getServer());
+        }
     }
 
     private static void testRecipes(MinecraftServer server){
@@ -52,7 +62,8 @@ public class NeoforgeEvents {
         var rm = server.getRecipeManager();
         KubeJS.LOGGER.info("onRecipeLoad started!");
 
-        var registryOps = RecipeSchemaFinder.getConditionalOps();
+        var conditionContext = new ConditionContext(server.getServerResources().managers().kjs$getTagManager());
+        var registryOps = new ConditionalOps<>(server.registryAccess().createSerializationContext(JsonOps.INSTANCE), conditionContext);
 
         Stream.of(event.originalRecipes.values(),event.addedRecipes.stream().toList()).flatMap(Collection::stream).filter(RECIPE_NOT_REMOVED).forEach(kubeRecipe -> {
             if (kubeRecipe.type.schemaType.schema.keys.isEmpty()) return;
@@ -128,7 +139,6 @@ public class NeoforgeEvents {
                 }
             }
         });
-        RecipeSchemaFinder.cleanUp();
     }
 
     public static Object eventDispatcher(KubeEvent kubeEvent) {

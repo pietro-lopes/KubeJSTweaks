@@ -34,9 +34,9 @@ public class CodecParsedListener {
 //        if (field == null) {
 //            KubeJSTweaks.LOGGER.info("Codec not found");
 //        }
-//        var mapSerializer = RecipeSchemaFinder.serializerEventMap.computeIfAbsent(RecipeSchemaFinder.currentSerializer, k -> new HashMap<>());
-//        var set = mapSerializer.computeIfAbsent(RecipeSchemaFinder.currentRecipe, k -> new LinkedHashSet<>());
-//        set.add(event);
+        var mapSerializer = RecipeSchemaFinder.serializerEventMap.computeIfAbsent(RecipeSchemaFinder.currentSerializer, k -> new HashMap<>());
+        var set = mapSerializer.computeIfAbsent(RecipeSchemaFinder.currentRecipe, k -> new LinkedHashSet<>());
+        set.add(event);
     }
 
 

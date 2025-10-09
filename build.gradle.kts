@@ -90,105 +90,87 @@ subprojects {
     version = project(":").version
 }
 
-neoForge {
-    version = neo_version
-
-    parchment {
-        mappingsVersion = parchment_mappings_version
-        minecraftVersion = parchment_minecraft_version
+sourceSets {
+    main {
+        resources.srcDir("src/generated/resources")
     }
-
-    runs {
-        register("client") {
-            client()
-            systemProperty("production", "")
-            systemProperty("neoforge.enableGameTest", "false")
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
-        }
-
-        register("server") {
-            server()
-            systemProperty("production", "")
-            systemProperty("neoforge.enableGameTest", "false")
-            programArgument("--nogui")
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
-        }
-
-        register("gameTestServer") {
-            type = "gameTestServer"
-            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
-        }
-
-        val agentJarFile = project(":kjst-agent").tasks.jar.get().archiveFile.get().asFile.toString()
-        register("testmod") {
-            client()
-            sourceSet = sourceSets.test.get()
-            systemProperty("neoforge.gameTestServer", "true")
-            systemProperty("neoforge.enabledGameTestNamespaces", "${mod_id},${testmod_id}")
-            jvmArgument("-javaagent:$agentJarFile")
-        }
-
-        register("data") {
-            data()
-
-            programArguments.addAll("--mod", mod_id, "--all", "--output", file("src/generated/resources/").absolutePath, "--existing", file("src/main/resources/").absolutePath)
-        }
-
-        configureEach {
-            systemProperty("forge.logging.markers", "REGISTRIES")
-            jvmArgument("-Xmx3000m")
-            //jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
-            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-
-            // So Intellij Debug can work...
-            //jvmArgument("--add-exports=java.base/sun.nio.ch=ALL-UNNAMED")
-            jvmArgument("--add-opens=java.base/java.lang=ALL-UNNAMED")
-            //jvmArgument("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED")
-            //jvmArgument("--add-opens=java.base/java.io=ALL-UNNAMED")
-            //jvmArgument("--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED")
-            //jvmArgument("--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED")
-
-            logLevel = org.slf4j.event.Level.DEBUG
-
-            if (type.get().startsWith("client")) {
-                programArguments.addAll("--width", "1920", "--height", "1080")
-                systemProperty("mixin.debug.export", "true")
-                jvmArguments.addAll(
-                    "-XX:+UnlockExperimentalVMOptions",
-                    "-XX:+UseG1GC",
-                    "-XX:G1NewSizePercent=20",
-                    "-XX:G1ReservePercent=20",
-                    "-XX:MaxGCPauseMillis=50",
-                    "-XX:G1HeapRegionSize=32M"
-                )
-            }
-        }
+    create("kjs71") {
+        java.srcDir("src/kjs71/java")
+        compileClasspath += sourceSets.main.get().compileClasspath
+//        resources.srcDir("src/kjs71/resources")
     }
-
-    mods {
-        register(mod_id) {
-            sourceSet(sourceSets.main.get())
-        }
-        register("testmod") {
-            sourceSet(sourceSets.test.get())
-        }
-//        register("kjst-asm") {
-//            sourceSet(project(":kjst-asm").sourceSets.main.get())
-//        }
+    create("kjs72") {
+        java.srcDir("src/kjs72/java")
     }
-    addModdingDependenciesTo(sourceSets.test.get())
 }
+
+tasks {
+    register("generateModMetadata", ProcessResources::class) {
+        val replaceProperties = mapOf(
+            "minecraft_version" to minecraft_version,
+            "minecraft_version_range" to minecraft_version_range,
+            "neo_version" to neo_version,
+            "neo_version_range" to neo_version_range,
+            "loader_version_range" to loader_version_range,
+            "mod_id" to mod_id,
+            "mod_name" to mod_name,
+            "mod_license" to mod_license,
+            "mod_version" to mod_version,
+            "mod_authors" to mod_authors,
+            "mod_description" to mod_description,
+            "alltheleaks_version_range" to alltheleaks_version_range,
+            "kubejs_version_range" to kubejs_version_range
+        )
+        inputs.properties(replaceProperties)
+        expand(replaceProperties)
+        from("src/main/templates")
+        into("build/generated/sources/modMetadata")
+    }
+    compileJava {
+        options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
+    }
+    wrapper {
+        distributionType = Wrapper.DistributionType.BIN
+    }
+    jar {
+        from(sourceSets.getByName("kjs71").output)
+    }
+
+    val schemasReady = listOf(
+        "actuallyadditions/**"
+    )
+
+    register<Zip>("generateDatapack") {
+        from("src/main/datapack")
+        from("run/kubejs/data") {
+            include(schemasReady)
+            into("data")
+            includeEmptyDirs = false
+        }
+        destinationDirectory = layout.buildDirectory.dir("libs")
+        archiveExtension = "zip"
+        archiveVersion = "0.1.0"
+        archiveBaseName = "kubejstweaks-recipes"
+        archiveClassifier = ""
+    }
+
+//    named("runTestmod") {
+//        dependsOn(":kjst-agent:jar")
+//    }
+}
+
+sourceSets.main {
+    resources.srcDir(tasks.named("generateModMetadata"))
+}
+
+
+
+
 
 val localRuntime: Configuration by configurations.creating
-configurations {
-    runtimeClasspath {
-        extendsFrom(localRuntime)
-    }
-    testRuntimeClasspath {
-        extendsFrom(localRuntime)
-    }
-}
-
+val kjs71CompileOnly: Configuration by configurations.getting
+val kjs71Implementation: Configuration by configurations.getting
+val kjs72CompileOnly: Configuration by configurations.getting
 //afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
 //    tasks.withType(RunGameTask::class).configureEach {
 //        classpathProvider.setFrom(classpathProvider.files.stream().filter {f -> !f.toString().contains("kjst-asm")}.toList())
@@ -196,6 +178,7 @@ configurations {
 //}
 
 dependencies {
+    kjs71CompileOnly(sourceSets.main.get().output)
     // MixinExtras that supports @Expression
     jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0")?.let {
         implementation(it)
@@ -204,16 +187,24 @@ dependencies {
     // MixinSquared to Cancel and Adjust other mixins
     annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3")?.let {
         compileOnly(it)
+        kjs71Implementation(it)
     }
     jarJar("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.3.3")?.let {
         implementation(it)
+        kjs71Implementation(it)
     }
 
 //    jarJar(project(":kjst-asm"))
 //    implementation(project(":kjst-asm"))
 //    localRuntime(project(":kjst-asm"))
 
-    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
+    kjs71Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
+        interfaceInjectionData(it)
+    }
+
+    kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
+
+    kjs72CompileOnly("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")?.let {
         interfaceInjectionData(it)
     }
     // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
@@ -351,6 +342,132 @@ dependencies {
      */
 }
 
+configurations {
+
+    compileClasspath {
+//        extendsFrom(kjs71CompileOnly)
+        extendsFrom(kjs72CompileOnly)
+    }
+
+    testCompileClasspath {
+//        extendsFrom(kjs71CompileOnly)
+        extendsFrom(kjs71Implementation)
+    }
+
+    getByName("kjs71RuntimeOnly") {
+        extendsFrom(localRuntime)
+    }
+
+    runtimeClasspath {
+        extendsFrom(localRuntime)
+    }
+    testRuntimeClasspath {
+        extendsFrom(localRuntime)
+    }
+}
+
+neoForge {
+    version = neo_version
+
+    parchment {
+        mappingsVersion = parchment_mappings_version
+        minecraftVersion = parchment_minecraft_version
+    }
+
+    runs {
+        register("client-kjs71") {
+            client()
+            systemProperty("production", "")
+            systemProperty("neoforge.enableGameTest", "false")
+            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+            sourceSet = sourceSets.getByName("kjs71")
+//            additionalRuntimeClasspathConfiguration.extendsFrom(kjs71Implementation)
+        }
+
+        register("client-kjs72") {
+            client()
+            systemProperty("production", "")
+            systemProperty("neoforge.enableGameTest", "false")
+            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+            sourceSet = sourceSets.getByName("kjs72")
+        }
+
+        register("server") {
+            server()
+            systemProperty("production", "")
+            systemProperty("neoforge.enableGameTest", "false")
+            programArgument("--nogui")
+            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+        }
+
+        register("gameTestServer") {
+            type = "gameTestServer"
+            systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
+        }
+
+        val agentJarFile = project(":kjst-agent").tasks.jar.get().archiveFile.get().asFile.toString()
+        register("testmod") {
+            client()
+            sourceSet = sourceSets.test.get()
+            systemProperty("neoforge.gameTestServer", "true")
+            systemProperty("neoforge.enabledGameTestNamespaces", "${mod_id},${testmod_id}")
+            jvmArgument("-javaagent:$agentJarFile")
+        }
+
+        register("data") {
+            data()
+
+            programArguments.addAll("--mod", mod_id, "--all", "--output", file("src/generated/resources/").absolutePath, "--existing", file("src/main/resources/").absolutePath)
+        }
+
+        configureEach {
+            systemProperty("forge.logging.markers", "REGISTRIES")
+            jvmArgument("-Xmx3000m")
+            //jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
+
+            // So Intellij Debug can work...
+            //jvmArgument("--add-exports=java.base/sun.nio.ch=ALL-UNNAMED")
+            jvmArgument("--add-opens=java.base/java.lang=ALL-UNNAMED")
+            //jvmArgument("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED")
+            //jvmArgument("--add-opens=java.base/java.io=ALL-UNNAMED")
+            //jvmArgument("--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED")
+            //jvmArgument("--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED")
+
+            logLevel = org.slf4j.event.Level.DEBUG
+
+            if (type.get().startsWith("client")) {
+                programArguments.addAll("--width", "1920", "--height", "1080")
+                systemProperty("mixin.debug.export", "true")
+                jvmArguments.addAll(
+                    "-XX:+UnlockExperimentalVMOptions",
+                    "-XX:+UseG1GC",
+                    "-XX:G1NewSizePercent=20",
+                    "-XX:G1ReservePercent=20",
+                    "-XX:MaxGCPauseMillis=50",
+                    "-XX:G1HeapRegionSize=32M"
+                )
+            }
+        }
+    }
+
+    mods {
+        register(mod_id) {
+            sourceSet(sourceSets.main.get())
+            sourceSet(sourceSets.getByName("kjs71"))
+        }
+        register("testmod") {
+            sourceSet(sourceSets.test.get())
+        }
+//        register("kjst-asm") {
+//            sourceSet(project(":kjst-asm").sourceSets.main.get())
+//        }
+    }
+    addModdingDependenciesTo(sourceSets.test.get())
+    addModdingDependenciesTo(sourceSets.getByName("kjs71"))
+    addModdingDependenciesTo(sourceSets.getByName("kjs72"))
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
@@ -362,64 +479,7 @@ publishing {
     }
 }
 
-tasks {
-    register("generateModMetadata", ProcessResources::class) {
-        val replaceProperties = mapOf(
-            "minecraft_version" to minecraft_version,
-            "minecraft_version_range" to minecraft_version_range,
-            "neo_version" to neo_version,
-            "neo_version_range" to neo_version_range,
-            "loader_version_range" to loader_version_range,
-            "mod_id" to mod_id,
-            "mod_name" to mod_name,
-            "mod_license" to mod_license,
-            "mod_version" to mod_version,
-            "mod_authors" to mod_authors,
-            "mod_description" to mod_description,
-            "alltheleaks_version_range" to alltheleaks_version_range,
-            "kubejs_version_range" to kubejs_version_range
-        )
-        inputs.properties(replaceProperties)
-        expand(replaceProperties)
-        from("src/main/templates")
-        into("build/generated/sources/modMetadata")
-    }
-    compileJava {
-        options.encoding = "UTF-8" // Use the UTF-8 charset for Java compilation
-    }
-    wrapper {
-        distributionType = Wrapper.DistributionType.BIN
-    }
 
-    val schemasReady = listOf(
-        "actuallyadditions/**"
-    )
-
-    register<Zip>("generateDatapack") {
-        from("src/main/datapack")
-        from("run/kubejs/data") {
-            include(schemasReady)
-            into("data")
-            includeEmptyDirs = false
-        }
-        destinationDirectory = layout.buildDirectory.dir("libs")
-        archiveExtension = "zip"
-        archiveVersion = "0.1.0"
-        archiveBaseName = "kubejstweaks-recipes"
-        archiveClassifier = ""
-    }
-
-    named("runTestmod") {
-        dependsOn(":kjst-agent:jar")
-    }
-}
-
-sourceSets {
-    main {
-        resources.srcDir("src/generated/resources")
-        resources.srcDir(tasks.named("generateModMetadata"))
-    }
-}
 
 neoForge.ideSyncTask(tasks.named("generateModMetadata"))
 neoForge.ideSyncTask(tasks.named("generateDatapack"))

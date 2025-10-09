@@ -11,6 +11,9 @@ public class KJSTMixinCanceller implements MixinCanceller {
         if (mixinClassName.equals("com.simibubi.create.foundation.mixin.SmithingTrimRecipeMixin")){
             return true;
         }
+        if (mixinClassName.equals("com.momosoftworks.coldsweat.mixin.compat.MixinKubeScanner")) {
+            return true;
+        }
         return false;
     }
 }

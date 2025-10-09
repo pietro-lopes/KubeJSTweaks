@@ -1,6 +1,5 @@
 package dev.uncandango.kubejstweaks;
 
-import dev.uncandango.kubejstweaks.command.KJSTCommands;
 import dev.uncandango.kubejstweaks.kubejs.schema.CodecParsedListener;
 import net.minecraft.SharedConstants;
 import net.neoforged.bus.api.Event;
@@ -34,9 +33,9 @@ public class KubeJSTweaks {
         // NeoForge.EVENT_BUS.register(this);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        if (FMLEnvironment.dist.isClient()) {
-            NeoForge.EVENT_BUS.addListener(this::registerClientCommands);
-        }
+//        if (FMLEnvironment.dist.isClient()) {
+//            NeoForge.EVENT_BUS.addListener(this::registerClientCommands);
+//        }
 
 
 
@@ -73,9 +72,9 @@ public class KubeJSTweaks {
 //        // Some common setup code
 //    }
 
-    public void registerClientCommands(RegisterClientCommandsEvent event){
-        KJSTCommands.registerClientCommands(event.getDispatcher(), event.getBuildContext());
-    }
+//    public void registerClientCommands(RegisterClientCommandsEvent event){
+//        KJSTCommands.registerClientCommands(event.getDispatcher(), event.getBuildContext());
+//    }
 
 //    @SubscribeEvent
 //    public void onServerStarting(ServerStartingEvent event) {
