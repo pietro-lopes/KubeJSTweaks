@@ -215,16 +215,16 @@ dependencies {
         interfaceInjectionData(it)
     }
 
-//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")
+//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.270")
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")
 
-    kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
+    kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
-    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.270")?.let {
         interfaceInjectionData(it)
     }
     // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
-    implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
+    implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
 //    runtimeOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
 //    compileOnly("dev.latvian.mods:rhino:2101.2.7-build.77")

@@ -20,10 +20,6 @@ public class RecipeSchemaStorageMixin {
     private static Map<ResourceLocation, Resource> loadSpecificDatapack(Map<ResourceLocation, Resource> original, @Local(argsOnly = true) ResourceManager manager){
         if (ModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.2-")) {
             original.entrySet().removeIf(entry -> entry.getKey().toString().contains("/kjs71/"));
-//            var kjs72 = manager.listResources("kubejs/kjs72", path -> path.getPath().endsWith("/recipe_mappings.json"));
-//            kjs72.forEach((rl, rs) -> {
-//                original.put(ResourceLocation.fromNamespaceAndPath(rl.getNamespace(),rl.getPath().replace("/kjs72","")), rs);
-//            });
         }
         return original;
     }
@@ -32,11 +28,6 @@ public class RecipeSchemaStorageMixin {
     private static Map<ResourceLocation, Resource> loadSpecificDatapack2(Map<ResourceLocation, Resource> original, @Local(argsOnly = true) ResourceManager manager){
         if (ModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.2-")) {
             original.entrySet().removeIf(entry -> entry.getKey().toString().contains("/kjs71/"));
-
-//            var kjs72 = manager.listResources("kubejs/kjs72", path -> path.getPath().endsWith("/recipe_components.json"));
-//            kjs72.forEach((rl, rs) -> {
-//                original.put(ResourceLocation.fromNamespaceAndPath(rl.getNamespace(),rl.getPath().replace("/kjs72","")), rs);
-//            });
         }
         return original;
     }

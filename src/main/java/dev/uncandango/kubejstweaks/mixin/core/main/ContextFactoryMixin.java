@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.lang.invoke.MethodHandles;
 
-@ConditionalMixin(modId = "rhino", versionRange = "[2101.2.7-build.74,2101.2.7-build.77]")
+@ConditionalMixin(modId = "rhino", versionRange = "[2101.2.7-build.74,2101.2.7-build.81]")
 @Mixin(ContextFactory.class)
 public abstract class ContextFactoryMixin {
 

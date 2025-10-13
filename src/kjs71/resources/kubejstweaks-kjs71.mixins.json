@@ -41,6 +41,8 @@
     "main.TagKeyComponentMixin",
     "main.TheurgyRecipeSchemaMixin",
     "main.TypeConsolidatorMixin",
+    "main.MobEffectBuilderMixin",
+    "main.MobEffectBuilderMixin$BasicMobEffectAccessor",
     "main.TypesMixin",
     "main.VariableTypeInfo2Mixin",
     "main.VariableTypeInfoMixin"

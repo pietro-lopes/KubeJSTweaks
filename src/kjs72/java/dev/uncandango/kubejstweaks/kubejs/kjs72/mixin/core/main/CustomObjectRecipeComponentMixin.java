@@ -58,18 +58,6 @@ public abstract class CustomObjectRecipeComponentMixin implements RecipeComponen
             }
 
             return mapCodec().decode(cx.ops().java(), MapLike.forMap((Map<Object, Object>) mapLike, cx.ops().java())).getOrThrow();
-//            Map<Object, Object> map = new HashMap<>(this.keys.size());
-//            var keyMap = new HashMap<String, RecipeComponentBuilder.Key>();
-//
-//            keys.forEach(key -> keyMap.put(key.name(), key));
-//            mapLike.forEach((key, value) -> {
-//                RecipeComponentBuilder.Key keyComponent = keyMap.get(key);
-//                Object newValueJava = keyComponent.component().wrap(cx, recipe, value);
-//                RecipeComponent<Object> component = (RecipeComponent<Object>) keyComponent.component();
-//                JsonElement newValueJson = component.codec().encodeStart(JsonOps.INSTANCE, newValueJava).getOrThrow();
-//                map.put(key, newValueJson.isJsonObject() ? MapJS.of(newValueJson) : newValueJson);
-//            });
-//            return ((KubeJSContext) cx).getRegistries().decodeMap(cx, ((RecipeComponentBuilder)(Object) this).mapCodec(), map);
         }
         throw new IllegalStateException("Unexpected value: " + from);
     }

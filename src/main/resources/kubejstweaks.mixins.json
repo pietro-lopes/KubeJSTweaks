@@ -17,9 +17,7 @@
     "main.TypeConsolidatorMixin",
     "main.TypesMixin",
     "main.VariableTypeInfo2Mixin",
-    "main.VariableTypeInfoMixin",
-    "main.MobEffectBuilderMixin",
-    "main.MobEffectBuilderMixin$BasicMobEffectAccessor"
+    "main.VariableTypeInfoMixin"
   ],
   "injectors": {
     "defaultRequire": 1

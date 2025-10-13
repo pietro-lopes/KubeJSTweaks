@@ -13,7 +13,6 @@
     "main.CustomObjectRecipeComponentMixin",
     "main.CustomObjectRecipeComponentMixin$ValueMixin",
     "main.CustomObjectRecipeComponentMixin$MapCodecMixin",
-    "main.RegistryComponentMixin",
     "main.RecipesKubeEventMixin",
     "main.KubeRecipeMixin",
     "main.RecipeManagerMixin",
