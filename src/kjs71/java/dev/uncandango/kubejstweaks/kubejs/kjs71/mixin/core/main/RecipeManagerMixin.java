@@ -1,8 +1,9 @@
 package dev.uncandango.kubejstweaks.kubejs.kjs71.mixin.core.main;
 
 import com.google.gson.JsonElement;
+import dev.uncandango.kubejstweaks.kubejs.event.PreRecipeEventJS;
 import dev.uncandango.kubejstweaks.kubejs.kjs71.event.KJSTEvents;
-import dev.uncandango.kubejstweaks.kubejs.kjs71.event.PreRecipeEventJS;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")
 @Mixin(value = RecipeManager.class, priority = 1098)
 public class RecipeManagerMixin {
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("HEAD"))

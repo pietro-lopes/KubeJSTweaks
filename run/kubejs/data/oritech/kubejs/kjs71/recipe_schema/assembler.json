@@ -28,7 +28,7 @@
             "excluded": true
         },
         {
-            "version_range": "(,0.15.2]",
+            "kubejstweaks:version_range": "(,0.15.2]",
             "name": "fluidInputVariant",
             "role": "input",
             "type": "registry_element<minecraft:fluid>",
@@ -36,7 +36,7 @@
             "always_write": true
         },
         {
-            "version_range": "(,0.15.2]",
+            "kubejstweaks:version_range": "(,0.15.2]",
             "name": "fluidInputAmount",
             "role": "other",
             "type": "long",
@@ -44,7 +44,7 @@
             "always_write": true
         },
         {
-            "version_range": "(,0.15.2]",
+            "kubejstweaks:version_range": "(,0.15.2]",
             "name": "fluidOutputVariant",
             "role": "output",
             "type": "registry_element<minecraft:fluid>",
@@ -52,7 +52,7 @@
             "always_write": true
         },
         {
-            "version_range": "(,0.15.2]",
+            "kubejstweaks:version_range": "(,0.15.2]",
             "name": "fluidOutputAmount",
             "role": "other",
             "type": "long",
@@ -60,14 +60,14 @@
             "always_write": true
         },
         {
-          "version_range": "[0.15.3,)",
+          "kubejstweaks:version_range": "[0.15.3,)",
           "name": "fluidInput",
           "role": "input",
           "type": "{fluid: string, amount: long<0,max>}",
           "optional": null
         },
         {
-          "version_range": "[0.15.3,0.15.7]",
+          "kubejstweaks:version_range": "[0.15.3,0.15.7]",
           "name": "fluidOutput",
           "role": "output",
           "type": "oritech:fluid_stack",
@@ -75,7 +75,7 @@
           "allow_empty": true
         },
         {
-          "version_range": "[0.16.0,)",
+          "kubejstweaks:version_range": "[0.16.0,)",
           "name": "fluidOutputs",
           "role": "output",
           "type": "oritech:fluid_stack[]",

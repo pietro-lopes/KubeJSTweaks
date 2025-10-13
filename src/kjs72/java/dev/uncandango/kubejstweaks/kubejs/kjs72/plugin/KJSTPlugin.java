@@ -1,9 +1,8 @@
 package dev.uncandango.kubejstweaks.kubejs.kjs72.plugin;
 
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
-import dev.latvian.mods.kubejs.plugin.ClassFilter;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
-import dev.latvian.mods.kubejs.recipe.schema.RecipeComponentFactoryRegistry;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentTypeRegistry;
 import dev.latvian.mods.kubejs.registry.RegistryType;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.ScriptManager;
@@ -12,21 +11,23 @@ import dev.latvian.mods.kubejs.script.TypeDescriptionRegistry;
 import dev.latvian.mods.rhino.type.JSObjectTypeInfo;
 import dev.latvian.mods.rhino.type.JSOptionalParam;
 import dev.latvian.mods.rhino.type.TypeInfo;
-import dev.uncandango.kubejstweaks.kubejs.component.CodecComponent;
-import dev.uncandango.kubejstweaks.kubejs.event.CommonEvents;
 import dev.uncandango.kubejstweaks.kubejs.event.CompatibilityEventJS;
-import dev.uncandango.kubejstweaks.kubejs.event.KJSTEvents;
-import dev.uncandango.kubejstweaks.kubejs.event.RegisterCodecEventJS;
-import dev.uncandango.kubejstweaks.kubejs.schema.RecipeSchemaFinder;
+import dev.uncandango.kubejstweaks.kubejs.kjs72.component.CodecComponent;
+import dev.uncandango.kubejstweaks.kubejs.kjs72.event.CommonEvents;
+import dev.uncandango.kubejstweaks.kubejs.kjs72.event.KJSTEvents;
+import dev.uncandango.kubejstweaks.kubejs.kjs72.event.RegisterCodecEventJS;
+import dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.util.NativeModuleLister;
 import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.common.util.Lazy;
 
 public class KJSTPlugin implements KubeJSPlugin {
+    private static final boolean KJS_LOADED = LoadingModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.2-");
     private static final Lazy<TypeInfo> NUMBER_PROVIDER_TYPE =
         Lazy.of(() -> JSObjectTypeInfo.NUMBER
             .or(JSObjectTypeInfo.NUMBER.asArray())
@@ -42,29 +43,26 @@ public class KJSTPlugin implements KubeJSPlugin {
 
 
     @Override
-    public void registerRecipeComponents(RecipeComponentFactoryRegistry registry) {
-        registry.register("codec", CodecComponent.FACTORY);
+    public void registerRecipeComponents(RecipeComponentTypeRegistry registry) {
+        if (!KJS_LOADED) return;
+        registry.register(CodecComponent.TYPE);
     }
 
     @Override
     public void registerEvents(EventGroupRegistry registry) {
+        if (!KJS_LOADED) return;
         registry.register(KJSTEvents.GROUP);
     }
 
     @Override
     public void registerTypeDescriptions(TypeDescriptionRegistry registry) {
+        if (!KJS_LOADED) return;
         registry.register(NumberProvider.class, NUMBER_PROVIDER_TYPE.get());
     }
 
-//    @Override
-//    public void beforeRecipeLoading(RecipesKubeEvent event, RecipeManagerKJS manager, Map<ResourceLocation, JsonElement> recipeJsons) {
-//        var preRecipeEvent = new PreRecipeEventJS(recipeJsons);
-//        KJSTEvents.preRecipes.post(preRecipeEvent);
-//    }
-
-
     @Override
     public void afterInit() {
+        if (!KJS_LOADED) return;
         if (KJSTEvents.compatibility.hasListeners()) {
             var event = new CompatibilityEventJS();
             KJSTEvents.compatibility.post(event);
@@ -81,9 +79,10 @@ public class KJSTPlugin implements KubeJSPlugin {
 
     @Override
     public void afterScriptsLoaded(ScriptManager manager) {
+        if (!KJS_LOADED) return;
         if (manager.scriptType == ScriptType.SERVER) {
             CommonEvents.listenKubeEvent();
-            RecipeSchemaFinder.cleanUp();
+//            RecipeSchemaFinder.cleanUp();
         }
         if (manager.scriptType == ScriptType.STARTUP) {
             if (KJSTEvents.schema.hasListeners()) {
@@ -95,6 +94,7 @@ public class KJSTPlugin implements KubeJSPlugin {
 
     @Override
     public void registerBindings(BindingRegistry bindings) {
+        if (!KJS_LOADED) return;
         bindings.add("KJSTweaks", KJSTPluginUtils.class);
     }
 }

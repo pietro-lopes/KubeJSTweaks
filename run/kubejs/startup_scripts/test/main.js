@@ -23,9 +23,9 @@ StartupEvents.registry("item", event => {
     event.create("kubejs:item_test").color("#225566").burnTime(60)
 });
 
-StartupEvents.registry('entity_type', event => {
-    event.createCustom('wyrm', "net.minecraft.world.entity.npc.Villager", modify => {})
-})
+//StartupEvents.registry('entity_type', event => {
+//    event.createCustom('wyrm', "net.minecraft.world.entity.npc.Villager", modify => {})
+//})
 
 KubeJSTweaks.checkCompatibility(event => {
   event.checkModVersion("jei", "19.22.0.316", "This version is causing durability tools issues")

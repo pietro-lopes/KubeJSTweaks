@@ -1,0 +1,11 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "ARR"
+
+[[mods]]
+modId = "testmodkjs72"
+version = "0.0.0"
+displayName = "Test Mod KJS 72"
+
+[[mixins]]
+config = "testmodkjs72.mixins.json"

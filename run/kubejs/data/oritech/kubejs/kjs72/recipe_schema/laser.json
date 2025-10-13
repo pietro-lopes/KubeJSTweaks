@@ -1,0 +1,6 @@
+{
+    "parent": "oritech:base",
+    "override_keys": {
+        "type": "oritech:laser"
+    }
+}

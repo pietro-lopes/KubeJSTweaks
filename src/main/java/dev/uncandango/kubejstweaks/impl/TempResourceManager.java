@@ -1,16 +1,6 @@
 package dev.uncandango.kubejstweaks.impl;
 
 import com.mojang.logging.LogUtils;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -20,6 +10,17 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceFilterSection;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class TempResourceManager implements CloseableResourceManager {
     private static final Logger LOGGER = LogUtils.getLogger();

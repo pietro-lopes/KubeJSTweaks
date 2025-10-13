@@ -10,7 +10,8 @@ import dev.latvian.mods.kubejs.DevProperties;
 import dev.latvian.mods.kubejs.error.KubeRuntimeException;
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.script.ConsoleJS;
-import dev.uncandango.kubejstweaks.kubejs.kjs71.debug.DumpErroringRecipes;
+import dev.uncandango.kubejstweaks.kubejs.debug.DumpErroringRecipes;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.objectweb.asm.Opcodes;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Consumer;
 
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")
 @Mixin(KubeRecipe.class)
 public class KubeRecipeMixin {
     @Shadow

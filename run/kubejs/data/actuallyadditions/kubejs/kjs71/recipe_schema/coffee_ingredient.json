@@ -22,7 +22,8 @@
             "role": "other",
             "type": "string",
             "optional": "",
-            "allow_empty": true
+            "allow_empty": true,
+            "function_names": ["extraText"]
         }
     ],
     "unique": ["ingredient"]

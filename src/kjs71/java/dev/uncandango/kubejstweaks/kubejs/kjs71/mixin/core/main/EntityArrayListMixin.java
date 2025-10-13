@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import dev.latvian.mods.kubejs.player.EntityArrayList;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.Util;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 // https://github.com/KubeJS-Mods/KubeJS/issues/1039
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")
 @Mixin(EntityArrayList.class)
 public class EntityArrayListMixin {
     @Inject(method = "filter", at = @At(value = "NEW", target = "(Lnet/minecraft/world/level/Level;I)Ldev/latvian/mods/kubejs/player/EntityArrayList;"))

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@ConditionalMixin(modId = "emi", versionRange = "[1.1,)")
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]", extraModDep = {"emi"}, extraModDepVersions = {"[1.1,)"})
 @Mixin(KubeJSEMIPlugin.class)
 public class KubeJSEMIPluginMixin {
     @Inject(method = "register", at = @At("HEAD"))

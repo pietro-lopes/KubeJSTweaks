@@ -1,0 +1,61 @@
+{
+    "keys": [
+    {
+        "name": "type",
+        "type": "id"
+    },
+    {
+        "name": "researchCost",
+        "role": "input",
+        "type": {
+          "type": "list",
+          "component": {
+            "type": "kubejstweaks:codec",
+            "class": "rearth.oritech.util.SizedIngredient"
+          }
+        }
+    },
+    {
+        "name": "applyCost",
+        "role": "input",
+        "type": {
+          "type": "list",
+          "component": {
+            "type": "kubejstweaks:codec",
+            "class": "rearth.oritech.util.SizedIngredient"
+          }
+        }
+    },
+    {
+        "name": "requirements",
+        "role": "other",
+        "type": {
+          "type": "list",
+          "component": "id",
+          "min": 0
+        }
+    },
+    {
+        "name": "requiredStation",
+        "type": "id"
+    },
+    {
+        "name": "uiX",
+        "type": "int"
+    },
+    {
+        "name": "uiY",
+        "type": "int"
+    },
+    {
+        "name": "time",
+        "type": "ticks",
+        "optional": 60
+    },
+    {
+        "name": "rfCost",
+        "type": "non_negative_long",
+        "optional": 60
+    }
+]
+}

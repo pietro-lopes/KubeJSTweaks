@@ -150,6 +150,7 @@ KubeJSTweaks.beforeRecipes(event => {
 
 ServerEvents.recipes(event => {
   event.forEachRecipe({output: "minecraft:acacia_boat"}, event => {})
+  event.shaped("minecraft:apple", ["XXX","XOX","XXX"], {"X": "minecraft:acacia_boat","O":"minecraft:empty_bucket"})
 })
 
 //

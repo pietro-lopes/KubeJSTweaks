@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import dev.latvian.mods.kubejs.recipe.schema.JsonRecipeSchemaLoader;
-import dev.uncandango.kubejstweaks.KubeJSTweaksKJS71;
+import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
@@ -30,30 +30,29 @@ public class JsonRecipeSchemaLoaderMixin {
         return instance;
     }
 
-
     @WrapWithCondition(method = "load", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 1))
     private static boolean checkVersion(List<Object> instance, Object e, @Local JsonObject keyJson, @Share("holder") LocalRef<RecipeSchemaBuilderAccessor> holderRef){
-        if (keyJson.has("version_range")) {
-            var range = keyJson.getAsJsonPrimitive("version_range").getAsString();
+        if (keyJson.has("kubejstweaks:version_range")) {
+            var range = keyJson.getAsJsonPrimitive("kubejstweaks:version_range").getAsString();
             var type = holderRef.get().kjstweaks$getId();
             var modId = type.getNamespace();
-            KubeJSTweaksKJS71.LOGGER.debug("Mod id {} with conditional version {}", modId, range);
+            KubeJSTweaks.LOGGER.debug("Mod id {} with conditional version {}", modId, range);
             try {
                 var rangeSpec = VersionRange.createFromVersionSpec(range);
                 var modFile = ModList.get().getModFileById(modId);
                 if (modFile != null) {
                     var modVersion = new DefaultArtifactVersion(modFile.versionString());
                     if (rangeSpec.containsVersion(modVersion)){
-                        KubeJSTweaksKJS71.LOGGER.debug("Key component for type {} with version range {} matches with mod version {}.", type, range, modVersion);
+                        KubeJSTweaks.LOGGER.debug("Key component for type {} with version range {} matches with mod version {}.", type, range, modVersion);
                         return true;
                     } else {
-                        KubeJSTweaksKJS71.LOGGER.debug("Key component for type {} with version range {} DOES NOT match with mod version {}.", type, range, modVersion);
+                        KubeJSTweaks.LOGGER.debug("Key component for type {} with version range {} DOES NOT match with mod version {}.", type, range, modVersion);
                     }
                 } else {
-                    KubeJSTweaksKJS71.LOGGER.warn("Mod {} was not found for key component type {}.", modId, type);
+                    KubeJSTweaks.LOGGER.warn("Mod {} was not found for key component type {}.", modId, type);
                 }
             } catch (InvalidVersionSpecificationException ex) {
-                KubeJSTweaksKJS71.LOGGER.error("Error evaluating version for a key component for mod: " + modId, ex);
+                KubeJSTweaks.LOGGER.error("Error evaluating version for a key component for mod: " + modId, ex);
             }
             return false;
         } else {

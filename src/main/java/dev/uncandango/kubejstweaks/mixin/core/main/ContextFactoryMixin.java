@@ -7,7 +7,6 @@ import dev.latvian.mods.rhino.ContextFactory;
 import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.lang.invoke.MethodHandles;

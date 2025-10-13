@@ -1,10 +1,7 @@
 package dev.uncandango.kubejstweaks.mixin.core.plugin;
 
-import com.bawnorton.mixinsquared.adjuster.MixinAnnotationAdjusterRegistrar;
 import com.bawnorton.mixinsquared.canceller.MixinCancellerRegistrar;
 import dev.uncandango.kubejstweaks.mixin.ConditionalMixinManager;
-import dev.uncandango.kubejstweaks.mixin.asm.ListRecipeComponentTransformers;
-import dev.uncandango.kubejstweaks.mixin_sq.adjuster.KJSTMixinAdjuster;
 import dev.uncandango.kubejstweaks.mixin_sq.canceller.KJSTMixinCanceller;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

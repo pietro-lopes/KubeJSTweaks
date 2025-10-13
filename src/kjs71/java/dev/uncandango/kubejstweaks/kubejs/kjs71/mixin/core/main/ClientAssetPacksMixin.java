@@ -3,6 +3,7 @@ package dev.uncandango.kubejstweaks.kubejs.kjs71.mixin.core.main;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.latvian.mods.kubejs.client.ClientAssetPacks;
 import dev.uncandango.kubejstweaks.impl.TempResourceManager;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,8 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.uncandango.kubejstweaks.kubejs.kjs71.plugin.KJSTPluginUtils.CLIENT_PACK_RESOURCES;
+import static dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils.CLIENT_PACK_RESOURCES;
 
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")
 @Mixin(value = ClientAssetPacks.class)
 public class ClientAssetPacksMixin {
     @Inject(method = "inject0", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/kubejs/script/data/VirtualAssetPack;reset()V", ordinal = 0))

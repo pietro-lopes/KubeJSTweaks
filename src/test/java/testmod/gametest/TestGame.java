@@ -22,7 +22,7 @@ public class TestGame {
         KubeJSTweaks.LOGGER.info("Center (Vec3) is: {}", vec3);
         KubeJSTweaks.LOGGER.info("Center (Pos) is: {}", center);
 
-        helper.getLevel().kjs$createExplosion(vec3.x, vec3.y, vec3.z).explosionMode(Level.ExplosionInteraction.TNT).explode();
+        //helper.getLevel().kjs$createExplosion(vec3.x, vec3.y, vec3.z).explosionMode(Level.ExplosionInteraction.TNT).explode();
         KubeJSTweaks.LOGGER.info("Hello from KubeJSTweaks tests!");
         KubeJSTweaks.LOGGER.info("Current thread is: {}", Thread.currentThread().getName());
         helper.fail("Testing!");

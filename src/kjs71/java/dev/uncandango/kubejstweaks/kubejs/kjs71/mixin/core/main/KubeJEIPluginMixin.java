@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@ConditionalMixin(modId = "jei", versionRange = "[19.8,20)")
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]", extraModDep = "jei", extraModDepVersions = "[19.8,20)")
 @Mixin(KubeJSJEIPlugin.class)
 public abstract class KubeJEIPluginMixin implements IModPlugin {
 

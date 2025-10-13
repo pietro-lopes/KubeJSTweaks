@@ -8,10 +8,12 @@ import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.Function;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import dev.latvian.mods.rhino.type.VariableTypeInfo;
+import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 // Fixed by ZZZank Generics PR
+@ConditionalMixin(modId = "rhino", versionRange = "[2101.2.7-build.77]")
 @Mixin(Context.class)
 public class ContextMixin {
     @ModifyExpressionValue(method = "getConversionWeight", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/rhino/type/TypeInfo;is(Ldev/latvian/mods/rhino/type/TypeInfo;)Z", ordinal = 0))

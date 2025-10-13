@@ -12,9 +12,9 @@ StartupEvents.postInit(event => {
 let $Integer = Java.loadClass("java.lang.Integer")
 let $ElementHelper = Java.loadClass("snownee.jade.impl.ui.ElementHelper") 
 let $NumberFormat = Java.loadClass("java.text.NumberFormat")
-let $Util = Java.loadClass("net.minecraft.Util")
 
-let PROJECTE_FORMATTER = $Util.make($NumberFormat.getInstance(), formatter => formatter.setMaximumFractionDigits(1))
+let PROJECTE_FORMATTER = $NumberFormat.getInstance()
+PROJECTE_FORMATTER.setMaximumFractionDigits(1)
 let CURRENCY_FORMATTER = $NumberFormat.getCurrencyInstance()
 // let someInvalidSignature = Java.loadClass("net.minecraft.Util", "SomeInvalidSignature")
 

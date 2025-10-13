@@ -1,0 +1,43 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "role": "output",
+      "type": "item_stack"
+    },
+    {
+      "name": "ingredient",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
+      "name": "experience",
+      "role": "output",
+      "type": {
+        "type": "float",
+        "min": 0.0
+      },
+      "function_names": ["xp", "experience"],
+      "optional": 0.0
+    },
+    {
+      "name": "cookingtime",
+      "role": "input",
+      "type": "ticks",
+      "function_names": ["time", "cookingTime"],
+      "optional": 200
+    },
+    {
+      "name": "category",
+      "type": "cooking_book_category",
+      "optional": "misc",
+      "excluded": true
+    },    {
+      "name": "group",
+      "role": "other",
+      "type": "optional_string",
+      "default_optional": true
+    }
+  ],
+  "unique": ["result"]
+}

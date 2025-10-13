@@ -1,7 +1,6 @@
 package dev.uncandango.kubejstweaks.kubejs.kjs71.mixin.core.main;
 
 import com.google.gson.JsonElement;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -14,10 +13,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.MapLike;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
-import dev.latvian.mods.kubejs.recipe.RecipeKey;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentBuilder;
-import dev.latvian.mods.kubejs.script.KubeJSContext;
 import dev.latvian.mods.kubejs.util.MapJS;
 import dev.latvian.mods.rhino.Context;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
@@ -30,10 +27,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 // Completly reworked, does not exist upstream
 @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")

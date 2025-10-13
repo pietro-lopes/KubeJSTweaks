@@ -8,7 +8,6 @@ import dev.latvian.mods.kubejs.item.ItemBuilder;
 import dev.latvian.mods.kubejs.registry.BuilderBase;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

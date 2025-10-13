@@ -3,13 +3,12 @@ package dev.uncandango.kubejstweaks.kubejs.kjs71.plugin;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeNamespace;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaType;
-import dev.latvian.mods.kubejs.script.KubeJSServerContext;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import dev.latvian.mods.rhino.CachedClassInfo;
 import dev.latvian.mods.rhino.CachedClassStorage;
-import dev.latvian.mods.rhino.NativeJavaClass;
-import dev.uncandango.kubejstweaks.kubejs.kjs71.event.NoOpEventJS;
+import dev.uncandango.kubejstweaks.kubejs.event.NoOpEventJS;
+import dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils;
 import moe.wolfgirl.probejs.lang.java.clazz.ClassPath;
 import moe.wolfgirl.probejs.lang.typescript.ScriptDump;
 import moe.wolfgirl.probejs.lang.typescript.TypeScriptFile;
@@ -18,14 +17,12 @@ import moe.wolfgirl.probejs.lang.typescript.code.member.MethodDecl;
 import moe.wolfgirl.probejs.lang.typescript.code.type.BaseType;
 import moe.wolfgirl.probejs.lang.typescript.code.type.Types;
 import moe.wolfgirl.probejs.plugin.ProbeJSPlugin;
-import net.minecraft.client.Minecraft;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class KJSTProbeJSPlugin extends ProbeJSPlugin {
 

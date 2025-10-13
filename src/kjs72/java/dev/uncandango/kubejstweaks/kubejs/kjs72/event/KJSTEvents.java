@@ -1,7 +1,10 @@
-package dev.uncandango.kubejstweaks.kubejs.event;
+package dev.uncandango.kubejstweaks.kubejs.kjs72.event;
 
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
+import dev.uncandango.kubejstweaks.kubejs.event.CompatibilityEventJS;
+import dev.uncandango.kubejstweaks.kubejs.event.NoOpEventJS;
+import dev.uncandango.kubejstweaks.kubejs.event.PreRecipeEventJS;
 
 public class KJSTEvents {
     public static final EventGroup GROUP = EventGroup.of("KubeJSTweaks");

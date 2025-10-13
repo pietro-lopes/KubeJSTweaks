@@ -1,0 +1,49 @@
+{
+  "factory": "kubejs:shapeless",
+  "keys": [
+    {
+      "name": "result",
+      "role": "output",
+      "type": "item_stack"
+    },
+    {
+      "name": "ingredients",
+      "role": "input",
+      "type": {
+        "type": "list",
+        "component": "ingredient",
+        "spread": "sized_ingredient"
+      }
+    },
+    {
+      "name": "category",
+      "role": "other",
+      "type": "crafting_book_category",
+      "optional": "misc",
+      "excluded": true
+    },    {
+      "name": "group",
+      "role": "other",
+      "type": "optional_string",
+      "default_optional": true
+    }
+  ],
+  "unique": ["result"],
+  "functions": {
+    "buildingCategory": {
+      "type": "set",
+      "key": "category",
+      "value": "building"
+    },
+    "redstoneCategory": {
+      "type": "set",
+      "key": "category",
+      "value": "redstone"
+    },
+    "equipmentCategory": {
+      "type": "set",
+      "key": "category",
+      "value": "equipment"
+    }
+  }
+}

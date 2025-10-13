@@ -1,7 +1,6 @@
 package dev.uncandango.kubejstweaks.kubejs.schema;
 
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Decoder;
 import dev.uncandango.kubejstweaks.KubeJSTweaks;
@@ -10,9 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 
 public class CodecParsedListener {
     public static final ThreadLocal<Boolean> enabled = ThreadLocal.withInitial(() -> Boolean.FALSE);

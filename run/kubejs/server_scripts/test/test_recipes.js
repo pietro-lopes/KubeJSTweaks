@@ -11,7 +11,7 @@ let $BuiltInRegistries = Java.loadClass("net.minecraft.core.registries.BuiltInRe
 
 // to use in `instanceof`
 let $Ingredient = Java.loadClass("net.minecraft.world.item.crafting.Ingredient")
-let $ItemStackKJS = Java.loadClass("dev.latvian.mods.kubejs.core.ItemStackKJS")
+//let $ItemStackKJS = Java.loadClass("dev.latvian.mods.kubejs.core.ItemStackKJS")
 let $List = Java.loadClass("java.util.List")
 let $Fluid = Java.loadClass("net.minecraft.world.level.material.Fluid")
 let $FluidIngredient = Java.loadClass("net.neoforged.neoforge.fluids.crafting.FluidIngredient")
@@ -20,7 +20,14 @@ let $KubeJSTweaks = Java.loadClass("dev.uncandango.kubejstweaks.KubeJSTweaks")
 let $SizedFluidIngredient = Java.loadClass("net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient")
 let $WeightedList = Java.loadClass("thedarkcolour.exdeorum.recipe.WeightedList")
 let $DataResult$Success = Java.loadClass("com.mojang.serialization.DataResult$Success")
-let $Value = Java.loadClass("dev.latvian.mods.kubejs.recipe.component.RecipeComponentBuilder$Value")
+let $Value
+KJSTweaks.runIfModPresent("kubejs","[2101.7.1,2101.7.2)", () => {
+  $Value = Java.loadClass("dev.latvian.mods.kubejs.recipe.component.RecipeComponentBuilder$Value")
+})
+KJSTweaks.runIfModPresent("kubejs","[2101.7.2,2101.7.3)", () => {
+  $Value = Java.loadClass("dev.latvian.mods.kubejs.recipe.component.CustomObjectRecipeComponent$Value")
+})
+
 let $Objects = Java.loadClass("java.util.Objects")
 let $TinyMap = Java.loadClass("dev.latvian.mods.kubejs.util.TinyMap")
 let $IntStream = Java.loadClass("java.util.stream.IntStream")
@@ -76,6 +83,92 @@ ServerEvents.recipes(event => {
   Array(10).fill(0).forEach(_ => console.log(ri()))
   */
 
+  const aa = event.recipes.actuallyadditions
+
+  aa.copy_nbt("minecraft:netherite_chestplate",["NNN","NDN","NNN"],{N:"minecraft:netherite_ingot", D: {type: "actuallyadditions:target_nbt", base: JsonIO.toObject(Ingredient.of("minecraft:diamond_chestplate"))}})
+    .id("actuallyadditions:copy_nbt/test/1")
+
+  KJSTweaks.runIfModPresent("actuallyadditions", () => {
+    let counter = 0
+    let results = () => [{stack: ris()}, {stack: "empty", chance: 0}]
+    let results2 = () => [{stack: ris()},{stack: ris(), chance: rChance()}]
+    let effects = () => genArray(rRange(1,10), () => ({effect: rRegistry("mob_effect"), amplifier: rRange(0,5), duration: rRange(20,200)}))
+
+    runFor(5, (idx) => {
+
+      aa.crushing(results(),ri())
+        .id("actuallyadditions:crushing/test/" + counter++)
+      aa.crushing(results2(), rit())
+        .id("actuallyadditions:crushing/test/" + counter++)
+      aa.crushing(results(), riot())
+        .id("actuallyadditions:crushing/test/" + counter++)
+
+      aa.coffee_ingredient(rit(), rRange(0,5))
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+      aa.coffee_ingredient(ri(), rRange(0,5)).effects(effects())
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+      aa.coffee_ingredient(riot(), rRange(0,5)).effects(effects()).extraText("Some Extra Text here?")
+        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
+
+      // required: result (itemstack), ingredient
+      aa.color_change(ri(), ri())
+        .id("actuallyadditions:color_change/test/" + counter++)
+      aa.color_change(ri(), rit())
+        .id("actuallyadditions:color_change/test/" + counter++)
+      aa.color_change(ri(), riot())
+        .id("actuallyadditions:color_change/test/" + counter++)
+
+//      console.log(`aa.color_change("${ri()}", "${ri()}")`)
+//      console.log(`aa.color_change("${ri()}", "${rit()}")`)
+//      console.log(`aa.color_change("${ri()}", "${riot()}")`)
+
+      // required: result (itemstack 1 qty only), base (ingredient on empowering), modifiers (4 ingredients, one on each display stand)
+      // optional: .color(hex) like .color(0xFFEEBB), default is 0xFFFFFF
+      // optional: .energy(number), default is 5000
+      // optional: .duration(ticks_number), default is 50
+      aa.empowering(ri(),ri(),genArray(4, riot))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), rit(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000))
+        .id("actuallyadditions:empowering/test/" + counter++)
+      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000)).duration(rRange(50,500))
+        .id("actuallyadditions:empowering/test/" + counter++)
+
+//      console.log(`aa.empowering("${ri()}", "${ri()}", ${JsonIO.toString(genArray(4, riot))})`)
+//      console.log(`aa.empowering("${ri()}", "${rit()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)})`)
+//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)})`)
+//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)}).duration(${rRange(50,500)})`)
+
+      aa.fermenting("80x " + rf(),"80x " + rf())
+        .id("actuallyadditions:fermenting/test/" + counter++)
+      aa.fermenting(rfs(), rfs(), rRange(100,10000))
+        .id("actuallyadditions:fermenting/test/" + counter++)
+      aa.fermenting(rfs(), rfs()).duration(rRange(100,10000))
+        .id("actuallyadditions:fermenting/test/" + counter++)
+
+//      console.log(`aa.fermenting("80x ${rf()}", "80x ${rf()}")`)
+//      console.log(`aa.fermenting("${rfs()}", "${rfs()}", ${rRange(100,10000)})`)
+//      console.log(`aa.fermenting("${rfs()}", "${rfs()}").duration(${rRange(100,10000)})`)
+
+      aa.laser(ri(),riot(),rRange(60,20000))
+        .id("actuallyadditions:laser/test/" + counter++)
+
+//      console.log(`aa.laser("${ri()}", "${ri()}", ${rRange(60,20000)})`)
+//      console.log(`aa.laser("${ri()}", "${rit()}", ${rRange(60,20000)})`)
+
+    })
+
+    testRecipes(event, /.*/, "actuallyadditions:crushing")
+    testRecipes(event, /.*/, "actuallyadditions:coffee_ingredient")
+    testRecipes(event, /.*/, "actuallyadditions:fermenting")
+    testRecipes(event, /.*/, "actuallyadditions:empowering")
+    testRecipes(event, /.*/, "actuallyadditions:color_change")
+    testRecipes(event, /.*/, "actuallyadditions:copy_nbt")
+    testRecipes(event, /.*/, "actuallyadditions:laser")
+  })
+
+
   // Oritech
   const recipeTypes = [
     ["assembler", 4, 1],
@@ -120,7 +213,7 @@ ServerEvents.recipes(event => {
     // Needs to be on a second pass
     recipeTypes.forEach(type => {
       // if (type[1] == 0 || type[2] == 0) return
-      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
+      testRecipes(event, /.*/, `oritech:${type[0]}`)
     })
   })
 
@@ -146,7 +239,7 @@ ServerEvents.recipes(event => {
     // Needs to be on a second pass
     recipeTypes.forEach(type => {
       // if (type[1] == 0 || type[2] == 0) return
-      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
+      testRecipes(event, /.*/, `oritech:${type[0]}`)
     })
   })
 
@@ -164,7 +257,7 @@ ServerEvents.recipes(event => {
           .id("oritech:" + type[0] + "/test/" + counter++)
         oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)})
           .id("oritech:" + type[0] + "/test/" + counter++)
-        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}, [{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)},{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)},{fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}])
+        oritech[type[0]](type[2] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[2] : 1, type[2]), ri), type[1] == 0 && !exactValue ? []: genArray(rRange(exactValue ? type[1] : 1, type[1]), riot), rRange(20, 200), {fluid: rList([rf(), "#" + rft()]), amount: rRange(1, 1000)}, [{fluid: rf(), amount: rRange(1, 1000)},{fluid: rf(), amount: rRange(1, 1000)},{fluid: rf(), amount: rRange(1, 1000)}])
           .id("oritech:" + type[0] + "/test/" + counter++)
       })
     })
@@ -172,104 +265,16 @@ ServerEvents.recipes(event => {
     // Needs to be on a second pass
     recipeTypes.forEach(type => {
       // if (type[1] == 0 || type[2] == 0) return
-      testRecipes(event, new RegExp(`oritech:${type[0]}/test/`))
+      testRecipes(event, /.*/, `oritech:${type[0]}`)
     })
   })
 
-  const aa = event.recipes.actuallyadditions
+  // Not ready yet for 7.2
+  KJSTweaks.runIfModPresent("kubejs", "[2101.7.1,2101.7.2)", () => {
 
-  aa.copy_nbt("minecraft:netherite_chestplate",["NNN","NDN","NNN"],{N:"minecraft:netherite_ingot", D: {type: "actuallyadditions:target_nbt", base: JsonIO.toObject(Ingredient.of("minecraft:diamond_chestplate"))}})
-    .id("actuallyadditions:copy_nbt/test/1")
 
-  KJSTweaks.runIfModPresent("actuallyadditions", () => {
-    let counter = 0
-    let results = () => [{stack: ris()}, {stack: "empty", chance: 0}]
-    let results2 = () => [{stack: ris()},{stack: ris(), chance: rChance()}]
-    let effects = () => genArray(rRange(1,10), () => ({effect: rRegistry("mob_effect"), amplifier: rRange(0,5), duration: rRange(20,200)}))
 
-    runFor(5, (idx) => {
-      // required: ingredient, max_amplifier
-      // optional: .effects([{effect: mod:effect_here, amplifier: number, duration: ticks},{...}])
-      // optional: .extra_text("Some text description")
-      aa.coffee_ingredient(rit(), rRange(1,5))
-        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
-      aa.coffee_ingredient(ri(), rRange(1,5)).effects(effects())
-        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
-      aa.coffee_ingredient(riot(), rRange(1,5)).effects(effects()).extra_text("Some Extra Text here?")
-        .id("actuallyadditions:coffee_ingredient/test/" + counter++)
 
-//      console.log(`aa.coffee_ingredient("${ri()}", ${rRange(1,5)})`)
-//      console.log(`aa.coffee_ingredient("${rit()}", ${rRange(1,5)}).effects(${JsonIO.toString(effects())})`)
-//      console.log(`aa.coffee_ingredient("${riot()}", ${rRange(1,5)}).effects(${JsonIO.toString(effects())}).extra_text("Some Extra Text here?")`)
-
-      // required: result (itemstack), ingredient
-      aa.color_change(ri(), ri())
-        .id("actuallyadditions:color_change/test/" + counter++)
-      aa.color_change(ri(), rit())
-        .id("actuallyadditions:color_change/test/" + counter++)
-      aa.color_change(ri(), riot())
-        .id("actuallyadditions:color_change/test/" + counter++)
-
-//      console.log(`aa.color_change("${ri()}", "${ri()}")`)
-//      console.log(`aa.color_change("${ri()}", "${rit()}")`)
-//      console.log(`aa.color_change("${ri()}", "${riot()}")`)
-
-      aa.crushing(results(),ri())
-        .id("actuallyadditions:crushing/test/" + counter++)
-      aa.crushing(results2(), rit())
-        .id("actuallyadditions:crushing/test/" + counter++)
-      aa.crushing(results(), riot())
-        .id("actuallyadditions:crushing/test/" + counter++)
-
-//      console.log(`aa.crushing(${JsonIO.toString(results())}, "${ri()}")`)
-//      console.log(`aa.crushing(${JsonIO.toString(results2())}, "${rit()}")`)
-//      console.log(`aa.crushing(${JsonIO.toString(results())}, "${riot()}")`)
-
-      // required: result (itemstack 1 qty only), base (ingredient on empowering), modifiers (4 ingredients, one on each display stand)
-      // optional: .color(hex) like .color(0xFFEEBB), default is 0xFFFFFF
-      // optional: .energy(number), default is 5000
-      // optional: .duration(ticks_number), default is 50
-      aa.empowering(ri(),ri(),genArray(4, riot))
-        .id("actuallyadditions:empowering/test/" + counter++)
-      aa.empowering(ri(), rit(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF))
-        .id("actuallyadditions:empowering/test/" + counter++)
-      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000))
-        .id("actuallyadditions:empowering/test/" + counter++)
-      aa.empowering(ri(), riot(),genArray(4, riot)).color(rRange(0x0, 0xFFFFFF)).energy(rRange(5000,50000)).duration(rRange(50,500))
-        .id("actuallyadditions:empowering/test/" + counter++)
-
-//      console.log(`aa.empowering("${ri()}", "${ri()}", ${JsonIO.toString(genArray(4, riot))})`)
-//      console.log(`aa.empowering("${ri()}", "${rit()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)})`)
-//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)})`)
-//      console.log(`aa.empowering("${ri()}", "${riot()}", ${JsonIO.toString(genArray(4, riot))}).color(${rRange(0x0, 0xFFFFFF)}).energy(${rRange(5000,50000)}).duration(${rRange(50,500)})`)
-
-      aa.fermenting("80x " + rf(),"80x " + rf())
-        .id("actuallyadditions:fermenting/test/" + counter++)
-      aa.fermenting(rfs(), rfs(), rRange(100,10000))
-        .id("actuallyadditions:fermenting/test/" + counter++)
-      aa.fermenting(rfs(), rfs()).duration(rRange(100,10000))
-        .id("actuallyadditions:fermenting/test/" + counter++)
-
-//      console.log(`aa.fermenting("80x ${rf()}", "80x ${rf()}")`)
-//      console.log(`aa.fermenting("${rfs()}", "${rfs()}", ${rRange(100,10000)})`)
-//      console.log(`aa.fermenting("${rfs()}", "${rfs()}").duration(${rRange(100,10000)})`)
-
-      aa.laser(ris(),riot(),rRange(60,20000))
-        .id("actuallyadditions:laser/test/" + counter++)
-
-//      console.log(`aa.laser("${ri()}", "${ri()}", ${rRange(60,20000)})`)
-//      console.log(`aa.laser("${ri()}", "${rit()}", ${rRange(60,20000)})`)
-
-    })
-
-    testRecipes(event, /.*/, "actuallyadditions:fermenting")
-    testRecipes(event, /.*/, "actuallyadditions:empowering")
-    testRecipes(event, /.*/, "actuallyadditions:crushing")
-    testRecipes(event, /.*/, "actuallyadditions:coffee_ingredient")
-    testRecipes(event, /.*/, "actuallyadditions:color_change")
-    testRecipes(event, /.*/, "actuallyadditions:copy_nbt")
-    testRecipes(event, /.*/, "actuallyadditions:laser")
-  })
 
   const exdeorum = event.recipes.exdeorum
 
@@ -322,27 +327,26 @@ ServerEvents.recipes(event => {
       .id("atmindev:enderio/sag_milling/test/" + counter++)
   })
   testRecipes(event, new RegExp(`atmindev:enderio/sag_milling/test/.*`))
-  
-  testRecipes(event, /.*/, "extendedae:circuit_cutter")
-
-  testRecipes(event, /.*/, "extendedae:crystal_assembler")
 
   counter = 0
-  runFor(15, (idx) => {
-    event.recipes.extendedae.circuit_cutter(ri(),{ingredient: riot()})
-      .id("atmindev:extendedae/circuit_cutter/test/" + counter++)
-    event.recipes.extendedae.circuit_cutter(ri(),{ingredient: riot(), amount: rRange(2,10)})
-      .id("atmindev:extendedae/circuit_cutter/test/" + counter++)
-    event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)}])
-      .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
-    event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)}],{ingredient: rf(), amount: rRange(1,5000)})
-      .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
-    event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)}],{ingredient: "#"+rft(), amount: rRange(2,5000)})
-      .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
-  })
+  KJSTweaks.runIfModPresent("extendedae", () => {
+    runFor(15, (idx) => {
+      event.recipes.extendedae.circuit_cutter(ri(),{ingredient: riot()})
+        .id("atmindev:extendedae/circuit_cutter/test/" + counter++)
+      event.recipes.extendedae.circuit_cutter(ri(),{ingredient: riot(), amount: rRange(2,10)})
+        .id("atmindev:extendedae/circuit_cutter/test/" + counter++)
+      event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)}])
+        .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
+      event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)}],{ingredient: rf(), amount: rRange(1,5000)})
+        .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
+      event.recipes.extendedae.crystal_assembler(ri(),[{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)},{ingredient: riot(), amount: rRange(2,10)}],{ingredient: "#"+rft(), amount: rRange(2,5000)})
+        .id("atmindev:extendedae/crystal_assembler/test/" + counter++)
+    })
 
-  testRecipes(event, new RegExp(`atmindev:extendedae/circuit_cutter/test/.*`))
-  testRecipes(event, new RegExp(`atmindev:extendedae/crystal_assembler/test/.*`))
+    testRecipes(event, /.*/, "extendedae:circuit_cutter")
+
+    testRecipes(event, /.*/, "extendedae:crystal_assembler")
+  })
 
   testRecipes(event, /.*/, "farmingforblockheads:market")
 
@@ -474,7 +478,7 @@ ServerEvents.recipes(event => {
   })
 
   testRecipes(event, new RegExp(`atmindev:justdirethings/fluiddrop/test/.*`))
-
+  })
 })
 
 
@@ -491,7 +495,7 @@ const testExistingRecipes = (event, regex, type) => {
 
 const testAddedRecipes = (event, regex, type) => {
   console.log("Now running test on Added Recipes using param: " + regex + " and " + type)
-  event.addedRecipes.stream().filter(recipe => type == null ? regex.test(recipe.getId()) : recipe.kjs$getType() == type && regex.test(recipe.getId())).forEach(debugRecipe)
+  event.addedRecipes.stream().filter(recipe => type == null ? regex.test(recipe.getId()) : (recipe.kjs$getType != null ? recipe.kjs$getType() : recipe.getType()) == type && regex.test(recipe.getId())).forEach(debugRecipe)
 }
 
 
@@ -504,7 +508,12 @@ const debugRecipe = (/** @type {$KubeRecipe_} */ recipe) => {
   recipe.valueMap.entrySet().forEach((rcvKey) => {
     let currentClass
     let error = false
-    if (recipe.kjs$getSchema().getKey(rcvKey.getKey().name) != null && (!(!rcvKey.getKey().optional() && rcvKey.getValue() == null))) {
+    let schema
+    KJSTweaks.runIfModPresent("kubejs", "[2101.7.2,2101.7.3)", () => {
+      schema = recipe.schema
+    })
+    if (schema == null) schema = recipe.kjs$getSchema()
+    if (schema.getKey(rcvKey.getKey().name) != null && (!(!rcvKey.getKey().optional() && rcvKey.getValue() == null))) {
       currentClass = rcvKey.getValue() == null ? "null" : KJSTweaks.getClass(rcvKey.getValue()) || rcvKey.getValue().toString()
       currentComponent = rcvKey.getKey().component
       // currentClass = rcvKey.getKey().component.typeInfo()
@@ -568,7 +577,7 @@ function unwrapValue(value) {
   }
   if (value == newValue && KJSTweaks.getClass(value) == KJSTweaks.getClass(newValue)) {
     if (value instanceof $Ingredient) return value.toJson()
-    if (value instanceof $ItemStackKJS) return value.toJson()
+    if (value instanceof $ItemStack) return value.toJson()
     if (value instanceof $Fluid) return value
     if (value instanceof $FluidIngredient) {
       return $FluidIngredient.CODEC.encodeStart($JsonInstance, value).getOrThrow()

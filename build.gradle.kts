@@ -101,6 +101,11 @@ sourceSets {
     }
     create("kjs72") {
         java.srcDir("src/kjs72/java")
+        compileClasspath += sourceSets.main.get().compileClasspath
+    }
+    create("testkjs72") {
+        java.srcDir("src/testkjs72/java")
+        compileClasspath += sourceSets.main.get().compileClasspath
     }
 }
 
@@ -134,6 +139,7 @@ tasks {
     }
     jar {
         from(sourceSets.getByName("kjs71").output)
+        from(sourceSets.getByName("kjs72").output)
     }
 
     val schemasReady = listOf(
@@ -171,6 +177,8 @@ val localRuntime: Configuration by configurations.creating
 val kjs71CompileOnly: Configuration by configurations.getting
 val kjs71Implementation: Configuration by configurations.getting
 val kjs72CompileOnly: Configuration by configurations.getting
+val kjs72Implementation: Configuration by configurations.getting
+val testkjs72Implementation: Configuration by configurations.getting
 //afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
 //    tasks.withType(RunGameTask::class).configureEach {
 //        classpathProvider.setFrom(classpathProvider.files.stream().filter {f -> !f.toString().contains("kjst-asm")}.toList())
@@ -179,6 +187,8 @@ val kjs72CompileOnly: Configuration by configurations.getting
 
 dependencies {
     kjs71CompileOnly(sourceSets.main.get().output)
+    kjs72CompileOnly(sourceSets.main.get().output)
+    testkjs72Implementation(sourceSets.main.get().output)
     // MixinExtras that supports @Expression
     jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0")?.let {
         implementation(it)
@@ -188,23 +198,29 @@ dependencies {
     annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3")?.let {
         compileOnly(it)
         kjs71Implementation(it)
+        kjs72Implementation(it)
     }
     jarJar("com.github.bawnorton.mixinsquared:mixinsquared-neoforge:0.3.3")?.let {
         implementation(it)
         kjs71Implementation(it)
+        kjs72Implementation(it)
     }
 
 //    jarJar(project(":kjst-asm"))
 //    implementation(project(":kjst-asm"))
 //    localRuntime(project(":kjst-asm"))
 
+    // Disable this while debuging 7.2
     kjs71Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
         interfaceInjectionData(it)
     }
 
+//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")
+    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")
+
     kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.77")
 
-    kjs72CompileOnly("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.265")?.let {
         interfaceInjectionData(it)
     }
     // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
@@ -214,6 +230,8 @@ dependencies {
 //    compileOnly("dev.latvian.mods:rhino:2101.2.7-build.77")
 
     testImplementation("net.neoforged:testframework:${neo_version}")
+    testkjs72Implementation("net.neoforged:testframework:${neo_version}")
+
 
     compileOnly("curse.maven:probejs-585406:5820894") // fixes some stuff
 
@@ -258,6 +276,8 @@ dependencies {
             if (nameId == "emi") return@forEach
         }
         if (nameId == "stone-zone") return@forEach
+        if (nameId == "ex-pattern-provider") return@forEach
+        if (nameId == "entityjs") return@forEach
         val fileId = addonJson.getAsJsonObject("installedFile").asJsonObject.get("id").asNumber
         localRuntime("curse.maven:$nameId-$cfId:$fileId")
     }
@@ -346,16 +366,24 @@ configurations {
 
     compileClasspath {
 //        extendsFrom(kjs71CompileOnly)
-        extendsFrom(kjs72CompileOnly)
+//        extendsFrom(kjs72CompileOnly)
     }
 
     testCompileClasspath {
 //        extendsFrom(kjs71CompileOnly)
-        extendsFrom(kjs71Implementation)
+        extendsFrom(kjs71CompileOnly)
     }
 
     getByName("kjs71RuntimeOnly") {
         extendsFrom(localRuntime)
+    }
+
+    getByName("kjs72RuntimeOnly") {
+        extendsFrom(localRuntime)
+    }
+
+    getByName("testkjs72CompileClasspath") {
+        extendsFrom(kjs72Implementation)
     }
 
     runtimeClasspath {
@@ -382,6 +410,7 @@ neoForge {
             systemProperty("neoforge.enabledGameTestNamespaces", mod_id)
             sourceSet = sourceSets.getByName("kjs71")
 //            additionalRuntimeClasspathConfiguration.extendsFrom(kjs71Implementation)
+
         }
 
         register("client-kjs72") {
@@ -455,17 +484,31 @@ neoForge {
         register(mod_id) {
             sourceSet(sourceSets.main.get())
             sourceSet(sourceSets.getByName("kjs71"))
+            sourceSet(sourceSets.getByName("kjs72"))
         }
         register("testmod") {
             sourceSet(sourceSets.test.get())
+        }
+        register("testmodkjs72") {
+            sourceSet(sourceSets.getByName("testkjs72"))
         }
 //        register("kjst-asm") {
 //            sourceSet(project(":kjst-asm").sourceSets.main.get())
 //        }
     }
     addModdingDependenciesTo(sourceSets.test.get())
+    addModdingDependenciesTo(sourceSets.getByName("testkjs72"))
     addModdingDependenciesTo(sourceSets.getByName("kjs71"))
     addModdingDependenciesTo(sourceSets.getByName("kjs72"))
+}
+
+tasks {
+    named("runClient-kjs71") {
+        dependsOn(":kjs72Classes")
+    }
+    named("runClient-kjs72") {
+        dependsOn(":kjs71Classes")
+    }
 }
 
 publishing {

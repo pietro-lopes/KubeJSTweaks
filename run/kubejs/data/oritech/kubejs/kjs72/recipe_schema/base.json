@@ -1,0 +1,96 @@
+{
+  "keys": [
+    {
+      "name": "results",
+      "role": "output",
+      "type": {
+        "type": "list",
+        "component": "item_stack",
+        "min": 0
+      }
+    },
+    {
+      "name": "ingredients",
+      "role": "input",
+      "type": {
+        "type": "list",
+        "component": "ingredient",
+        "min": 0
+      }
+    },
+    {
+      "name": "time",
+      "type": "ticks",
+      "optional": 60,
+      "always_write": true
+    },
+    {
+      "name": "type",
+      "type": "id",
+      "optional": "mod:recipe_type",
+      "always_write": true,
+      "excluded": true
+    },
+    {
+      "kubejstweaks:version_range": "(,0.15.2]",
+      "name": "fluidInputVariant",
+      "role": "input",
+      "type": {
+        "type": "registry_element",
+        "registry": "fluid"
+      },
+      "optional": "minecraft:empty",
+      "always_write": true
+    },
+    {
+      "kubejstweaks:version_range": "(,0.15.2]",
+      "name": "fluidInputAmount",
+      "type": "non_negative_long",
+      "optional": 0,
+      "always_write": true
+    },
+    {
+      "kubejstweaks:version_range": "(,0.15.2]",
+      "name": "fluidOutputVariant",
+      "role": "output",
+      "type": {
+        "type": "registry_element",
+        "registry": "fluid"
+      },
+      "optional": "minecraft:empty",
+      "always_write": true
+    },
+    {
+      "kubejstweaks:version_range": "(,0.15.2]",
+      "name": "fluidOutputAmount",
+      "type": "non_negative_long",
+      "optional": 0,
+      "always_write": true
+    },
+    {
+      "kubejstweaks:version_range": "[0.15.3,)",
+      "name": "fluidInput",
+      "role": "input",
+      "type": "oritech:fluid_ingredient",
+      "default_optional": true
+    },
+    {
+      "kubejstweaks:version_range": "[0.15.3,0.15.7]",
+      "name": "fluidOutput",
+      "role": "output",
+      "type": "oritech:fluid_stack",
+      "default_optional": true
+    },
+    {
+      "kubejstweaks:version_range": "[0.16.0,)",
+      "name": "fluidOutputs",
+      "role": "output",
+      "type": {
+        "type": "list",
+        "component": "oritech:fluid_stack",
+        "min": 0
+      },
+      "default_optional": true
+    }
+  ]
+}

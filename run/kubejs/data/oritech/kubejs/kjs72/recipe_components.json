@@ -1,0 +1,38 @@
+{
+  "oritech:fluid_stack": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "fluid",
+        "component": {
+          "type": "registry_element",
+          "registry": "fluid"
+        }
+      },
+      {
+        "name": "amount",
+        "component": "non_negative_int"
+      }
+    ]
+  },
+  "oritech:fluid_ingredient": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "fluid",
+        "component": {
+          "type": "either",
+          "left": "hashed_fluid_tag",
+          "right": {
+            "type": "registry_element",
+            "registry": "fluid"
+          }
+        }
+      },
+      {
+        "name": "amount",
+        "component": "non_negative_int"
+      }
+    ]
+  }
+}

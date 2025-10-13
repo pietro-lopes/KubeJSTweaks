@@ -6,6 +6,7 @@ import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.generator.KubeDataGenerator;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.data.GeneratedDataStage;
+import dev.uncandango.kubejstweaks.kubejs.event.NoOpEventJS;
 
 public class CommonEvents {
 

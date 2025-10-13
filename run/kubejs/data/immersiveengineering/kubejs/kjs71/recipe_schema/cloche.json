@@ -26,7 +26,7 @@
             "type": "immersiveengineering:render"
         },
         {
-            "version_range": "[12.4.2-194,)",
+            "kubejstweaks:version_range": "[12.4.2-194,)",
             "name": "fluid",
             "role": "input",
             "type": "fluid_ingredient",
