@@ -1,0 +1,33 @@
+{ "keys": [
+    {
+        "name": "base_fluid",
+        "type": "fluid_ingredient",
+        "role": "input"
+    },
+    {
+        "name": "result_fluid",
+        "role": "output",
+        "type": {"type": "registry_element", "registry": "fluid"}
+    },
+    {
+        "name": "result_color",
+        "type": {"type": "int"},
+        "role": "other"
+    },
+    {
+        "name": "catalyst",
+        "type": "exdeorum:block_predicate",
+        "role": "other"
+    },
+    {
+        "name": "duration",
+        "type": {"type": "int"},
+        "role": "other"
+    },
+    {
+        "name": "byproducts",
+        "type": {"type": "list","component": "exdeorum:weighted_list_blockstate"},
+        "role": "output",
+        "default_optional": true
+    }
+]}

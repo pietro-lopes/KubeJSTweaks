@@ -1,0 +1,23 @@
+{ "keys": [
+    {
+        "name": "base_fluid",
+        "type": "flat_sized_fluid_ingredient",
+        "role": "input"
+    },
+    {
+        "name": "additive_fluid",
+        "role": "input",
+        "type": "fluid_ingredient"
+    },
+    {
+        "name": "result",
+        "type": "item_stack",
+        "role": "output"
+    },
+    {
+        "name": "consumes_additive",
+        "type": "boolean",
+        "role": "other",
+        "optional": false
+    }
+]}

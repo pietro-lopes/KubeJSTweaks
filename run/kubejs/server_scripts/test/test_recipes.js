@@ -269,21 +269,32 @@ ServerEvents.recipes(event => {
     })
   })
 
+  KJSTweaks.runIfModPresent("exdeorum", () => {
+    const exdeorum = event.recipes.exdeorum
+
+    exdeorum.hammer("minecraft:dirt", "minecraft:apple", { type: "binomial", p: 0.25, n: 20 })
+
+    exdeorum.crucible_heat_source({block_tag: "c:stones"}, 1)
+    exdeorum.crucible_heat_source({block: "acacia_log", state: {axis: "x"}}, 1)
+
+
+    testRecipes(event, /.*/, "exdeorum:barrel_compost")
+    testRecipes(event, /.*/, "exdeorum:barrel_fluid_mixing")
+    testRecipes(event, /.*/, "exdeorum:barrel_fluid_transformation")
+    testRecipes(event, /.*/, "exdeorum:barrel_mixing")
+    testRecipes(event, /.*/, "exdeorum:compressed_hammer")
+    testRecipes(event, /.*/, "exdeorum:compressed_sieve")
+    testRecipes(event, /.*/, "exdeorum:crook")
+    testRecipes(event, /.*/, "exdeorum:crucible_heat_source")
+    testRecipes(event, /.*/, "exdeorum:hammer")
+    testRecipes(event, /.*/, "exdeorum:lava_crucible")
+    testRecipes(event, /.*/, "exdeorum:sieve")
+    testRecipes(event, /.*/, "exdeorum:water_crucible")
+
+  })
+
   // Not ready yet for 7.2
   KJSTweaks.runIfModPresent("kubejs", "[2101.7.1,2101.7.2)", () => {
-
-
-
-
-
-  const exdeorum = event.recipes.exdeorum
-
-  exdeorum.hammer("minecraft:dirt", "minecraft:apple", { type: "binomial", p: 0.25, n: 20 })
-
-  testRecipes(event, new RegExp(`exdeorum:.*/`))
-
-  exdeorum.crucible_heat_source({block_tag: "c:stones"}, 1)
-  exdeorum.crucible_heat_source({block: "acacia_log", state: {axis: "x"}}, 1)
 
   event.recipes.ae2.inscriber("acacia_boat",{bottom: "#actuallyadditions:crystals", top: "#actuallyadditions:lamps", middle: "#ae2:all_fluix"},"press")
 

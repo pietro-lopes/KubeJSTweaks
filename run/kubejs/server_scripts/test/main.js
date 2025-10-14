@@ -150,6 +150,8 @@ KubeJSTweaks.beforeRecipes(event => {
 
 ServerEvents.recipes(event => {
   event.forEachRecipe({output: "minecraft:acacia_boat"}, event => {})
+//  event.remove({input: ["minecraft:iron_ingot"]})
+//  event.remove({output: ["minecraft:iron_ingot"]})
   event.shaped("minecraft:apple", ["XXX","XOX","XXX"], {"X": "minecraft:acacia_boat","O":"minecraft:empty_bucket"})
 })
 
@@ -190,3 +192,12 @@ ServerEvents.recipes(event => {
 //         "minecraft:grass_block",
 //     ).offhand("minecraft:dirt").consumeOffhand()
 // })
+
+PlayerEvents.chat(event => {
+  if (event.message == "nukelist reload") {
+    event.server.runCommand(`tell @a Now reloading Nukelist scripts`)
+    event.server.runCommand(`kubejs reload startup-scripts`)
+    event.server.runCommand(`reload`)
+    event.server.runCommand(`kubejs reload lang`)
+  }
+})
