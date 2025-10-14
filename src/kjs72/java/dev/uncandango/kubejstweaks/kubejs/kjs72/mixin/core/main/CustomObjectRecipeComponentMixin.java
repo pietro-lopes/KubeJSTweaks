@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2,2101.7.3)")
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2-build.270]")
 @Mixin(CustomObjectRecipeComponent.class)
 public abstract class CustomObjectRecipeComponentMixin implements RecipeComponent<List<CustomObjectRecipeComponent.Value>> {
 
@@ -52,17 +52,18 @@ public abstract class CustomObjectRecipeComponentMixin implements RecipeComponen
     @Override
     public List<CustomObjectRecipeComponent.Value> wrap(RecipeScriptContext cx, Object from) {
         if (from instanceof Map<?, ?> mapLike) {
-            boolean alreadyWrapped = mapLike.entrySet().stream().allMatch(entry -> entry.getKey() instanceof CustomObjectRecipeComponent.Key && entry.getValue() instanceof CustomObjectRecipeComponent.Value);
-            if (alreadyWrapped) {
-                return (List<CustomObjectRecipeComponent.Value>) mapLike.values().stream().toList();
-            }
-
             return mapCodec().decode(cx.ops().java(), MapLike.forMap((Map<Object, Object>) mapLike, cx.ops().java())).getOrThrow();
+        }
+        if (from instanceof List<?> listLike) {
+            boolean alreadyWrapped = listLike.stream().allMatch(element -> element instanceof CustomObjectRecipeComponent.Value);
+            if (alreadyWrapped) {
+                return (List<CustomObjectRecipeComponent.Value>) listLike;
+            }
         }
         throw new IllegalStateException("Unexpected value: " + from);
     }
 
-    @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2,2101.7.3)")
+    @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2-build.270]")
     @Mixin(CustomObjectRecipeComponent.Value.class)
     public static class ValueMixin {
         @Shadow
@@ -90,7 +91,7 @@ public abstract class CustomObjectRecipeComponentMixin implements RecipeComponen
         }
     }
 
-    @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2,2101.7.3)")
+    @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2-build.270]")
     @Mixin(targets = "dev.latvian.mods.kubejs.recipe.component.CustomObjectRecipeComponent$1")
     public static abstract class MapCodecMixin {
         @Shadow
@@ -143,12 +144,12 @@ public abstract class CustomObjectRecipeComponentMixin implements RecipeComponen
             var newValue = key.component().wrap(recipeCtx, par2);
 
             RecipeComponent<Object> rc = (RecipeComponent<Object>) key.component();
-            var regJson = ((RegistryOps<JsonElement>) ops).withParent(JsonOps.INSTANCE);
+            var regJson = ((RegistryOps<Object>) ops).withParent(JsonOps.INSTANCE);
             JsonElement newJson = rc.codec().encodeStart(regJson, newValue).getOrThrow();
             if (newJson.isJsonObject()) {
                 return JsonUtils.toObject(newJson);
             }
-            return JsonOps.INSTANCE.convertTo(ops, newJson);
+            return regJson.convertTo(ops, newJson);
         }
 
         @WrapOperation(method = "decode", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/DataResult;success(Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;"))

@@ -220,9 +220,10 @@ dependencies {
 
     kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
-    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.270")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.277")?.let {
         interfaceInjectionData(it)
     }
+
     // compileOnly("dev.latvian.mods:rhino:2101.2.7-build.74")
     implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
