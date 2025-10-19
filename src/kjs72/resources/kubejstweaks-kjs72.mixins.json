@@ -7,18 +7,22 @@
   "client": [
     "main.ClientAssetPacksMixin",
     "main.KubeJEIPluginMixin",
-    "main.KubeJSEMIPluginMixin"
+    "main.KubeJSEMIPluginMixin",
+    "main.EMIRemoveEntriesKubeEventMixin"
   ],
   "mixins": [
     "main.CustomObjectRecipeComponentMixin",
-    "main.CustomObjectRecipeComponentMixin$ValueMixin",
     "main.CustomObjectRecipeComponentMixin$MapCodecMixin",
-    "main.RecipesKubeEventMixin",
+    "main.CustomObjectRecipeComponentMixin$ValueMixin",
+    "main.CustomObjectRecipeComponentMixin2",
+    "main.EnumComponentMixin",
+    "main.EnumComponentMixin2",
+    "main.JsonRecipeSchemaLoaderMixin",
+    "main.JsonRecipeSchemaLoaderMixin2",
     "main.KubeRecipeMixin",
     "main.RecipeManagerMixin",
     "main.RecipeSchemaStorageMixin",
-    "main.JsonRecipeSchemaLoaderMixin",
-    "main.JsonRecipeSchemaLoaderMixin2",
+    "main.RecipesKubeEventMixin",
     "main.ServerPackMixin"
   ],
   "injectors": {

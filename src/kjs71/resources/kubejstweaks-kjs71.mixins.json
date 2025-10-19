@@ -8,10 +8,10 @@
     "main.ClientAssetPacksMixin",
     "main.KubedexHighlightMixin",
     "main.KubeJEIPluginMixin",
-    "main.KubeJSEMIPluginMixin"
+    "main.KubeJSEMIPluginMixin",
+    "main.EMIRemoveEntriesKubeEventMixin"
   ],
   "mixins": [
-    "main.ShapedKubeRecipeMixin",
     "main.CachedTagLookupMixin",
     "main.ContextMixin",
     "main.DataExportMixin",
@@ -25,6 +25,8 @@
     "main.JsonRecipeSchemaLoaderMixin2",
     "main.KubeJSPathsMixin",
     "main.KubeRecipeMixin",
+    "main.MobEffectBuilderMixin",
+    "main.MobEffectBuilderMixin$BasicMobEffectAccessor",
     "main.RecipeComponentBuilderMixin",
     "main.RecipeComponentBuilderMixin$MapCodecMixin",
     "main.RecipeComponentBuilderMixin$ValueMixin",
@@ -38,11 +40,10 @@
     "main.ScannerMixin",
     "main.ServerPackMixin",
     "main.ServerScriptManagerMixin",
+    "main.ShapedKubeRecipeMixin",
     "main.TagKeyComponentMixin",
     "main.TheurgyRecipeSchemaMixin",
     "main.TypeConsolidatorMixin",
-    "main.MobEffectBuilderMixin",
-    "main.MobEffectBuilderMixin$BasicMobEffectAccessor",
     "main.TypesMixin",
     "main.VariableTypeInfo2Mixin",
     "main.VariableTypeInfoMixin"

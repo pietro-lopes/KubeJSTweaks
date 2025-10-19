@@ -215,12 +215,12 @@ dependencies {
         interfaceInjectionData(it)
     }
 
-//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.270")
+//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.281")
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")
 
     kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
-    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.277")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.281")?.let {
         interfaceInjectionData(it)
     }
 
@@ -247,7 +247,7 @@ dependencies {
     compileOnly("curse.maven:applied-energistics-2-223794:6323510") // fix service bug
 
 
-//    compileOnly("curse.maven:emi-580555:6420931")
+    compileOnly("curse.maven:emi-580555:6420931")
 //    compileOnly("curse.maven:tmrv-1194921:6269681")
 
 //    compileOnly("curse.maven:create-328085:6323264")
@@ -276,6 +276,7 @@ dependencies {
             if (nameId == "tmrv") return@forEach
             if (nameId == "emi") return@forEach
         }
+        if (nameId == "kubejs") return@forEach
         if (nameId == "stone-zone") return@forEach
         if (nameId == "ex-pattern-provider") return@forEach
         if (nameId == "entityjs") return@forEach
@@ -284,6 +285,8 @@ dependencies {
     }
 
     localRuntime("curse.maven:projecte-226410:6611984")
+    localRuntime("curse.maven:buddingcrystals-628302:6453092")
+    localRuntime("curse.maven:dynamic-asset-generator-577096:5625118")
 
     // localRuntime("curse.maven:oritech-1030830:6558345") // oritech-neoforge-0.15.7.jar
     //localRuntime("curse.maven:jei-238222:6614392")
