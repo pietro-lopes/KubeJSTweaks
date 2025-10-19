@@ -1,0 +1,41 @@
+{
+  "keys": [
+    {
+      "name": "results",
+      "role": "output",
+      "type": {
+        "type": "list",
+        "component": {
+          "type": "either",
+          "left": "immersiveengineering:tag_output",
+          "right": "immersiveengineering:stack_with_chance"
+        }
+      }
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "type": "optional_ingredient"
+    },
+    {
+      "name": "soil",
+      "type": "optional_ingredient"
+    },
+    {
+      "name": "time",
+      "type": "int"
+    },
+    {
+      "name": "render",
+      "type": "immersiveengineering:render"
+    },
+    {
+      "kubejstweaks:version_range": "[12.4.2-194,)",
+      "name": "fluid",
+      "role": "input",
+      "type": "optional_fluid_ingredient",
+      "default_optional": true
+    }
+  ],
+  "unique": ["results"]
+}

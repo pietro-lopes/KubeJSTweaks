@@ -95,6 +95,7 @@ public class NeoforgeEvents {
                 }
                 if (cv.key.component.allowEmpty() && cv.value == null) continue;
                 if (!cv.key.optional() || cv.key.alwaysWrite) cv.write();
+                if (cv.key.optional() && !cv.key.alwaysWrite && cv.value == cv.key.optional.getDefaultValue(kubeRecipe.type.schemaType)) continue;
                 if (cv.value != null && !cv.key.component.isEmpty(Cast.to(cv.value))) cv.write();
             }
             kubeRecipe.json = new JsonObject();

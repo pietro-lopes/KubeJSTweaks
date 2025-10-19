@@ -30,5 +30,6 @@
       "optional": {},
       "allow_empty": true
     }
-  ]
+  ],
+  "unique": ["output"]
 }

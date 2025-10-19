@@ -1,0 +1,15 @@
+{
+    "bigreactors:item_stack_recipe_ingredient": {
+      "type": "custom_object",
+      "keys": [
+        {
+          "name": "ingredient",
+          "component": "optional_ingredient"
+        },
+        {
+          "name": "count",
+          "component": "non_negative_int"
+        }
+      ]
+    }
+}

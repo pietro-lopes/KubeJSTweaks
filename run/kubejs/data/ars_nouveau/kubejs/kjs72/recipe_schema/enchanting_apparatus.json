@@ -1,0 +1,43 @@
+{
+  "keys": [
+    {
+      "name": "reagent",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
+      "name": "result",
+      "role": "output",
+      "type": "item_stack"
+    },
+    {
+      "name": "pedestalItems",
+      "role": "input",
+      "type": {
+        "type": "list",
+        "component": "optional_ingredient",
+        "min": 0
+      }
+    },
+    {
+      "name": "sourceCost",
+      "role": "other",
+      "type": "non_negative_int"
+    },
+    {
+      "name": "keepNbtOfReagent",
+      "role": "other",
+      "type": "boolean",
+      "optional": false,
+      "always_write": true
+    }
+  ],
+  "functions": {
+    "keepNbt": {
+      "type": "set",
+      "key": "keepNbtOfReagent",
+      "value": true
+    }
+  },
+  "unique": ["result"]
+}

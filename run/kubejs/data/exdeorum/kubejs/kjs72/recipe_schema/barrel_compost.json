@@ -1,12 +1,15 @@
-{ "keys": [
+{
+  "keys": [
     {
-        "name": "ingredient",
-        "type": "ingredient",
-        "role": "input"
+      "name": "ingredient",
+      "type": "ingredient",
+      "role": "input"
     },
     {
-        "name": "volume",
-        "role": "output",
-        "type": {"type":"int"}
+      "name": "volume",
+      "role": "output",
+      "type": "int"
     }
-]}
+  ],
+  "unique": ["ingredient"]
+}

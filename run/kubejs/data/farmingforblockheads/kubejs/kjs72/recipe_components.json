@@ -1,0 +1,48 @@
+{
+  "farmingforblockheads:result": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "item",
+        "component": {
+          "type": "registry_element",
+          "registry": "item"
+        }
+      },
+      {
+        "name": "count",
+        "component": "positive_int",
+        "optional": true
+      },
+      {
+        "name": "components",
+        "component": {
+          "type": "kubejstweaks:codec",
+          "class": "net.minecraft.core.component.DataComponentPatch"
+        },
+        "optional": true
+      }
+    ]
+  },
+  "farmingforblockheads:payment": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "ingredient",
+        "component": "optional_ingredient"
+      },
+      {
+        "name": "count",
+        "component": "int"
+      },
+      {
+        "name": "tooltip",
+        "component": {
+          "type": "kubejstweaks:codec",
+          "class": "net.minecraft.network.chat.ComponentSerialization"
+        },
+        "optional": true
+      }
+    ]
+  }
+}

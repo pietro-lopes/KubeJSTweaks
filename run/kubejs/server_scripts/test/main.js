@@ -152,7 +152,8 @@ ServerEvents.recipes(event => {
   event.forEachRecipe({output: "minecraft:acacia_boat"}, event => {})
 //  event.remove({input: ["minecraft:iron_ingot"]})
 //  event.remove({output: ["minecraft:iron_ingot"]})
-  event.shaped("minecraft:apple", ["XXX","XOX","XXX"], {"X": "minecraft:acacia_boat","O":"minecraft:empty_bucket"})
+
+  //event.shaped("minecraft:apple", ["XXX","XOX","XXX"], {"X": "minecraft:acacia_boat","O":"minecraft:empty_bucket"})
 })
 
 //

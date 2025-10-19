@@ -1,17 +1,20 @@
-{ "keys": [
+{
+  "keys": [
     {
-        "name": "block_predicate",
-        "type": "exdeorum:block_predicate",
-        "role": "other"
+      "name": "block_predicate",
+      "type": "exdeorum:block_predicate",
+      "role": "other"
     },
     {
-        "name": "result",
-        "role": "output",
-        "type": "item_stack"
+      "name": "result",
+      "role": "output",
+      "type": "item_stack"
     },
     {
-        "name": "chance",
-        "role": "other",
-        "type": {"type": "float"}
+      "name": "chance",
+      "role": "other",
+      "type": "float"
     }
-]}
+  ],
+  "unique": ["result"]
+}

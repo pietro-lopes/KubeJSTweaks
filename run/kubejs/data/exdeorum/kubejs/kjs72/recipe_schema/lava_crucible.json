@@ -1,12 +1,15 @@
-{ "keys": [
+{
+  "keys": [
     {
-        "name": "ingredient",
-        "type": "ingredient",
-        "role": "input"
+      "name": "ingredient",
+      "type": "ingredient",
+      "role": "input"
     },
     {
-        "name": "fluid",
-        "role": "output",
-        "type": "fluid_stack"
+      "name": "fluid",
+      "role": "output",
+      "type": "fluid_stack"
     }
-]}
+  ],
+  "unique": ["fluid"]
+}

@@ -1,0 +1,25 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "role": "output",
+      "type": "immersiveengineering:tag_output"
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "type": "immersiveengineering:ingredient_with_size"
+    },
+    {
+      "name": "mold",
+      "type": {
+        "type": "registry_element",
+        "registry": "item"
+      }
+    },
+    {
+      "name": "energy",
+      "type": "int"
+    }
+  ]
+}

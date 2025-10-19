@@ -1,0 +1,57 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "role": "output",
+      "type": "item_stack"
+    },
+    {
+      "name": "pattern",
+      "type": {
+        "type": "list",
+        "component": "string"
+      }
+    },
+    {
+      "name": "key",
+      "role": "input",
+      "type": {
+        "type": "pattern",
+        "component": "optional_ingredient"
+      }
+    },
+    {
+      "name": "accept_mirrored",
+      "type": "boolean",
+      "optional": true,
+      "always_write": true,
+      "excluded": true
+    },
+    {
+      "name": "category",
+      "type": "crafting_book_category",
+      "optional": "misc",
+      "excluded": true
+    },
+    {
+      "name": "group",
+      "type": "optional_string",
+      "optional": "",
+      "excluded": true
+    },
+    {
+      "name": "show_notification",
+      "type": "boolean",
+      "optional": true,
+      "excluded": true
+    }
+  ],
+  "functions": {
+    "noMirror": {
+      "type": "set",
+      "key": "accept_mirrored",
+      "value": false
+    }
+  },
+  "unique": ["result"]
+}

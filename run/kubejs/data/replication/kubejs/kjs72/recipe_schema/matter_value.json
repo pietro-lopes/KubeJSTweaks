@@ -1,0 +1,21 @@
+{
+  "keys": [
+    {
+      "name": "matter",
+      "role": "output",
+      "type": {
+        "type": "list",
+        "component": {
+          "type": "kubejstweaks:codec",
+          "class": "com.buuz135.replication.calculation.MatterValue"
+        }
+      }
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "type": "optional_ingredient"
+    }
+  ],
+  "unique": ["matter"]
+}

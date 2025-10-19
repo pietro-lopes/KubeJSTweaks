@@ -1,0 +1,81 @@
+{
+  "immersiveengineering:ingredient_with_size_count": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "basePredicate",
+        "component": "optional_ingredient"
+      },
+      {
+        "name": "count",
+        "component": "int"
+      }
+    ]
+  },
+  "immersiveengineering:ingredient_with_size": {
+    "type": "either",
+    "left": "immersiveengineering:ingredient_with_size_count",
+    "right": "optional_ingredient"
+  },
+  "immersiveengineering:tag_output": {
+    "type": "either",
+    "left": "immersiveengineering:ingredient_with_size",
+    "right": "item_stack"
+  },
+  "immersiveengineering:stack_with_chance": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "output",
+        "component": "immersiveengineering:tag_output"
+      },
+      {
+        "name": "chance",
+        "component": "float"
+      },
+      {
+        "name": "conditions",
+        "optional": true,
+        "component": {
+          "type": "kubejstweaks:codec",
+          "class": "net.neoforged.neoforge.common.conditions.ICondition",
+          "field": "LIST_CODEC"
+        }
+      }
+    ]
+  },
+  "immersiveengineering:render": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "type",
+        "component": "id"
+      },
+      {
+        "name": "block",
+        "component": "block",
+        "optional": true
+      },
+      {
+        "name": "crop",
+        "optional": true,
+        "component": "block"
+      },
+      {
+        "name": "stem",
+        "optional": true,
+        "component": "block"
+      },
+      {
+        "name": "attachedStem",
+        "optional": true,
+        "component": "block"
+      },
+      {
+        "name": "doublingAge",
+        "optional": true,
+        "component": "int"
+      }
+    ]
+  }
+}

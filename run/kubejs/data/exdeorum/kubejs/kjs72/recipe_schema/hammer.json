@@ -1,19 +1,23 @@
 {
-    "keys": [
-        {
-            "name": "ingredient",
-            "type": "ingredient",
-            "role": "input"
-        },
-        {
-            "name": "result",
-            "type": "item_stack",
-            "role": "output"
-        },
-        {
-            "name": "result_amount",
-            "type": {"type": "kubejstweaks:codec", "class": "net.minecraft.world.level.storage.loot.providers.number.NumberProviders"},
-            "role": "other"
-        }
-    ]
+  "keys": [
+    {
+      "name": "ingredient",
+      "type": "ingredient",
+      "role": "input"
+    },
+    {
+      "name": "result",
+      "type": "item_stack",
+      "role": "output"
+    },
+    {
+      "name": "result_amount",
+      "type": {
+        "type": "kubejstweaks:codec",
+        "class": "net.minecraft.world.level.storage.loot.providers.number.NumberProviders"
+      },
+      "role": "other"
+    }
+  ],
+  "unique": ["result"]
 }

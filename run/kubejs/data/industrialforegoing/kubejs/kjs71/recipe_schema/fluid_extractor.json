@@ -1,9 +1,9 @@
 {
   "keys": [
     {
-      "name": "input",
-      "role": "input",
-      "type": "ingredient"
+      "name": "output",
+      "role": "output",
+      "type": "fluid_stack"
     },
     {
       "name": "result",
@@ -12,14 +12,14 @@
       "allow_empty": true
     },
     {
+      "name": "input",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
       "name": "breakChance",
       "role": "other",
       "type": "float"
-    },
-    {
-      "name": "output",
-      "role": "output",
-      "type": "fluid_stack"
     },
     {
       "name": "defaultRecipe",

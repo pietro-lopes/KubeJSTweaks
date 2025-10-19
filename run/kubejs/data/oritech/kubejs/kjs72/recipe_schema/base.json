@@ -92,5 +92,6 @@
       },
       "default_optional": true
     }
-  ]
+  ],
+  "unique": ["results"]
 }

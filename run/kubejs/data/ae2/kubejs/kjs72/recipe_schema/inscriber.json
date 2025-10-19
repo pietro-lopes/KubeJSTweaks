@@ -1,0 +1,25 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "type": "item_stack",
+      "role": "output"
+    },
+    {
+      "name": "ingredients",
+      "role": "input",
+      "type": "ae2:ingredients"
+    },
+    {
+      "name": "mode",
+      "type": {
+        "type": "kubejstweaks:codec",
+        "class": "appeng.recipes.handlers.InscriberRecipe",
+        "field": "MODE_CODEC"
+      },
+      "optional": "inscribe",
+      "always_write": true
+    }
+  ],
+  "unique": ["result"]
+}

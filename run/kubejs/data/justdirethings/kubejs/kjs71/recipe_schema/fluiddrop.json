@@ -1,24 +1,24 @@
 {
-    "keys": [
-        {
-            "name": "id",
-            "role": "other",
-            "type": "id"
-        },
-        {
-            "name": "input",
-            "role": "input",
-            "type": "block_state"
-        },
-        {
-            "name": "output",
-            "role": "output",
-            "type": "block_state"
-        },
-        {
-            "name": "catalyst",
-            "role": "other",
-            "type": "codec<net.minecraft.world.item.ItemStack#ITEM_NON_AIR_CODEC>"
-        }
-    ]
+  "keys": [
+    {
+      "name": "output",
+      "role": "output",
+      "type": "block_state"
+    },
+    {
+      "name": "id",
+      "role": "other",
+      "type": "id"
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "type": "block_state"
+    },
+    {
+      "name": "catalyst",
+      "role": "other",
+      "type": "codec<net.minecraft.world.item.ItemStack#ITEM_NON_AIR_CODEC>"
+    }
+  ]
 }

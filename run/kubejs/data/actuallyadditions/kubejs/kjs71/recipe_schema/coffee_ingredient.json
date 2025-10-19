@@ -8,7 +8,8 @@
         {
             "name": "max_amplifier",
             "role": "other",
-            "type": "int"
+            "type": "int",
+            "function_names": ["maxAmplifier"]
         },
         {
             "name": "effects",

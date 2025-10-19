@@ -1,0 +1,54 @@
+{
+  "integrateddynamics:item_stack_from_ingredient": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "tag",
+        "component": "id"
+      },
+      {
+        "name": "count",
+        "component": "int",
+        "optional": true
+      }
+    ]
+  },
+  "integrateddynamics:tag_chance": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "tag",
+        "component": "integrateddynamics:item_stack_from_ingredient"
+      },
+      {
+        "name": "chance",
+        "component": "float",
+        "optional": true
+      }
+    ]
+  },
+  "integrateddynamics:item_chance": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "item",
+        "component": "item_stack"
+      },
+      {
+        "name": "chance",
+        "component": "float",
+        "optional": true
+      }
+    ]
+  },
+  "integrateddynamics:item_stack_or_tag": {
+    "type": "either",
+    "left": "item_stack",
+    "right": "integrateddynamics:item_stack_from_ingredient"
+  },
+  "integrateddynamics:ingredient_chance": {
+    "type": "either",
+    "left": "integrateddynamics:item_chance",
+    "right": "integrateddynamics:tag_chance"
+  }
+}

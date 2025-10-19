@@ -1,0 +1,30 @@
+{
+  "extendedae:ingredient_stack_item": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "ingredient",
+        "component": "optional_ingredient"
+      },
+      {
+        "name": "amount",
+        "component": "positive_int",
+        "optional": true
+      }
+    ]
+  },
+  "extendedae:ingredient_stack_fluid": {
+    "type": "custom_object",
+    "keys": [
+      {
+        "name": "ingredient",
+        "component": "optional_fluid_ingredient"
+      },
+      {
+        "name": "amount",
+        "component": "positive_int",
+        "optional": true
+      }
+    ]
+  }
+}

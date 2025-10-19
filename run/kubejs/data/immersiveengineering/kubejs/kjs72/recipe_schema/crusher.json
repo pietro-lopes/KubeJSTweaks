@@ -1,0 +1,28 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "role": "output",
+      "type": "immersiveengineering:tag_output"
+    },
+    {
+      "name": "input",
+      "role": "input",
+      "type": "ingredient"
+    },
+    {
+      "name": "energy",
+      "type": "int"
+    },
+    {
+      "name": "secondaries",
+      "role": "output",
+      "type": {
+        "type": "list",
+        "component": "immersiveengineering:stack_with_chance",
+        "min": 0
+      },
+      "default_optional": true
+    }
+  ]
+}
