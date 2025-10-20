@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 // https://github.com/KubeJS-Mods/KubeJS/issues/1052
-@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2,2101.7.3)", extraModDep = "emi", extraModDepVersions = "*")
+@ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.2-build.270,2101.7.2-build.277]", extraModDep = "emi", extraModDepVersions = "*")
 @Mixin(EMIRemoveEntriesKubeEvent.class)
 public class EMIRemoveEntriesKubeEventMixin {
     @Shadow
     @Final
     private EmiRegistry registry;
 
-    @Inject(method = "remove", at = @At(value = "JUMP", opcode = Opcodes.IF_ACMPNE, ordinal = 0), cancellable = true)
+    @Inject(method = "remove", at = @At(value = "JUMP", opcode = Opcodes.IF_ACMPNE, ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void fixClassCast(Context cx, Object filter, CallbackInfo ci, @Local(ordinal = 1) Object predicate){
         registry.removeEmiStacks(EMIIntegration.predicate((ItemPredicate) predicate));
         ci.cancel();

@@ -33,10 +33,6 @@ public class KubeRecipeMixin {
     @Shadow
     public JsonObject json;
 
-    @Inject(method = "deserialize", at = @At(value = "JUMP", opcode = Opcodes.IF_ICMPGE))
-    private void storeCurrentException(boolean merge, CallbackInfo ci, @Share(value = "currentEx") LocalRef<Throwable> exRef){
-    }
-
     @Inject(method = "deserialize", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/kubejs/script/ConsoleJS;error(Ljava/lang/String;Ldev/latvian/mods/kubejs/script/SourceLine;Ljava/lang/Throwable;Ljava/util/regex/Pattern;)Ldev/latvian/mods/kubejs/script/ConsoleLine;"))
     private void setCurrentException(boolean merge, CallbackInfo ci, @Local Exception ex, @Share(value = "currentEx") LocalRef<Throwable> exRef){
         exRef.set(ex);

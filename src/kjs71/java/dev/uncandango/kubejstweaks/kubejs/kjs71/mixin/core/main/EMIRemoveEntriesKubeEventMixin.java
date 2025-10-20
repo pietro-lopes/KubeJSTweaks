@@ -23,7 +23,7 @@ public class EMIRemoveEntriesKubeEventMixin {
     @Final
     private EmiRegistry registry;
 
-    @Inject(method = "remove", at = @At(value = "JUMP", opcode = Opcodes.IF_ACMPNE, ordinal = 0), cancellable = true)
+    @Inject(method = "remove", at = @At(value = "JUMP", opcode = Opcodes.IF_ACMPNE, ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void fixClassCast(Context cx, Object filter, CallbackInfo ci, @Local(ordinal = 1) Object predicate){
         registry.removeEmiStacks(EMIIntegration.predicate((ItemPredicate) predicate));
         ci.cancel();

@@ -21,6 +21,10 @@ public class JsonRecipeSchemaLoaderMixin {
     @ModifyArg(method = "load", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/Codec;parse(Lcom/mojang/serialization/DynamicOps;Ljava/lang/Object;)Lcom/mojang/serialization/DataResult;"), index = 1)
     private static Object checkVersion(Object par2, @Local ResourceLocation id){
         if (par2 instanceof JsonObject json) {
+            if (!ModList.get().isLoaded(id.getNamespace())) {
+                json.asMap().clear();
+                return json;
+            }
             if (json.has("keys")) {
                 var it = json.getAsJsonArray("keys").iterator();
                 while (it.hasNext()) {

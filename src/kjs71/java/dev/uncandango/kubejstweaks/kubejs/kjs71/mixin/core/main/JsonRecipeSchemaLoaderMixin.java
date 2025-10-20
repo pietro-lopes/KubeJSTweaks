@@ -32,10 +32,14 @@ public class JsonRecipeSchemaLoaderMixin {
 
     @WrapWithCondition(method = "load", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 1))
     private static boolean checkVersion(List<Object> instance, Object e, @Local JsonObject keyJson, @Share("holder") LocalRef<RecipeSchemaBuilderAccessor> holderRef){
+        var type = holderRef.get().kjstweaks$getId();
+        var modId = type.getNamespace();
+        if (!ModList.get().isLoaded(modId)) {
+            keyJson.asMap().clear();
+            return false;
+        }
         if (keyJson.has("kubejstweaks:version_range")) {
             var range = keyJson.getAsJsonPrimitive("kubejstweaks:version_range").getAsString();
-            var type = holderRef.get().kjstweaks$getId();
-            var modId = type.getNamespace();
             KubeJSTweaks.LOGGER.debug("Mod id {} with conditional version {}", modId, range);
             try {
                 var rangeSpec = VersionRange.createFromVersionSpec(range);
