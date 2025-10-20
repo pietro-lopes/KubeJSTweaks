@@ -23,6 +23,7 @@ public class JsonRecipeSchemaLoaderMixin {
         if (par2 instanceof JsonObject json) {
             if (!ModList.get().isLoaded(id.getNamespace())) {
                 json.asMap().clear();
+                KubeJSTweaks.LOGGER.info("Skipping schema {} for mod NOT loaded: {}", id, id.getNamespace());
                 return json;
             }
             if (json.has("keys")) {

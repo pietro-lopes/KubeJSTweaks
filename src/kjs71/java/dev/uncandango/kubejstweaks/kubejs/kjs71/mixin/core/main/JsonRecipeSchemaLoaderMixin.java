@@ -36,6 +36,7 @@ public class JsonRecipeSchemaLoaderMixin {
         var modId = type.getNamespace();
         if (!ModList.get().isLoaded(modId)) {
             keyJson.asMap().clear();
+            KubeJSTweaks.LOGGER.info("Skipping schema {} for mod NOT loaded: {}", type, type.getNamespace());
             return false;
         }
         if (keyJson.has("kubejstweaks:version_range")) {
