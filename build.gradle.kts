@@ -276,6 +276,7 @@ dependencies {
             if (nameId == "tmrv") return@forEach
             if (nameId == "emi") return@forEach
         }
+        if (nameId == "actually-additions") return@forEach
         if (nameId == "kubejs") return@forEach
         if (nameId == "stone-zone") return@forEach
         if (nameId == "ex-pattern-provider") return@forEach

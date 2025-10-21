@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.List;
 
@@ -30,15 +31,21 @@ public class JsonRecipeSchemaLoaderMixin {
         return instance;
     }
 
+    @ModifyArg(method = "load", at = @At(value = "INVOKE", target = "Ljava/util/HashMap;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), index = 1)
+    private static Object clearJsonIfModNotLoaded(Object value){
+        var id = ((RecipeSchemaBuilderAccessor)value).kjstweaks$getId();
+        var json = ((RecipeSchemaBuilderAccessor)value).kjstweaks$getJson();
+        if (!ModList.get().isLoaded(id.getNamespace())) {
+            json.asMap().clear();
+            KubeJSTweaks.LOGGER.info("Skipping schema {} for mod NOT loaded: {}", id, id.getNamespace());
+        }
+        return value;
+    }
+
     @WrapWithCondition(method = "load", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 1))
     private static boolean checkVersion(List<Object> instance, Object e, @Local JsonObject keyJson, @Share("holder") LocalRef<RecipeSchemaBuilderAccessor> holderRef){
         var type = holderRef.get().kjstweaks$getId();
         var modId = type.getNamespace();
-        if (!ModList.get().isLoaded(modId)) {
-            keyJson.asMap().clear();
-            KubeJSTweaks.LOGGER.info("Skipping schema {} for mod NOT loaded: {}", type, type.getNamespace());
-            return false;
-        }
         if (keyJson.has("kubejstweaks:version_range")) {
             var range = keyJson.getAsJsonPrimitive("kubejstweaks:version_range").getAsString();
             KubeJSTweaks.LOGGER.debug("Mod id {} with conditional version {}", modId, range);
@@ -65,9 +72,13 @@ public class JsonRecipeSchemaLoaderMixin {
         }
     }
 
+    @ConditionalMixin(modId = "kubejs", versionRange = "[2101.7.1-build.181]")
     @Mixin(targets = "dev.latvian.mods.kubejs.recipe.schema.JsonRecipeSchemaLoader$RecipeSchemaBuilder")
     public interface RecipeSchemaBuilderAccessor {
         @Accessor("id")
         ResourceLocation kjstweaks$getId();
+
+        @Accessor("json")
+        JsonObject kjstweaks$getJson();
     }
 }

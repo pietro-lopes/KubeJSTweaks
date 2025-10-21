@@ -1,8 +1,12 @@
 package dev.uncandango.kubejstweaks.kubejs.kjs71.mixin.core.main;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaStorage;
+import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -19,10 +23,7 @@ public class RecipeSchemaStorageMixin {
     @ModifyExpressionValue(method = "fireEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;listResources(Ljava/lang/String;Ljava/util/function/Predicate;)Ljava/util/Map;", ordinal = 0))
     private static Map<ResourceLocation, Resource> loadSpecificDatapack(Map<ResourceLocation, Resource> original, @Local(argsOnly = true) ResourceManager manager){
         if (ModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.1-")) {
-            var kjs71 = manager.listResources("kubejs/kjs71", path -> path.getPath().endsWith("/recipe_mappings.json"));
-            kjs71.forEach((rl, rs) -> {
-                original.put(ResourceLocation.fromNamespaceAndPath(rl.getNamespace(),rl.getPath().replace("/kjs71","")), rs);
-            });
+            original.entrySet().removeIf(entry -> entry.getKey().toString().contains("/kjs72/"));
         }
         return original;
     }
@@ -30,11 +31,18 @@ public class RecipeSchemaStorageMixin {
     @ModifyExpressionValue(method = "fireEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ResourceManager;listResources(Ljava/lang/String;Ljava/util/function/Predicate;)Ljava/util/Map;", ordinal = 1))
     private static Map<ResourceLocation, Resource> loadSpecificDatapack2(Map<ResourceLocation, Resource> original, @Local(argsOnly = true) ResourceManager manager){
         if (ModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.1-")) {
-            var kjs71 = manager.listResources("kubejs/kjs71", path -> path.getPath().endsWith("/recipe_components.json"));
-            kjs71.forEach((rl, rs) -> {
-                original.put(ResourceLocation.fromNamespaceAndPath(rl.getNamespace(),rl.getPath().replace("/kjs71","")), rs);
-            });
+            original.entrySet().removeIf(entry -> entry.getKey().toString().contains("/kjs72/"));
         }
         return original;
+    }
+
+    @ModifyReceiver(method = "fireEvents", at = @At(value = "INVOKE", target = "Lcom/google/gson/JsonObject;entrySet()Ljava/util/Set;"))
+    private static JsonObject clearJsonIfModNotLoaded(JsonObject instance, @Local Map.Entry<ResourceLocation, Resource> entry){
+        var modId = entry.getKey().getNamespace();
+        if (!ModList.get().isLoaded(modId)) {
+            instance.asMap().clear();
+            KubeJSTweaks.LOGGER.info("Skipping schema component/mapping {} for mod NOT loaded: {}", entry.getKey(), modId);
+        }
+        return instance;
     }
 }

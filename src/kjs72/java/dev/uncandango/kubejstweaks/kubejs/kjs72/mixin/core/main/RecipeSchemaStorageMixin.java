@@ -1,8 +1,11 @@
 package dev.uncandango.kubejstweaks.kubejs.kjs72.mixin.core.main;
 
+import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaStorage;
+import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import dev.uncandango.kubejstweaks.mixin.annotation.ConditionalMixin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -30,5 +33,15 @@ public class RecipeSchemaStorageMixin {
             original.entrySet().removeIf(entry -> entry.getKey().toString().contains("/kjs71/"));
         }
         return original;
+    }
+
+    @ModifyReceiver(method = "fireEvents", at = @At(value = "INVOKE", target = "Lcom/google/gson/JsonObject;entrySet()Ljava/util/Set;"))
+    private static JsonObject clearJsonIfModNotLoaded(JsonObject instance, @Local Map.Entry<ResourceLocation, Resource> entry){
+        var modId = entry.getKey().getNamespace();
+        if (!ModList.get().isLoaded(modId)) {
+            instance.asMap().clear();
+            KubeJSTweaks.LOGGER.info("Skipping schema component/mapping {} for mod NOT loaded: {}", entry.getKey(), modId);
+        }
+        return instance;
     }
 }

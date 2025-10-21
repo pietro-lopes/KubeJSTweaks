@@ -83,21 +83,21 @@ ServerEvents.recipes(event => {
   Array(10).fill(0).forEach(_ => console.log(ri()))
   */
 
-  console.log("Testing transfering attributes")
-  let recipe1 = event.recipes.actuallyadditions.coffee_ingredient("minecraft:apple", 5).effects([{"effect":"minecraft:health_boost","amplifier":2,"duration":107}])
-  let recipe2 = event.recipes.actuallyadditions.coffee_ingredient("minecraft:carrot", 2)
-  // works
-  recipe2.maxAmplifier(recipe1.get("max_amplifier"))
-  // fails
-  recipe2.effects(recipe1.get("effects"))
-  console.log("Done testing effects")
-
-  const aa = event.recipes.actuallyadditions
-
-  aa.copy_nbt("minecraft:netherite_chestplate",["NNN","NDN","NNN"],{N:"minecraft:netherite_ingot", D: {type: "actuallyadditions:target_nbt", base: JsonIO.toObject(Ingredient.of("minecraft:diamond_chestplate"))}})
-    .id("actuallyadditions:copy_nbt/test/1")
-
   KJSTweaks.runIfModPresent("actuallyadditions", () => {
+    console.log("Testing transfering attributes")
+    let recipe1 = event.recipes.actuallyadditions.coffee_ingredient("minecraft:apple", 5).effects([{"effect":"minecraft:health_boost","amplifier":2,"duration":107}])
+    let recipe2 = event.recipes.actuallyadditions.coffee_ingredient("minecraft:carrot", 2)
+    // works
+    recipe2.maxAmplifier(recipe1.get("max_amplifier"))
+    // fails
+    recipe2.effects(recipe1.get("effects"))
+    console.log("Done testing effects")
+
+    const aa = event.recipes.actuallyadditions
+
+    aa.copy_nbt("minecraft:netherite_chestplate",["NNN","NDN","NNN"],{N:"minecraft:netherite_ingot", D: {type: "actuallyadditions:target_nbt", base: JsonIO.toObject(Ingredient.of("minecraft:diamond_chestplate"))}})
+      .id("actuallyadditions:copy_nbt/test/1")
+
     let counter = 0
     let results = () => [{stack: ris()}, {stack: "empty", chance: 0}]
     let results2 = () => [{stack: ris()},{stack: ris(), chance: rChance()}]
