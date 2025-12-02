@@ -9,11 +9,14 @@ import net.minecraft.server.packs.resources.FallbackResourceManager;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceFilterSection;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,11 +31,11 @@ public class TempResourceManager implements CloseableResourceManager {
     private final List<PackResources> packs;
 
     public TempResourceManager(PackType type, List<PackResources> packs) {
-        this.packs = List.copyOf(packs);
+        this.packs = filterIncompatiblePacks(packs);
         Map<String, FallbackResourceManager> map = new HashMap<>();
-        List<String> list = packs.stream().flatMap(p_215471_ -> p_215471_.getNamespaces(type).stream()).distinct().toList();
+        List<String> list = this.packs.stream().flatMap(p_215471_ -> p_215471_.getNamespaces(type).stream()).distinct().toList();
 
-        for (PackResources packresources : packs) {
+        for (PackResources packresources : this.packs) {
             ResourceFilterSection resourcefiltersection = this.getPackFilterSection(packresources);
             Set<String> set = packresources.getNamespaces(type);
             Predicate<ResourceLocation> predicate = resourcefiltersection != null
@@ -61,6 +64,29 @@ public class TempResourceManager implements CloseableResourceManager {
         }
 
         this.namespacedManagers = map;
+    }
+
+    private static List<PackResources> filterIncompatiblePacks(List<PackResources> packs) {
+        Set<String> packsToSkip = new HashSet<>();
+        if (ModList.get().isLoaded("dynamic_asset_generator")) {
+            packsToSkip.addAll(Set.of("mod/dynamic_asset_generator", "dynamic_asset_generator/dynamic_asset_generator:builtin_assets","dynamic_asset_generator/dynamic_asset_generator:builtin_data", "dynamic_asset_generator/buddingcrystals:assets"));
+        }
+        if (ModList.get().isLoaded("buddingcrystals")) {
+            packsToSkip.add("mod/buddingcrystals");
+        }
+        if (ModList.get().isLoaded("supplementaries")) {
+            packsToSkip.add("mod/supplementaries");
+            packsToSkip.add("supplementaries:generated_pack");
+        }
+        if (ModList.get().isLoaded("moonlight")) {
+            packsToSkip.add("mod/moonlight");
+            packsToSkip.add("moonlight:merged_pack");
+        }
+        if (ModList.get().isLoaded("sawmill")) {
+            packsToSkip.add("mod/sawmill");
+            packsToSkip.add("sawmill:sawmill_recipes");
+        }
+        return packs.stream().filter(pack -> !packsToSkip.contains(pack.packId())).toList();
     }
 
     @Nullable

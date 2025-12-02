@@ -1,0 +1,83 @@
+{
+    "keys": [
+        {
+            "name": "result",
+            "type": "item_stack",
+            "role": "output"
+        },
+        {
+            "name": "left",
+            "type": "block_state",
+            "role": "input"
+        },
+        {
+            "name": "right",
+            "type": "block_state",
+            "role": "input"
+        },
+        {
+            "name": "modifier",
+            "type": "block_state",
+            "role": "input",
+            "optional": true
+        },
+        {
+            "name": "speed",
+            "type": "float",
+            "role": "other",
+            "optional": 1.0,
+            "function_names": [
+                "speed"
+            ]
+        },
+        {
+            "name": "consumeLeft",
+            "type": "boolean",
+            "role": "other",
+            "optional": false
+        },
+        {
+            "name": "consumeRight",
+            "type": "boolean",
+            "role": "other",
+            "optional": false
+        }
+    ],
+    "functions": {
+        "consumeLeft": {
+            "type": "set",
+            "key": "consumeLeft",
+            "value": true
+        },
+        "consumeRight": {
+            "type": "set",
+            "key": "consumeRight",
+            "value": true
+        },
+        "consumeBoth": {
+            "type": "bundle",
+            "functions": [
+                {
+                    "type": "set",
+                    "key": "consumeLeft",
+                    "value": true
+                },
+                {
+                    "type": "set",
+                    "key": "consumeRight",
+                    "value": true
+                }
+            ]
+        }
+    },
+    "constructors": [
+        {
+            "keys": [
+                "result",
+                "left",
+                "right",
+                "modifier"
+            ]
+        }
+    ]
+}

@@ -202,3 +202,7 @@ PlayerEvents.chat(event => {
     event.server.runCommand(`kubejs reload lang`)
   }
 })
+
+//BlockEvents.randomTick("actuallyadditions:black_quartz_ore", event => {
+//    console.log(event.block)
+//});

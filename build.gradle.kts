@@ -215,12 +215,12 @@ dependencies {
         interfaceInjectionData(it)
     }
 
-//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.281")
+//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.336")
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")
 
     kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
-    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.281")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.336")?.let {
         interfaceInjectionData(it)
     }
 
@@ -276,7 +276,6 @@ dependencies {
             if (nameId == "tmrv") return@forEach
             if (nameId == "emi") return@forEach
         }
-        if (nameId == "actually-additions") return@forEach
         if (nameId == "kubejs") return@forEach
         if (nameId == "stone-zone") return@forEach
         if (nameId == "ex-pattern-provider") return@forEach

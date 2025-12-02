@@ -10,6 +10,7 @@
     "main.BalmClientRuntimeSpiMixin",
     "main.ContextFactoryMixin",
     "main.InterpreterMixin",
+    "main.NativeJavaMapMixin",
     "main.NativeJavaMethodMixin",
     "main.PlatHelperImplMixin",
     "main.RecipeComponentValueMapMixin",

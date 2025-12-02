@@ -77,3 +77,11 @@ global.flux =  [
         resultBlock:  'minecraft:cobblestone'
     }
 ];
+
+BlockEvents.modification(event => {
+    event.modify("actuallyadditions:black_quartz_ore", handler => {
+        handler.randomTickCallback = (tick) => {
+            console.log("Ticking: " + tick.block)
+        }
+    })
+})

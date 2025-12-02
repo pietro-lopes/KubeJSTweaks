@@ -99,7 +99,7 @@ ServerEvents.recipes(event => {
       .id("actuallyadditions:copy_nbt/test/1")
 
     let counter = 0
-    let results = () => [{stack: ris()}, {stack: "empty", chance: 0}]
+    let results = () => [{stack: ris()}, {stack: "air", chance: 0}]
     let results2 = () => [{stack: ris()},{stack: ris(), chance: rChance()}]
     let effects = () => genArray(rRange(1,10), () => ({effect: rRegistry("mob_effect"), amplifier: rRange(0,5), duration: rRange(20,200)}))
 

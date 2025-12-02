@@ -24,14 +24,6 @@ import static dev.uncandango.kubejstweaks.kubejs.plugin.KJSTPluginUtils.CLIENT_P
 public class ClientAssetPacksMixin {
     @Inject(method = "inject0", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/kubejs/script/data/VirtualAssetPack;reset()V", ordinal = 0))
     private void grabPackResources(List<PackResources> original, CallbackInfoReturnable<List<PackResources>> cir, @Local(ordinal = 0) ArrayList<PackResources> packs){
-        Set<String> packsToSkip = new HashSet<>();
-        if (ModList.get().isLoaded("dynamic_asset_generator")) {
-            packsToSkip.addAll(Set.of("mod/dynamic_asset_generator", "dynamic_asset_generator/dynamic_asset_generator:builtin_assets", "dynamic_asset_generator/buddingcrystals:assets"));
-        }
-        if (ModList.get().isLoaded("buddingcrystals")) {
-            packsToSkip.add("mod/buddingcrystals");
-        }
-        var newPack = packs.stream().filter(pack -> !packsToSkip.contains(pack.packId())).toList();
-        CLIENT_PACK_RESOURCES = new TempResourceManager(PackType.CLIENT_RESOURCES, newPack);
+        CLIENT_PACK_RESOURCES = new TempResourceManager(PackType.CLIENT_RESOURCES, packs);
     }
 }

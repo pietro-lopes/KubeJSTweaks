@@ -1,0 +1,39 @@
+{
+    "keys": [
+        {
+            "name": "component_mergers",
+            "type": {
+                "type": "map",
+                "key": {
+                    "type": "registry_element",
+                    "registry": "minecraft:data_component_type"
+                },
+                "component": {
+                    "type": "map",
+                    "key": "string",
+                    "component": {
+                        "type": "enum",
+                        "enum": "com.github.minecraftschurlimods.bibliocraft.content.printingtable.PrintingTableMergingRecipe$MergeMethod"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ingredient",
+            "role": "input",
+            "type": "ingredient"
+        },
+        {
+            "name": "result",
+            "role": "output",
+            "type": "item_stack"
+        },
+        {
+            "name": "duration",
+            "type": "int"
+        }
+    ],
+    "unique": [
+        "result"
+    ]
+}
