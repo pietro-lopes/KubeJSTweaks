@@ -24,6 +24,11 @@
         "name": "chance",
         "component": "float",
         "optional": true
+      },
+      {
+        "name": "count",
+        "component": "int",
+        "optional": true
       }
     ]
   },

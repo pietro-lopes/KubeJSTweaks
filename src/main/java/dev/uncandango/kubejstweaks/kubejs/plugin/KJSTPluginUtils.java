@@ -9,8 +9,10 @@ import dev.latvian.mods.kubejs.script.KubeJSContext;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.SourceLine;
 import dev.latvian.mods.kubejs.util.JsonIO;
+import dev.latvian.mods.kubejs.util.JsonUtils;
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.NativeJavaObject;
+import dev.uncandango.kubejstweaks.KubeJSTweaks;
 import dev.uncandango.kubejstweaks.impl.TempResourceManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +28,8 @@ import net.minecraft.world.level.validation.DirectoryValidator;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.resource.ResourcePackLoader;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.locating.IModFile;
@@ -34,12 +38,27 @@ import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 public class KJSTPluginUtils {
     public static WeakReference<CloseableResourceManager> SERVER_PACK_RESOURCES = new WeakReference<>(null);
@@ -196,6 +215,54 @@ public class KJSTPluginUtils {
 
     public static void runIfModPresent(Context cx, String modId, Callable<Void> runnable) {
         runIfModPresent(cx, modId,"*",runnable);
+    }
+
+    public static void curseForgeGetEndpoint(String url, Executor executor, Consumer<JsonElement> callback) {
+        CompletableFuture.runAsync(() -> {
+            var client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
+
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Java-http-client/").append(System.getProperty("java.version")).append(' ');
+            sb.append("KubeJSTweaks/").append(LoadingModList.get().getModFileById("kubejstweaks").versionString());
+            final String userAgent = sb.toString();
+
+            var request = HttpRequest.newBuilder()
+                .uri(URI.create("https://www.curseforge.com/api/" + url))
+                .timeout(Duration.ofSeconds(15))
+                .setHeader("Accept-Encoding", "gzip")
+                .setHeader("User-Agent", userAgent)
+                .GET()
+                .build();
+            try {
+                final HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                int responseCode = response.statusCode();
+                if (responseCode == 200) {
+                    final boolean isGzipEncoded = response.headers().firstValue("Content-Encoding").orElse("").equals("gzip");
+
+                    final String bodyStr;
+                    try (InputStream inStream = isGzipEncoded ? new GZIPInputStream(response.body()) : response.body()) {
+                        try (var bufferedReader = new BufferedReader(new InputStreamReader(inStream))) {
+                            bodyStr = bufferedReader.lines().collect(Collectors.joining("\n"));
+                        }
+                    }
+                    executor.execute(() -> {
+                        try {
+                            callback.accept(JsonUtils.fromString(bodyStr));
+                        } catch (Exception e) {
+                            KubeJSTweaks.LOGGER.error("Error while executing from CF Endpoint callback", e);
+                        }
+                    });
+                } else {
+                    KubeJSTweaks.LOGGER.error("Error while trying to call CF endpoint {}, response code: {}", url, responseCode);
+                    KubeJSTweaks.LOGGER.warn("You are only allowed to call public endpoints (does not require API-KEY)");
+                }
+            } catch (IOException | InterruptedException e) {
+                KubeJSTweaks.LOGGER.error("Error while trying to call CF endpoint {}, error: {}", url, e.getMessage());
+                if (e instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
     }
 
     public enum KJSTPackType {

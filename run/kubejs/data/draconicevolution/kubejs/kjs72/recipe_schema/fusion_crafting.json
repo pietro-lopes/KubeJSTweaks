@@ -1,0 +1,54 @@
+{
+    "keys": [
+        {
+            "name": "result",
+            "role": "output",
+            "type": "optional_item_stack"
+        },
+        {
+            "name": "catalyst",
+            "role": "input",
+            "type": "ingredient"
+        },
+        {
+            "name": "ingredients",
+            "role": "input",
+            "type": {
+                "type": "list",
+                "component": {
+                    "type": "custom_object",
+                    "keys": [
+                        {
+                            "name": "ingredient",
+                            "component": "ingredient"
+                        },
+                        {
+                            "name": "consume",
+                            "component": "boolean"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "techLevel",
+            "type": {
+                "type": "enum",
+                "enum": "com.brandon3055.brandonscore.api.TechLevel"
+            },
+            "function_names": ["tier","techLevel"],
+            "always_write": true,
+            "optional": "draconium"
+        },
+        {
+            "name": "totalEnergy",
+            "type": "long",
+            "always_write": true,
+            "optional": 1000000,
+            "function_names": ["totalEnergy","energy"]
+        }
+    ],
+    "unique": [
+        "result"
+    ]
+}

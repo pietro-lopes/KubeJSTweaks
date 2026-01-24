@@ -85,3 +85,17 @@ BlockEvents.modification(event => {
         }
     })
 })
+
+StartupEvents.postInit(event => {
+  KJSTweaks.curseForgeGetEndpoint("v1/mods/925200/files?pageSize=1", Client, response => {
+    let data = response.get("data")
+    console.log(data)
+    let file = data.get(0)
+    console.log(file)
+    let displayName = file.get("displayName")
+    console.log(displayName)
+    let $SystemToast = Java.loadClass("net.minecraft.client.gui.components.toasts.SystemToast")
+    let $SystemToastId = Java.loadClass("net.minecraft.client.gui.components.toasts.SystemToast$SystemToastId")
+    $SystemToast.add(Client.getToasts(), $SystemToastId.PERIODIC_NOTIFICATION, "Title is here!", "Message is here!")
+  })
+})

@@ -525,6 +525,24 @@ ServerEvents.recipes(event => {
 
   })
 
+  KJSTweaks.runIfModPresent("draconicevolution", () => {
+
+    let counter = 0
+    let ingredients = genArray(rRange(6,12), () => ({ingredient: riot(), consume: rb()}))
+    let tiers = ["draconium","wyvern","draconic","chaotic"]
+    runFor(10, (idx) => {
+      event.recipes.draconicevolution.fusion_crafting(ris(), riot(), ingredients)
+        .id("atmindev:draconicevolution/fusion_crafting/test/" + counter++)
+      event.recipes.draconicevolution.fusion_crafting(ris(), riot(), ingredients).tier(rList(tiers))
+        .id("atmindev:draconicevolution/fusion_crafting/test/" + counter++)
+      event.recipes.draconicevolution.fusion_crafting(ris(), riot(), ingredients).tier(rList(tiers)).energy(rRange(1000000,1000000000))
+        .id("atmindev:draconicevolution/fusion_crafting/test/" + counter++)
+    })
+
+    testRecipes(event, /.*/, "draconicevolution:fusion_crafting")
+
+  })
+
   // Not ready yet for 7.2
 //  KJSTweaks.runIfModPresent("kubejs", "[2101.7.1,2101.7.2)", () => {
 //

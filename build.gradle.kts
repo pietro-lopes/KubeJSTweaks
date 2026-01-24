@@ -6,7 +6,7 @@ import java.nio.file.Files
 plugins {
     `java-library`
     `maven-publish`
-    id("net.neoforged.moddev") version "2.0.78"
+    id("net.neoforged.moddev") version "2.0.136"
     idea
 }
 
@@ -178,6 +178,7 @@ val kjs71CompileOnly: Configuration by configurations.getting
 val kjs71Implementation: Configuration by configurations.getting
 val kjs72CompileOnly: Configuration by configurations.getting
 val kjs72Implementation: Configuration by configurations.getting
+val kjs72RuntimeOnly: Configuration by configurations.getting
 val testkjs72Implementation: Configuration by configurations.getting
 //afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
 //    tasks.withType(RunGameTask::class).configureEach {
@@ -190,9 +191,9 @@ dependencies {
     kjs72CompileOnly(sourceSets.main.get().output)
     testkjs72Implementation(sourceSets.main.get().output)
     // MixinExtras that supports @Expression
-    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0")?.let {
-        implementation(it)
-    }
+//    jarJar("io.github.llamalad7:mixinextras-neoforge:0.5.0")?.let {
+//        implementation(it)
+//    }
 
     // MixinSquared to Cancel and Adjust other mixins
     annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3")?.let {
@@ -211,16 +212,16 @@ dependencies {
 //    localRuntime(project(":kjst-asm"))
 
     // Disable this while debuging 7.2
-    kjs71Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
-        interfaceInjectionData(it)
-    }
+//    kjs71Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")?.let {
+//        interfaceInjectionData(it)
+//    }
 
-//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.336")
+//    implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.348")
     implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181")
 
     kjs71Implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
 
-    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.336")?.let {
+    kjs72Implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.348")?.let {
         interfaceInjectionData(it)
     }
 
@@ -287,6 +288,11 @@ dependencies {
     localRuntime("curse.maven:projecte-226410:6611984")
     localRuntime("curse.maven:buddingcrystals-628302:6453092")
     localRuntime("curse.maven:dynamic-asset-generator-577096:5625118")
+
+    localRuntime("curse.maven:draconic-evolution-223565:7284028")
+    localRuntime("curse.maven:brandons-core-231382:7130990")
+    localRuntime("curse.maven:codechicken-lib-1-8-242818:7281427")
+    kjs72RuntimeOnly("curse.maven:probejs-585406:7105159")
 
     // localRuntime("curse.maven:oritech-1030830:6558345") // oritech-neoforge-0.15.7.jar
     //localRuntime("curse.maven:jei-238222:6614392")
@@ -525,8 +531,6 @@ publishing {
         maven("file://$projectDir/repo")
     }
 }
-
-
 
 neoForge.ideSyncTask(tasks.named("generateModMetadata"))
 neoForge.ideSyncTask(tasks.named("generateDatapack"))
