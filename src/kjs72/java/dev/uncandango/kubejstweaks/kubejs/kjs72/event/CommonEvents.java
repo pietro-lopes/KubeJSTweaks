@@ -14,7 +14,7 @@ public class CommonEvents {
 
     public static void listenKubeEvent(){
         //ServerEvents.RECIPES_AFTER_LOADED.listenJava(ScriptType.SERVER, null, CommonEvents::afterRecipeLoaded);
-        KubeJSTweaks.LOGGER.info("Testing");
+        //KubeJSTweaks.LOGGER.info("Testing");
         ServerEvents.GENERATE_DATA.listenJava(ScriptType.SERVER, GeneratedDataStage.LAST,CommonEvents::onGenerateData);
     }
 

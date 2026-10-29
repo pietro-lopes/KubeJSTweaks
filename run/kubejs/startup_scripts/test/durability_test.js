@@ -1,6 +1,7 @@
-let $Lib = Java.loadClass("blusunrize.immersiveengineering.api.Lib")
+import { $Lib } from "blusunrize.immersiveengineering.api.Lib"
+let $Lib /* @type {typeof $Lib} */ = Java.loadClass("blusunrize.immersiveengineering.api.Lib")
 
-StartupEvents.registry('item',event=> {
+StartupEvents.registry('item',event => {
     event.create('ie_tiered_sword', 'sword')
       .tier($Lib.MATERIAL_Steel)
 })

@@ -169,10 +169,6 @@ sourceSets.main {
     resources.srcDir(tasks.named("generateModMetadata"))
 }
 
-
-
-
-
 val localRuntime: Configuration by configurations.creating
 val kjs71CompileOnly: Configuration by configurations.getting
 val kjs71Implementation: Configuration by configurations.getting
@@ -288,6 +284,7 @@ dependencies {
     localRuntime("curse.maven:projecte-226410:6611984")
     localRuntime("curse.maven:buddingcrystals-628302:6453092")
     localRuntime("curse.maven:dynamic-asset-generator-577096:5625118")
+    localRuntime("curse.maven:excavated-variants-577411:5625108")
 
     localRuntime("curse.maven:draconic-evolution-223565:7284028")
     localRuntime("curse.maven:brandons-core-231382:7130990")

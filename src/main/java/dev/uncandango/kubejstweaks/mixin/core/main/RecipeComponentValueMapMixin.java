@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Mixin(RecipeComponentValueMap.class)
 public class RecipeComponentValueMapMixin {
-    @Redirect(method = "entrySet", at = @At(value = "INVOKE", target = "Ljava/util/Set;of([Ljava/lang/Object;)Ljava/util/Set;"))
+    @Redirect(method = "entrySet", at = @At(value = "INVOKE", target = "Ljava/util/Set;of([Ljava/lang/Object;)Ljava/util/Set;"), require = 0, expect = 0)
     private Set<Object> keepOrder(Object[] set){
         return Collections.unmodifiableSet(new LinkedHashSet<>(Arrays.asList(set)));
     }

@@ -1,5 +1,6 @@
 package dev.uncandango.kubejstweaks.kubejs.plugin;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -28,7 +29,6 @@ import net.minecraft.world.level.validation.DirectoryValidator;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.resource.ResourcePackLoader;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -55,8 +54,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
@@ -64,6 +63,9 @@ public class KJSTPluginUtils {
     public static WeakReference<CloseableResourceManager> SERVER_PACK_RESOURCES = new WeakReference<>(null);
     public static CloseableResourceManager CLIENT_PACK_RESOURCES;
     public static CloseableResourceManager TEMPORARY_SERVER_PACK_RESOURCES = null;
+    private static final Supplier<HttpClient> HTTP_CLIENT = Suppliers.memoize(() -> HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build());
+    private static final Supplier<String> USER_AGENT = Suppliers.memoize(() -> "Java-http-client/" + System.getProperty("java.version") + ' ' +
+        "KubeJSTweaks/" + LoadingModList.get().getModFileById("kubejstweaks").versionString());
 
     @Nullable
     public static JsonElement readJsonFromMod(Context cx, String modId, String id) {
@@ -219,22 +221,15 @@ public class KJSTPluginUtils {
 
     public static void curseForgeGetEndpoint(String url, Executor executor, Consumer<JsonElement> callback) {
         CompletableFuture.runAsync(() -> {
-            var client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(15)).build();
-
-            final StringBuilder sb = new StringBuilder();
-            sb.append("Java-http-client/").append(System.getProperty("java.version")).append(' ');
-            sb.append("KubeJSTweaks/").append(LoadingModList.get().getModFileById("kubejstweaks").versionString());
-            final String userAgent = sb.toString();
-
             var request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.curseforge.com/api/" + url))
                 .timeout(Duration.ofSeconds(15))
                 .setHeader("Accept-Encoding", "gzip")
-                .setHeader("User-Agent", userAgent)
+                .setHeader("User-Agent", USER_AGENT.get())
                 .GET()
                 .build();
             try {
-                final HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                final HttpResponse<InputStream> response = HTTP_CLIENT.get().send(request, HttpResponse.BodyHandlers.ofInputStream());
                 int responseCode = response.statusCode();
                 if (responseCode == 200) {
                     final boolean isGzipEncoded = response.headers().firstValue("Content-Encoding").orElse("").equals("gzip");

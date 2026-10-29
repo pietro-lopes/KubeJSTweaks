@@ -36,6 +36,7 @@ ServerEvents.generateData("last", event => {
     let recipeSchemaStoneCuttingJson = KJSTweaks.readJsonFromMod("kubejs", "minecraft:kubejs/recipe_schema/stonecutting")
 
     console.log("Jukebox Song 5: " + jukeboxSongJson)
+    console.log("description.translate of Jukebox Song 5: " + JsonUtils.toObject(jukeboxSongJson).description.translate)
     console.log("Recipe Schema Stone Cutting: " + recipeSchemaStoneCuttingJson)
 
     // REMEMBER THAT GETTING ASSETS ON STARTUP/SERVER EVENT IS NOT SUPPORTED ON A DEDICATED SERVER

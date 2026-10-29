@@ -78,7 +78,7 @@ public class KubeJSTweaks {
 
     private static void auditMyMixinsOnly(){
         try {
-            Class<?> MIXIN_CONFIG_CLASS = ModFileParser.MixinConfig.class;
+            Class<?> MIXIN_CONFIG_CLASS = Class.forName("org.spongepowered.asm.mixin.transformer.MixinConfig");
             MethodHandle unhandledMixinsMH = MethodHandles.lookup().unreflect(ObfuscationReflectionHelper.findMethod(MIXIN_CONFIG_CLASS, "getUnhandledTargets", Set.class));
             var configMain = org.spongepowered.asm.mixin.transformer.Config.create("kubejstweaks.mixins.json", MixinEnvironment.getCurrentEnvironment(), null);
             var kjs72Loaded = LoadingModList.get().getModFileById("kubejs").versionString().startsWith("2101.7.2-");

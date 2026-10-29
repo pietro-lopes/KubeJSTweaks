@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.server.packs.resources.FallbackResourceManager;
 import net.minecraft.server.packs.resources.Resource;
@@ -67,26 +69,27 @@ public class TempResourceManager implements CloseableResourceManager {
     }
 
     private static List<PackResources> filterIncompatiblePacks(List<PackResources> packs) {
-        Set<String> packsToSkip = new HashSet<>();
-        if (ModList.get().isLoaded("dynamic_asset_generator")) {
-            packsToSkip.addAll(Set.of("mod/dynamic_asset_generator", "dynamic_asset_generator/dynamic_asset_generator:builtin_assets","dynamic_asset_generator/dynamic_asset_generator:builtin_data", "dynamic_asset_generator/buddingcrystals:assets"));
-        }
-        if (ModList.get().isLoaded("buddingcrystals")) {
-            packsToSkip.add("mod/buddingcrystals");
-        }
-        if (ModList.get().isLoaded("supplementaries")) {
-            packsToSkip.add("mod/supplementaries");
-            packsToSkip.add("supplementaries:generated_pack");
-        }
-        if (ModList.get().isLoaded("moonlight")) {
-            packsToSkip.add("mod/moonlight");
-            packsToSkip.add("moonlight:merged_pack");
-        }
-        if (ModList.get().isLoaded("sawmill")) {
-            packsToSkip.add("mod/sawmill");
-            packsToSkip.add("sawmill:sawmill_recipes");
-        }
-        return packs.stream().filter(pack -> !packsToSkip.contains(pack.packId())).toList();
+        return packs.stream().filter(pack -> pack.getClass() == VanillaPackResources.class || pack.getClass() == PathPackResources.class).toList();
+//        Set<String> packsToSkip = new HashSet<>();
+//        if (ModList.get().isLoaded("dynamic_asset_generator")) {
+//            packsToSkip.addAll(Set.of("mod/dynamic_asset_generator", "dynamic_asset_generator/dynamic_asset_generator:builtin_assets","dynamic_asset_generator/dynamic_asset_generator:builtin_data", "dynamic_asset_generator/buddingcrystals:assets"));
+//        }
+//        if (ModList.get().isLoaded("buddingcrystals")) {
+//            packsToSkip.add("mod/buddingcrystals");
+//        }
+//        if (ModList.get().isLoaded("supplementaries")) {
+//            packsToSkip.add("mod/supplementaries");
+//            packsToSkip.add("supplementaries:generated_pack");
+//        }
+//        if (ModList.get().isLoaded("moonlight")) {
+//            packsToSkip.add("mod/moonlight");
+//            packsToSkip.add("moonlight:merged_pack");
+//        }
+//        if (ModList.get().isLoaded("sawmill")) {
+//            packsToSkip.add("mod/sawmill");
+//            packsToSkip.add("sawmill:sawmill_recipes");
+//        }
+//        return packs.stream().filter(pack -> !packsToSkip.contains(pack.packId())).toList();
     }
 
     @Nullable
